@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Las Bugambilias - INNOVA Inversiones",
+  "description": "Premium landing page for lots sales and direct financing at Alameda del Sol urban development by Grupo Centenario.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

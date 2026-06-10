@@ -1,0 +1,121 @@
+{
+  "entities": {
+    "SiteImages": {
+      "title": "SiteImages",
+      "description": "Custom external URLs for site images in Las Bugambilias website",
+      "type": "object",
+      "properties": {
+        "heroBanner": {
+          "type": "string",
+          "description": "URL for the main Hero banner image. Ideal: 1920x1080px."
+        },
+        "mapPlan": {
+          "type": "string",
+          "description": "URL for the main urban plan or locator map. Ideal: 1200x800px."
+        },
+        "testimonialsFamily": {
+          "type": "string",
+          "description": "URL for the testimonial family proof image. Ideal: 500x500px."
+        },
+        "related1Huacho": {
+          "type": "string",
+          "description": "URL for the Related Project 1 Huacho preview. Ideal: 800x600px."
+        },
+        "related2Planicie": {
+          "type": "string",
+          "description": "URL for the Related Project 2 La Planicie preview. Ideal: 800x600px."
+        },
+        "related3SantaClara": {
+          "type": "string",
+          "description": "URL for the Related Project 3 Santa Clara preview. Ideal: 800x600px."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last updated timestamp."
+        }
+      },
+      "required": []
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "Captured customer leads for Nueva La Joya real estate",
+      "type": "object",
+      "properties": {
+        "nombres": {
+          "type": "string",
+          "description": "Nombres del prospecto."
+        },
+        "apellidos": {
+          "type": "string",
+          "description": "Apellidos del prospecto."
+        },
+        "email": {
+          "type": "string",
+          "description": "Correo electronico del prospecto."
+        },
+        "telefono": {
+          "type": "string",
+          "description": "Numero de telefono movil."
+        },
+        "tipoDocumento": {
+          "type": "string",
+          "description": "Tipo de documento (DNI, CE, RUC)."
+        },
+        "numeroDocumento": {
+          "type": "string",
+          "description": "Numero de documento de identificacion."
+        },
+        "mensaje": {
+          "type": "string",
+          "description": "Mensaje o consulta personalizada."
+        },
+        "politicaTerminos": {
+          "type": "boolean",
+          "description": "Si acepto los terminos y condiciones."
+        },
+        "politicaPublicidad": {
+          "type": "boolean",
+          "description": "Si acepto el envio de publicidad."
+        },
+        "politicaPerfilamiento": {
+          "type": "boolean",
+          "description": "Si acepto el perfilamiento de datos."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp in standard format."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Nuevo", "Contactado", "En Progreso", "Cerrado Ganado"],
+          "description": "Process stage of the lead in CRM."
+        },
+        "origen": {
+          "type": "string",
+          "description": "Canal de captacion o formulario de origen."
+        },
+        "dispositivo": {
+          "type": "string",
+          "description": "User device category."
+        },
+        "loteInteres": {
+          "type": "string",
+          "description": "Interes de lote o manzana especifica si aplica."
+        }
+      },
+      "required": ["nombres", "apellidos", "email", "telefono", "tipoDocumento", "numeroDocumento", "politicaTerminos", "politicaPublicidad", "politicaPerfilamiento", "timestamp", "status", "origen", "dispositivo"]
+    }
+  },
+  "firestore": {
+    "settings/images": {
+      "schema": "SiteImages",
+      "description": "Global settings for dynamic images utilized throughout the public frontend."
+    },
+    "leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Real-time records of contact requests submitted by active prospective buyers."
+    }
+  }
+}
