@@ -1,32 +1,41 @@
-# --- Build Stage ---
+# --- Step 1: Build Stage ---
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package JSON files. Using wildcard allows copying package-lock.json if it exists, without failing if it is missing.
+# Copy package descriptors
 COPY package*.json ./
 
-# Install dependencies. Using npm install is highly compatible for automated deploy environments.
+# Install both general dependencies and devDependencies (like esbuild, typescript, etc.)
 RUN npm install
 
-# Copy the rest of the application files
+# Copy all project source code
 COPY . .
 
-# Build the production optimized bundle (outputs to /app/dist)
+# Run compilation scripts:
+# 1) Vite compiles frontend to /app/dist
+# 2) esbuild bundles server.ts into /app/dist/server.cjs
 RUN npm run build
 
-# --- Production Station (Nginx) ---
-FROM nginx:alpine
+# --- Step 2: Production Run Stage ---
+FROM node:20-alpine AS runner
 
-# Copy custom Nginx configuration to support SPA routing & custom port
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Clean default nginx public files and replace with built statics from builder stage
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Set production environment flags
+ENV NODE_ENV=production
 
-# Expose port 8007 exactly as requested
-EXPOSE 8007
+# Copy package descriptors for production dependency install
+COPY package*.json ./
 
-# Run Nginx on the foreground
-CMD ["nginx", "-g", "daemon off;"]
+# Only install runtime production dependencies to keep the image slim
+RUN npm install --omit=dev
+
+# Copy the compiles from builder stage
+COPY --from=builder /app/dist ./dist
+
+# Expose port 3000 (standard server port)
+EXPOSE 3000
+
+# Start Express server using the start script (which runs node dist/server.cjs)
+CMD ["npm", "run", "start"]
