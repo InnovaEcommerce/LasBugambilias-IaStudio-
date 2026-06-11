@@ -11,8 +11,7 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  // In production, bind to port 8007, otherwise default to 3000 for development setup
-  const PORT = process.env.NODE_ENV === "production" ? 8007 : 3000;
+  const PORT = 3000;
 
   app.use(express.json());
 
