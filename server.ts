@@ -6,8 +6,21 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Dual ES Module and CommonJS compatibility for __filename and __dirname
+let resolvedFilename = "";
+let resolvedDirname = "";
+
+try {
+  if (typeof import.meta !== "undefined" && import.meta.url) {
+    resolvedFilename = fileURLToPath(import.meta.url);
+    resolvedDirname = path.dirname(resolvedFilename);
+  }
+} catch (e) {
+  // Graceful fallback for non-ESM or environments without import.meta
+}
+
+const __filenameFallback = resolvedFilename || (typeof __filename !== "undefined" ? __filename : "");
+const __dirnameFallback = resolvedDirname || (typeof __dirname !== "undefined" ? __dirname : process.cwd());
 
 async function startServer() {
   const app = express();
