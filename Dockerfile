@@ -15,18 +15,23 @@ COPY . .
 # Build the production optimized bundle (outputs to /app/dist)
 RUN npm run build
 
-# --- Production Station (Nginx) ---
-FROM nginx:alpine
+# --- Production Stage (Node.js) ---
+FROM node:20-alpine
 
-# Copy custom Nginx configuration to support SPA routing & custom port
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Clean default nginx public files and replace with built statics from builder stage
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copy package JSON files and install production dependencies
+COPY package*.json ./
+RUN npm install --only=production
 
-# Expose port 8007 exactly as requested
+# Copy built assets and compiled server file
+COPY --from=builder /app/dist ./dist
+
+# Set production environment variable
+ENV NODE_ENV=production
+
+# Expose port 8007 for the backend server
 EXPOSE 8007
 
-# Run Nginx on the foreground
-CMD ["nginx", "-g", "daemon off;"]
+# Run the compiled backend Express/Node application
+CMD ["node", "dist/server.cjs"]
