@@ -1,27 +1,20 @@
-import { Facebook, Youtube, Instagram, ShieldCheck, FileSpreadsheet, Heart, Smartphone } from 'lucide-react';
+import { Facebook, Youtube, Instagram, ShieldCheck, FileSpreadsheet, Heart, Smartphone, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const primaryLinks = [
-    { label: 'Condominios', href: '#proyecto' },
     { label: 'Proyectos', href: '#proyecto' },
     { label: 'Refiere y gana', href: '#refiere' },
-    { label: 'App vecino INNOVA', href: '#app' },
-  ];
-
-  const legalLinks = [
-    { label: 'Pagolink', href: '#financiamiento' },
-    { label: 'Términos y condiciones', href: '#legal' },
-    { label: 'Políticas de Privacidad', href: '#legal' },
-    { label: 'Mesa de Partes', href: '#contacto' },
+    { label: 'Invierte AQUÍ', href: '#financiamiento' },
+    { label: 'Contáctanos', href: '#mapa' },
   ];
 
   return (
     <footer className="bg-neutral-900 border-t-4 border-centenario-magenta text-white font-sans text-xs">
       
       {/* Top Footer links segment */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14 grid grid-cols-1 md:grid-cols-3 gap-8">
         
         {/* Column 1: Brand details and short summary */}
         <div className="space-y-4">
@@ -34,12 +27,12 @@ export default function Footer() {
             </span>
           </div>
           <p className="text-neutral-400 text-xs leading-relaxed max-w-xs">
-            Desarrolladora de proyectos residenciales modernos líder en el sur del Perú con más de 15 años de trayectoria sustentable construyendo proyectos seguros y revalorizables.
+            Desarrolladora de proyectos de inversión modernos líder en Arequipa con más de 15 años de trayectoria construyendo proyectos rentables y seguros.
           </p>
           
           <div className="flex items-center gap-2 pt-2">
             <ShieldCheck className="w-4 h-4 text-emerald-450 shrink-0" />
-            <span className="text-[10px] text-neutral-400 font-mono">Inversión 100% Amparada S.A.A.</span>
+            <span className="text-[10px] text-neutral-400 font-mono">Inversión 100% segura.</span>
           </div>
         </div>
 
@@ -60,38 +53,16 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Column 3: Legal Disclosures list */}
-        <div className="space-y-3 text-left">
-          <h4 className="font-display font-black text-sm uppercase tracking-wider text-centenario-yellow">Transparencia</h4>
-          <ul className="space-y-2">
-            {legalLinks.map((lnk) => (
-              <li key={lnk.label}>
-                <a
-                  href={lnk.href}
-                  className="text-neutral-300 hover:text-centenario-magenta transition-colors duration-150"
-                >
-                  • {lnk.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Column 4: Libro de Reclamaciones and physical markers */}
+        {/* Column 3: Canal de Contacto */}
         <div className="space-y-4">
-          <h4 className="font-[#FFD100] font-sans font-black tracking-wide text-sm text-centenario-yellow">Canal de Contacto</h4>
-          <p className="text-neutral-300 leading-normal">
-            ✉️ info@innova.com.pe
-          </p>
-
-          {/* Simulated Libro de reclamaciones icon layout matching Peru requirements */}
-          <div className="p-3 bg-neutral-950 rounded-2xl border border-neutral-850 flex items-center gap-3 w-52 shadow-inner">
-            <FileSpreadsheet className="w-8 h-8 text-neutral-300 shrink-0" />
-            <div className="text-left font-sans text-[10px] leading-tight">
-              <span className="text-white font-extrabold uppercase block font-display tracking-tight text-xs">Libro de Reclamaciones</span>
-              <span className="text-neutral-500 font-mono text-[9px] block mt-0.5">Hoja de Reclamo Virtual</span>
-            </div>
-          </div>
+          <h4 className="font-sans font-black tracking-wide text-sm text-centenario-yellow">Canal de Contacto</h4>
+          <p className="text-neutral-455 text-[10px] font-mono uppercase tracking-widest block">HABLAR CON UN ASESOR</p>
+          <a
+            href="tel:926289293"
+            className="text-2xl font-black text-centenario-yellow block hover:underline hover:text-amber-400 leading-none cursor-pointer"
+          >
+            📞 926 289 293
+          </a>
         </div>
 
       </div>
@@ -101,13 +72,13 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           
           <p className="text-[11px] leading-relaxed text-neutral-450 text-center md:text-left">
-            Copyright © {currentYear} innova.com.pe • Todos los derechos reservados bajo leyes peruanas S.A.C.
+            Copyright © {currentYear} • Todos los derechos reservados bajo leyes peruanas
           </p>
 
           {/* Social icons row */}
           <div className="flex gap-4 items-center">
             <a
-              href="https://facebook.com/innovaperu"
+              href="https://www.facebook.com/innovainversiones.oficial"
               target="_blank"
               rel="noreferrer"
               className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-900 transition-colors cursor-pointer"
@@ -116,7 +87,16 @@ export default function Footer() {
               <Facebook className="w-4 h-4" />
             </a>
             <a
-              href="https://youtube.com"
+              href="https://www.instagram.com/innovainversiones.oficial"
+              target="_blank"
+              rel="noreferrer"
+              className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-900 transition-colors cursor-pointer"
+              aria-label="Seguir en Instagram"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.youtube.com/@innovainversiones"
               target="_blank"
               rel="noreferrer"
               className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-900 transition-colors cursor-pointer"
@@ -125,13 +105,13 @@ export default function Footer() {
               <Youtube className="w-4 h-4" />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%EF%BF%BD%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias&type=phone_number&app_absent=0"
               target="_blank"
               rel="noreferrer"
               className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-900 transition-colors cursor-pointer"
-              aria-label="Seguir en Instagram"
+              aria-label="Contacto por WhatsApp"
             >
-              <Instagram className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4" />
             </a>
           </div>
 

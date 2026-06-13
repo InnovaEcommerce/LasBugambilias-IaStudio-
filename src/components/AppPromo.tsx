@@ -110,38 +110,7 @@ export default function AppPromo() {
               ))}
             </ul>
 
-            {/* Apple Store and Google Play Badges */}
-            <div className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
-              <a
-                href="https://apps.apple.com"
-                target="_blank"
-                rel="noreferrer"
-                className="bg-black p-2 border border-neutral-800 rounded-xl flex items-center gap-2.5 hover:bg-neutral-900 transition-colors cursor-pointer text-left h-12 w-44 shadow-lg"
-              >
-                <div className="p-1 rounded bg-neutral-900">
-                  <Smartphone className="w-5 h-5 text-white" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[8px] font-bold text-neutral-400 uppercase leading-none font-mono">Consíguelo en</span>
-                  <span className="text-sm font-display font-extrabold text-white leading-none mt-0.5 tracking-tight font-sans">App Store</span>
-                </div>
-              </a>
-
-              <a
-                href="https://play.google.com"
-                target="_blank"
-                rel="noreferrer"
-                className="bg-black p-2 border border-neutral-800 rounded-xl flex items-center gap-2.5 hover:bg-neutral-900 transition-colors cursor-pointer text-left h-12 w-44 shadow-lg"
-              >
-                <div className="p-1 rounded bg-neutral-900">
-                  <Laptop className="w-5 h-5 text-emerald-400" />
-                </div>
-                <div className="flex flex-col text-neutral-100">
-                  <span className="text-[8px] font-bold text-neutral-400 uppercase leading-none font-mono">Consíguelo en</span>
-                  <span className="text-sm font-display font-extrabold text-white leading-none mt-0.5 tracking-tight font-sans">Google Play</span>
-                </div>
-              </a>
-            </div>
+            {/* Apple Store and Google Play Badges Removed */}
 
           </div>
 

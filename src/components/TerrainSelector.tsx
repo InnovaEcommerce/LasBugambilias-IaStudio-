@@ -26,33 +26,33 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
   // Generate realistic lots for Alameda del Sol
   const lotesData: Lote[] = [
     // Manzana A
-    { id: 'a1', manzana: 'MZ A', numero: 1, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
-    { id: 'a2', manzana: 'MZ A', numero: 2, area: '98m²', precio: 'S/7,990', estado: 'Vendido' },
+    { id: 'a1', manzana: 'MZ A', numero: 1, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
+    { id: 'a2', manzana: 'MZ A', numero: 2, area: '98m²', precio: 'S/7,900', estado: 'Vendido' },
     { id: 'a3', manzana: 'MZ A', numero: 3, area: '99m²', precio: 'S/8,390', estado: 'Disponible', precioEspecial: 'S/7,290' },
-    { id: 'a4', manzana: 'MZ A', numero: 4, area: '98m²', precio: 'S/7,990', estado: 'Reservado' },
-    { id: 'a5', manzana: 'MZ A', numero: 5, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
+    { id: 'a4', manzana: 'MZ A', numero: 4, area: '98m²', precio: 'S/7,900', estado: 'Reservado' },
+    { id: 'a5', manzana: 'MZ A', numero: 5, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
     { id: 'a6', manzana: 'MZ A', numero: 6, area: '112m²', precio: 'S/9,590', estado: 'Disponible', precioEspecial: 'S/8,390' },
-    { id: 'a7', manzana: 'MZ A', numero: 7, area: '98m²', precio: 'S/7,990', estado: 'Vendido' },
-    { id: 'a8', manzana: 'MZ A', numero: 8, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
+    { id: 'a7', manzana: 'MZ A', numero: 7, area: '98m²', precio: 'S/7,900', estado: 'Vendido' },
+    { id: 'a8', manzana: 'MZ A', numero: 8, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
 
     // Manzana B
     { id: 'b1', manzana: 'MZ B', numero: 1, area: '98m²', precio: 'S/8,190', estado: 'Vendido' },
-    { id: 'b2', manzana: 'MZ B', numero: 2, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
-    { id: 'b3', manzana: 'MZ B', numero: 3, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
+    { id: 'b2', manzana: 'MZ B', numero: 2, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
+    { id: 'b3', manzana: 'MZ B', numero: 3, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
     { id: 'b4', manzana: 'MZ B', numero: 4, area: '124m²', precio: 'S/10,290', estado: 'Reservado' },
-    { id: 'b5', manzana: 'MZ B', numero: 5, area: '98m²', precio: 'S/7,990', estado: 'Vendido' },
-    { id: 'b6', manzana: 'MZ B', numero: 6, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
+    { id: 'b5', manzana: 'MZ B', numero: 5, area: '98m²', precio: 'S/7,900', estado: 'Vendido' },
+    { id: 'b6', manzana: 'MZ B', numero: 6, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
     { id: 'b7', manzana: 'MZ B', numero: 7, area: '99m²', precio: 'S/8,390', estado: 'Vendido' },
-    { id: 'b8', manzana: 'MZ B', numero: 8, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
+    { id: 'b8', manzana: 'MZ B', numero: 8, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
 
     // Manzana C
-    { id: 'c1', manzana: 'MZ C', numero: 1, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
-    { id: 'c2', manzana: 'MZ C', numero: 2, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
-    { id: 'c3', manzana: 'MZ C', numero: 3, area: '98m²', precio: 'S/7,990', estado: 'Vendido' },
-    { id: 'c4', manzana: 'MZ C', numero: 4, area: '98m²', precio: 'S/7,990', estado: 'Vendido' },
+    { id: 'c1', manzana: 'MZ C', numero: 1, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
+    { id: 'c2', manzana: 'MZ C', numero: 2, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
+    { id: 'c3', manzana: 'MZ C', numero: 3, area: '98m²', precio: 'S/7,900', estado: 'Vendido' },
+    { id: 'c4', manzana: 'MZ C', numero: 4, area: '98m²', precio: 'S/7,900', estado: 'Vendido' },
     { id: 'c5', manzana: 'MZ C', numero: 5, area: '104m²', precio: 'S/8,690', estado: 'Disponible', precioEspecial: 'S/7,590' },
-    { id: 'c6', manzana: 'MZ C', numero: 6, area: '98m²', precio: 'S/7,990', estado: 'Reservado' },
-    { id: 'c7', manzana: 'MZ C', numero: 7, area: '98m²', precio: 'S/7,990', estado: 'Disponible', precioEspecial: 'S/6,990' },
+    { id: 'c6', manzana: 'MZ C', numero: 6, area: '98m²', precio: 'S/7,900', estado: 'Reservado' },
+    { id: 'c7', manzana: 'MZ C', numero: 7, area: '98m²', precio: 'S/7,900', estado: 'Disponible', precioEspecial: 'S/6,900' },
     { id: 'c8', manzana: 'MZ C', numero: 8, area: '108m²', precio: 'S/9,190', estado: 'Disponible', precioEspecial: 'S/7,995' },
   ];
 
@@ -62,11 +62,7 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
     setActiveLote(lote);
   };
 
-  const handleBookLote = (lote: Lote) => {
-    if (lote.estado !== 'Disponible') return;
-    const lotName = `${lote.manzana} - LOTE ${lote.numero}`;
-    onOpenWithLot(lotName);
-  };
+
 
   return (
     <section id="lotes-map" className="bg-white py-14 md:py-20 font-sans scroll-mt-32">
@@ -89,7 +85,12 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
 
             {/* Start Overlay state */}
             {!started ? (
-              <div className="relative w-full h-[400px] md:h-[500px] rounded-[32px] overflow-hidden shadow-2xl group border border-neutral-200">
+              <a 
+                href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1QUIERO+PLANO+PDF%21+de+1+etapa+del+proyecto+LB&type=phone_number&app_absent=0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative block w-full h-[400px] md:h-[500px] rounded-[32px] overflow-hidden shadow-2xl group border border-neutral-200 cursor-pointer"
+              >
                 <img
                   src={images.mapPlan}
                   alt="Planificación Las Bugambilias"
@@ -107,18 +108,15 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                       Buscador Interactivo de Lotes
                     </span>
                     <p className="font-sans font-black text-xl md:text-2xl text-white tracking-tight leading-snug uppercase">
-                      Mira el plano del proyecto, elige la ubicación exacta de tu terreno y consulta detalles en tiempo real.
+                      Mira el plano del proyecto, elige tu lote y cotízalo
                     </p>
                   </div>
 
-                  <button
-                    onClick={() => setStarted(true)}
-                    className="px-8 py-4 bg-[#FFD100] hover:bg-amber-400 text-neutral-950 font-black text-sm rounded-full shadow-xl hover:scale-105 transition-all duration-300 md:animate-bounce cursor-pointer uppercase tracking-wider"
-                  >
-                    Empezar ahora
-                  </button>
+                  <span className="px-8 py-4 bg-[#FFD100] group-hover:bg-amber-400 text-neutral-950 font-black text-sm rounded-full shadow-xl transition-all duration-300 md:animate-bounce uppercase tracking-wider inline-flex items-center justify-center select-none">
+                    PLANO PDF AQUÍ
+                  </span>
                 </div>
-              </div>
+              </a>
             ) : (
               /* Interactive Terrain Selector Applet */
               <div className="w-full bg-neutral-50 rounded-[32px] border border-neutral-200 overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-12">
@@ -275,20 +273,7 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                     </AnimatePresence>
                   </div>
 
-                  {/* Reservation Active button */}
-                  <div className="mt-8 pt-6 border-t border-neutral-200">
-                    <button
-                      onClick={() => activeLote && handleBookLote(activeLote)}
-                      className={`w-full py-3.5 text-center text-xs font-black rounded-full transition-all duration-300 shadow-md uppercase tracking-wider ${
-                        activeLote && activeLote.estado === 'Disponible'
-                          ? 'bg-[#FFD100] text-[#D2007A] hover:bg-amber-400 cursor-pointer transform hover:scale-[1.02]'
-                          : 'bg-neutral-250 text-neutral-400 cursor-not-allowed'
-                      }`}
-                      disabled={!activeLote || activeLote.estado !== 'Disponible'}
-                    >
-                      {activeLote ? 'Reservar Lote Ahora' : 'Elige un lote'}
-                    </button>
-                  </div>
+
 
                 </div>
 

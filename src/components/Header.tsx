@@ -58,19 +58,15 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
           {/* Logo Brand Representation block hanging down - Image 1 */}
           <a
             href="#"
-            className="flex flex-col items-center bg-white border border-neutral-100 shadow-md px-5 pt-3 pb-3 select-none -mt-3 -mb-6 z-50 rounded-b-2xl group transition-all"
-            style={{ minWidth: '110px' }}
+            className="flex flex-col items-center justify-center bg-white border border-neutral-100 shadow-md px-3 py-3 select-none -mt-[15px] -mb-8 z-50 rounded-b-2xl group transition-all"
+            style={{ minWidth: '114px' }}
           >
-            {/* The real interlocking red squares Centenario icon */}
-            <svg viewBox="0 0 100 100" className="w-10 h-10 group-hover:scale-105 transition-transform duration-300">
-              <rect x="20" y="15" width="48" height="48" fill="#D2007A" rx="4" />
-              <rect x="36" y="31" width="48" height="48" fill="#D2007A" rx="4" />
-              <rect x="36" y="31" width="32" height="32" fill="white" />
-              <rect x="42" y="37" width="20" height="20" fill="#D2007A" />
-            </svg>
-            <span className="text-[12px] font-sans font-black text-neutral-900 leading-none tracking-tight mt-1.5 uppercase font-sans">
-              Innova
-            </span>
+            <img 
+              src="https://app.innovainversiones.com/logo_buganbilias.svg" 
+              alt="Logo Las Bugambilias" 
+              className="h-[57px] w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              referrerPolicy="no-referrer"
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -90,13 +86,13 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
 
           {/* Action and Admin CRM Toggle */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Reserva aquí tu VISÍTA! Button - Image styled */}
-            <button
-              onClick={onOpenLeadPopup}
-              className="px-5 py-3 bg-[#E9EAF0] hover:bg-[#DEDFE5] text-[#0C152B] font-extrabold text-[13px] xl:text-[14px] rounded-xl transition duration-200 shadow-sm font-sans"
+            {/* Direct Call Button */}
+            <a
+              href="tel:+51926289293"
+              className="px-5 py-3 bg-[#E9EAF0] hover:bg-[#DEDFE5] text-[#0C152B] font-black text-[13px] xl:text-[14px] rounded-xl transition duration-200 shadow-sm font-sans inline-flex items-center justify-center gap-1"
             >
-              Reserva aquí tu <span className="font-extrabold uppercase font-sans">VISÍTA!</span>
-            </button>
+              📞 <span className="font-sans font-black">926 289 293</span>
+            </a>
 
             {/* ¡Regístrate AQUÍ! Button - Image styled */}
             <button
@@ -162,15 +158,13 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
               <div className="h-[1px] bg-neutral-100 my-2"></div>
 
               <div className="space-y-2">
-                <button
-                  onClick={() => {
-                    setIsOpenMenu(false);
-                    onOpenLeadPopup();
-                  }}
-                  className="w-full py-3 bg-[#E9EAF0] text-[#0C152B] rounded-xl text-center font-extrabold text-sm block shadow-sm"
+                <a
+                  href="tel:+51926289293"
+                  onClick={() => setIsOpenMenu(false)}
+                  className="w-full py-3 bg-[#E9EAF0] text-[#0C152B] rounded-xl text-center font-black text-sm block shadow-sm"
                 >
-                  Reserva aquí tu <span className="uppercase">VISÍTA!</span>
-                </button>
+                  📞 926 289 293
+                </a>
                 <button
                   onClick={() => {
                     setIsOpenMenu(false);

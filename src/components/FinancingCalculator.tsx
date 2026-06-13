@@ -8,8 +8,8 @@ interface FinancingCalculatorProps {
 export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalculatorProps) {
   // Simulator pricing params for direct financing
   const lotPrice = 7990;
-  const [downPayment, setDownPayment] = useState(1000);
-  const [months, setMonths] = useState(30);
+  const [downPayment, setDownPayment] = useState(1998); // Starts with 25% of S/ 7,990 (S/ 1,998)
+  const [months, setMonths] = useState(24); // Defaults to 24 months
 
   // Mortgage math computation (9.5% annual rate for direct financing)
   const calculateQuota = () => {
@@ -46,10 +46,10 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
             {/* Section Heading */}
             <div className="text-center md:text-left space-y-2 font-sans">
               <span className="text-xs font-black uppercase tracking-widest text-[#FFD100] bg-white/10 px-3 py-1 rounded-full border border-white/15">
-                Financiamiento Flexible Directo
+                FACILIDADES DE PAGO
               </span>
               <h2 className="font-sans font-black text-3xl md:text-4xl text-white tracking-tight leading-none uppercase mt-1">
-                Financia Tu Lote Hoy
+                Financia Tu Rapilote
               </h2>
               <div className="w-16 h-1 bg-[#FFD100] md:mx-0 mx-auto rounded-full mt-2"></div>
             </div>
@@ -57,8 +57,8 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
             {/* Combined Comparison Board */}
             <div className="relative group mt-16 text-left">
               
-              {/* Centered circular yellow badge exactly matching Image 5 */}
-              <div className="absolute top-[-44px] left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 flex w-24 h-24 rounded-full bg-[#FFD100] border-4 border-[#D2007A] text-neutral-950 font-sans font-extrabold text-[11px] text-center items-center justify-center shadow-2xl uppercase leading-none z-25 select-none transition-transform hover:scale-105 duration-200">
+              {/* Centered circular yellow badge exactly matching Image 5 - shifted to have 280px margin left on Desktop/PC (100px left from 380px) */}
+              <div className="absolute top-[-44px] left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 md:ml-[280px] flex w-24 h-24 rounded-full bg-[#FFD100] border-4 border-[#D2007A] text-neutral-950 font-sans font-extrabold text-[11px] text-center items-center justify-center shadow-2xl uppercase leading-none z-25 select-none transition-transform hover:scale-105 duration-200">
                 <span className="px-1 text-[#D2007A] font-black leading-tight text-[11.5px]">
                   Compra tu<br />lote<br />hoy
                 </span>
@@ -102,7 +102,7 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                         <Check className="w-3.5 h-3.5 stroke-[4px]" />
                       </div>
                       <span className="text-neutral-700 text-xs md:text-sm font-semibold">
-                        Hasta <strong className="text-neutral-900 font-extrabold">3 años para pagar</strong>
+                        Hasta <strong className="text-neutral-900 font-extrabold">24 meses para pagar</strong>
                       </span>
                     </div>
 
@@ -120,7 +120,7 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                         <Check className="w-3.5 h-3.5 stroke-[4px]" />
                       </div>
                       <span className="text-neutral-700 text-xs md:text-sm font-semibold">
-                        Descuento financiado hasta <strong className="text-neutral-900 font-extrabold">S/ 1,000</strong>
+                        Descuento y/o regalo por <strong className="text-neutral-900 font-extrabold">2 LOTES</strong>
                       </span>
                     </div>
 
@@ -161,7 +161,7 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                         <Check className="w-3.5 h-3.5 stroke-[4px]" />
                       </div>
                       <span className="text-neutral-700 text-xs md:text-sm font-semibold">
-                        Descuento al contado hasta <strong className="text-neutral-900 font-extrabold">S/ 2,000</strong>
+                        Descuento al contado hasta <strong className="text-neutral-900 font-extrabold">S/ 1,000</strong>
                       </span>
                     </div>
 
@@ -190,26 +190,26 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                     <span className="bg-[#FFD100] text-[#D2007A] text-[9px] font-black tracking-widest uppercase font-mono px-2 py-0.5 rounded">
                       Simulador
                     </span>
-                    <h4 className="text-base font-sans font-black tracking-tight text-white uppercase">Simulación de Cuotas Directas</h4>
+                    <h4 className="text-base font-sans font-black tracking-tight text-white uppercase">de Cuotas Mensuales</h4>
                   </div>
                   <p className="text-xs text-neutral-200 leading-relaxed">
-                    Ajusta los deslizadores para proyectar de manera referencial la cuota mensual de tu financiamiento según tu capacidad de cuota inicial.
+                    Ajusta los deslizadores para proyectar la cuota de tu financiamiento según tu capacidad de cuota inicial.
                   </p>
 
                   <div className="space-y-4 pt-1">
                     {/* Cuota inicial */}
                     <div className="space-y-1">
                       <div className="flex justify-between font-mono text-[10px] font-bold text-neutral-300">
-                        <span>CUOTA INICIAL</span>
+                        <span>CUOTA INICIAL APORTADA (MÍN. S/ 1,998)</span>
                         <span className="text-[#FFD100] font-black">S/ {downPayment.toLocaleString('es-PE')}</span>
                       </div>
                       <input
                         type="range"
-                        min="500"
-                        max="5000"
-                        step="100"
+                        min="1998"
+                        max="7000"
+                        step="10"
                         value={downPayment}
-                        onChange={(e) => setDownPayment(Number(e.target.value))}
+                        onChange={(e) => setDownPayment(Math.max(1998, Number(e.target.value)))}
                         className="w-full accent-[#FFD100] h-1.5 bg-neutral-800 rounded-lg cursor-pointer"
                       />
                     </div>
@@ -223,7 +223,7 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                       <input
                         type="range"
                         min="3"
-                        max="30"
+                        max="24"
                         step="1"
                         value={months}
                         onChange={(e) => setMonths(Number(e.target.value))}
@@ -236,20 +236,20 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                 {/* Display Simulator math result */}
                 <div className="p-6 bg-white/5 rounded-2xl border border-white/5 text-center flex flex-col justify-center items-center space-y-4">
                   <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-[#FFD100]">
-                    Cuota Mensual Estimada S.F.
+                    Cuota Referencial LB
                   </span>
                   <div className="text-4xl md:text-5xl font-sans font-black text-white font-mono leading-none">
                     S/ {currentQuota.toLocaleString('es-PE')}
                   </div>
                   <p className="text-[10px] text-neutral-300 font-mono">
-                    Principal a financiar: S/ {(lotPrice - downPayment).toLocaleString('es-PE')} (Monto base)
+                    Saldo a financiar: S/ {(lotPrice - downPayment).toLocaleString('es-PE')}{" "}
                   </p>
                   
                   <button
                     onClick={handleApplyPlan}
                     className="w-full py-3.5 bg-[#FFD100] text-[#D2007A] text-xs font-black uppercase rounded-full hover:bg-white hover:text-[#D2007A] transition-all duration-300 flex items-center justify-center gap-1.5 shadow cursor-pointer"
                   >
-                    <span>Solicitar este plan directo</span>
+                    <span>Solicitar esta cotización</span>
                     <ArrowRight className="w-4 h-4 text-[#D2007A] stroke-[3px]" />
                   </button>
                 </div>

@@ -14,35 +14,35 @@ export default function TabsAndDescription({ onOpenLead }: TabsAndDescriptionPro
           <div className="lg:col-span-8 space-y-10">
             
             {/* 1. Feature Bullet Points (horizontal Row/Col inside left space) */}
-            <div className="grid grid-cols-3 gap-2.5 sm:gap-6 bg-white py-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-6 bg-white py-2">
               
               {/* Highlight 1: Avenida Huarangal */}
-              <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-2 sm:gap-4 group">
-                <div className="w-10 h-10 xs:w-12 xs:h-12 rounded-full bg-[#D2007A] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
-                  <MapPin className="w-4.5 h-4.5 xs:w-5.5 xs:h-5.5 text-white stroke-[2.5px]" />
+              <div className="flex items-center text-left gap-4 group">
+                <div className="w-12 h-12 rounded-full bg-[#D2007A] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
+                  <MapPin className="w-5.5 h-5.5 text-white stroke-[2.5px]" />
                 </div>
-                <p className="font-sans font-extrabold text-[9px] xs:text-[10.5px] sm:text-[13.5px] md:text-[14.5px] text-neutral-850 leading-snug tracking-tight">
-                  Cerca a Avenida principal y Panam. Sur
+                <p className="font-sans font-black text-[15px] sm:text-[16px] md:text-[18px] text-neutral-900 leading-tight tracking-tight">
+                  Cerca a colegio, centro de salud, iglesia y comisaria
                 </p>
               </div>
 
               {/* Highlight 2: Lotes desde 98m² */}
-              <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-2 sm:gap-4 group">
-                <div className="w-10 h-10 xs:w-12 xs:h-12 rounded-full bg-[#D2007A] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
-                  <Layers className="w-4.5 h-4.5 xs:w-5.5 xs:h-5.5 text-white stroke-[2.5px]" />
+              <div className="flex items-center text-left gap-4 group">
+                <div className="w-12 h-12 rounded-full bg-[#D2007A] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
+                  <Layers className="w-5.5 h-5.5 text-white stroke-[2.5px]" />
                 </div>
-                <p className="font-sans font-extrabold text-[9px] xs:text-[10.5px] sm:text-[13.5px] md:text-[14.5px] text-neutral-850 leading-snug tracking-tight">
-                  Lotes desde 98m²
+                <p className="font-sans font-black text-[16px] sm:text-[18px] md:text-[20px] text-neutral-900 leading-tight tracking-tight">
+                  Lotes con excelente ubicación
                 </p>
               </div>
 
               {/* Highlight 3: A 2 cdras del Mercado */}
-              <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-2 sm:gap-4 group">
-                <div className="w-10 h-10 xs:w-12 xs:h-12 rounded-full bg-[#D2007A] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
-                  <Clock className="w-4.5 h-4.5 xs:w-5.5 xs:h-5.5 text-white stroke-[2.5px]" />
+              <div className="flex items-center text-left gap-4 group">
+                <div className="w-12 h-12 rounded-full bg-[#D2007A] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
+                  <Clock className="w-5.5 h-5.5 text-white stroke-[2.5px]" />
                 </div>
-                <p className="font-sans font-extrabold text-[9px] xs:text-[10.5px] sm:text-[13.5px] md:text-[14.5px] text-neutral-850 leading-snug tracking-tight">
-                  A 3 min de Plaza de San Isidro
+                <p className="font-sans font-black text-[16px] sm:text-[18px] md:text-[20px] text-neutral-900 leading-tight tracking-tight">
+                  A 3 min de avenida principal y 5 min de Panam. Sur
                 </p>
               </div>
 
@@ -51,7 +51,7 @@ export default function TabsAndDescription({ onOpenLead }: TabsAndDescriptionPro
             {/* 2. Narrative Description plain text list matching reference image style */}
             <div className="text-left py-4 pt-6 select-text">
               <p className="text-neutral-600 font-semibold text-[14px] md:text-[15.5px] leading-relaxed max-w-3xl">
-                Terrenos desde 98 hasta 200 m² en La Joya, Arequipa. Más de 150 familias ya eligieron a Innova para cumplir el sueño de su hogar. Residencial con diseño moderno, parques, áreas comunes y financiamiento. Más de 15 años de experiencia transformando la zona.
+                Terrenos de 98 hasta 200 m² en La Joya, Arequipa. Familias emprendedoras arequipeñas ya eligieron a INNOVA Inversiones para cumplir el sueño de su hogar. Nuestra residencial cuenta con diseño moderno, área de aportes, parques, áreas comunes y financiamiento rapidito.
               </p>
             </div>
 

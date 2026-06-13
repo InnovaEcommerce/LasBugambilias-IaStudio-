@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRight, UserCheck } from 'lucide-react';
+import { X, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRight, UserCheck, Calendar, Flame, Users, Gift, Home, MapPin, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lead } from '../types';
 import { saveLeadToFirestore } from '../services/leadsService';
@@ -62,10 +62,6 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
       err.celular = 'Ingresa tu número de teléfono móvil';
     } else if (!phoneRegex.test(form.celular)) {
       err.celular = 'Ingresa un celular de 9 dígitos (Inicia con 9)';
-    }
-
-    if (!form.politicaTerminos) {
-      err.politicaTerminos = 'Debes aceptar los términos y políticas para continuar';
     }
 
     setErrors(err);
@@ -172,10 +168,10 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed left-4 right-4 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-white rounded-3xl overflow-hidden shadow-2xl z-50 max-w-lg w-full font-sans text-neutral-800 flex flex-col max-h-[90vh]"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl overflow-hidden shadow-2xl z-50 max-w-[calc(100%-2rem)] w-[410px] md:max-w-lg font-sans text-neutral-800 flex flex-col max-h-[90vh]"
           >
             {/* Header branding band with yellow top */}
-            <div className="bg-centenario-yellow py-4 px-6 flex justify-between items-center border-b border-amber-200">
+            <div className="bg-centenario-yellow py-3 md:py-4 px-5 md:px-6 flex justify-between items-center border-b border-amber-200">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-centenario-magenta" />
                 <span className="font-display font-black text-sm text-neutral-950 uppercase tracking-tight">
@@ -192,13 +188,13 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
             </div>
 
             {/* Steps indicator bar */}
-            <div className="bg-neutral-50 px-6 py-3 border-b border-neutral-150 flex justify-between text-xs font-semibold text-neutral-500 font-mono">
-              <span className={step === 1 ? 'text-centenario-magenta font-black' : ''}>1. Datos de Contacto</span>
-              <span className={step === 2 ? 'text-centenario-magenta font-black' : ''}>2. Residencia & Políticas</span>
+            <div className="bg-neutral-50 px-5 md:px-6 py-2.5 md:py-3 border-b border-neutral-150 flex justify-between text-[11px] md:text-xs font-semibold text-neutral-500 font-mono">
+              <span className={step === 1 ? 'text-centenario-magenta font-black' : ''}>1. Datos personales</span>
+              <span className={step === 2 ? 'text-centenario-magenta font-black' : ''}>2. Datos de contacto</span>
             </div>
 
             {/* Form scrollable container */}
-            <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5 overflow-y-auto max-h-[60vh] text-left">
+            <form onSubmit={handleSubmit} className="p-5 md:p-8 space-y-4 md:space-y-5 overflow-y-auto max-h-[60vh] text-left">
               
               <AnimatePresence mode="wait">
                 {step === 1 ? (
@@ -211,13 +207,13 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
                   >
                     {/* Lead Full Name Field */}
                     <div className="space-y-1">
-                      <label className="text-xs font-black uppercase text-neutral-450 tracking-wider font-mono">Nombres y Apellidos</label>
+                      <label className="text-[13.5px] font-semibold text-neutral-600 font-sans tracking-normal block">Nombres y Apellidos</label>
                       <input
                         type="text"
-                        placeholder="Nombres y apellidos completos"
+                        placeholder="Graciela García A."
                         value={form.lead}
                         onChange={(e) => handleFormChange('lead', e.target.value)}
-                        className={`w-full p-3 font-medium bg-neutral-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta ${
+                        className={`w-full p-3 font-sans font-semibold bg-neutral-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta ${
                           errors.lead ? 'border-rose-400 focus:ring-rose-300' : 'border-neutral-200'
                         }`}
                       />
@@ -230,11 +226,11 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
                     </div>
 
                     {/* Step transition submit */}
-                    <div className="pt-4">
+                    <div className="pt-2 md:pt-4">
                       <button
                         type="button"
                         onClick={handleNext}
-                        className="w-full py-4 bg-[#D2007A] hover:bg-pink-800 text-white text-xs font-black rounded-xl shadow-lg flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01] transition-transform duration-200 uppercase font-sans tracking-widest"
+                        className="w-full py-3.5 md:py-4 bg-[#D2007A] hover:bg-pink-800 text-white text-xs font-black rounded-xl shadow-lg flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01] transition-transform duration-200 uppercase font-sans tracking-widest"
                       >
                         <span>Siguiente Paso</span>
                         <ArrowRight className="w-4 h-4 text-white" />
@@ -249,39 +245,36 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
                     exit={{ opacity: 0, x: -10 }}
                     className="space-y-4"
                   >
-                    
-                    {/* Phone Field */}
+                                  {/* Phone Field */}
                     <div className="space-y-1">
-                      <label className="text-xs font-black uppercase text-neutral-450 tracking-wider font-mono">Celular (+51)</label>
+                      <label className="text-[13.5px] font-semibold text-neutral-600 font-sans tracking-normal block">Celular (+51)</label>
                       <input
                         type="tel"
-                        placeholder="Ej. 981234567"
+                        placeholder="981234567"
                         maxLength={9}
                         value={form.celular}
                         onChange={(e) => handleFormChange('celular', e.target.value.replace(/\D/g, ''))}
-                        className={`w-full p-3 font-mono font-bold bg-neutral-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta ${
+                        className={`w-full p-3 font-sans font-semibold bg-neutral-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta ${
                           errors.celular ? 'border-rose-400 focus:ring-rose-300' : 'border-neutral-200'
                         }`}
                       />
-                      {errors.celular ? (
+                      {errors.celular && (
                         <p className="text-[10px] text-rose-500 font-extrabold flex items-center gap-1 font-mono">
                           <ShieldAlert className="w-3 h-3 shrink-0" />
                           {errors.celular}
                         </p>
-                      ) : (
-                        <span className="text-[9px] text-neutral-450 font-mono italic">Sólo celulares peruanos de 9 dígitos.</span>
                       )}
                     </div>
 
                     {/* Email Field */}
                     <div className="space-y-1">
-                      <label className="text-xs font-black uppercase text-neutral-450 tracking-wider font-mono">Correo de Contacto</label>
+                      <label className="text-[13.5px] font-semibold text-neutral-600 font-sans tracking-normal block">Correo electrónico</label>
                       <input
                         type="email"
                         placeholder="nombre@ejemplo.com"
                         value={form.correo}
                         onChange={(e) => handleFormChange('correo', e.target.value)}
-                        className={`w-full p-3 font-semibold bg-neutral-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta ${
+                        className={`w-full p-3 font-sans font-semibold bg-neutral-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta ${
                           errors.correo ? 'border-rose-400 focus:ring-rose-300' : 'border-neutral-200'
                         }`}
                       />
@@ -295,72 +288,41 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
 
                     {/* Distrito Field */}
                     <div className="space-y-1">
-                      <label className="text-xs font-black uppercase text-neutral-450 tracking-wider font-mono">Distrito de Residencia (Opcional)</label>
+                      <label className="text-[13.5px] font-semibold text-neutral-600 font-sans tracking-normal block">Distrito (Opcional)</label>
                       <input
                         type="text"
-                        placeholder="Ej: Chorrillos, Arequipa, etc."
+                        placeholder="Arequipa, Yanahuara, etc."
                         value={form.distrito}
                         onChange={(e) => handleFormChange('distrito', e.target.value)}
-                        className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta font-semibold text-neutral-800"
+                        className="w-full p-3 font-sans font-semibold bg-neutral-50 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta text-neutral-800"
                       />
                     </div>
 
                     {/* Custom Message Area */}
                     <div className="space-y-1">
-                      <label className="text-xs font-black uppercase text-neutral-450 tracking-wider font-mono">Notas o Comentarios (Opcional)</label>
+                      <label className="text-[13.5px] font-semibold text-neutral-600 font-sans tracking-normal block">Tu Comentario (Opcional)</label>
                       <textarea
                         rows={2}
-                        placeholder="Ej: Deseo financiamiento de cuotas, consultas del terreno."
+                        placeholder="Deseo financiamiento de cuotas, consultas del terreno."
                         value={form.comentarios}
                         onChange={(e) => handleFormChange('comentarios', e.target.value)}
-                        className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl text-xs focus:outline-none"
+                        className="w-full p-3 font-sans font-semibold bg-neutral-50 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta text-neutral-800"
                       />
                     </div>
 
-                    {/* Bullet Consents Checklist */}
-                    <div className="space-y-2 border-t border-neutral-100 pt-3">
-                      <label className="flex items-start gap-2.5 text-[10px] text-neutral-500 font-medium cursor-pointer leading-tight">
-                        <input
-                          type="checkbox"
-                          checked={form.politicaTerminos}
-                          onChange={(e) => handleFormChange('politicaTerminos', e.target.checked)}
-                          className="mt-0.5 accent-centenario-magenta h-3.5 w-3.5"
-                        />
-                        <span>
-                          He leído y acepto los <strong className="text-neutral-700 underline">Términos y Condiciones</strong> y la <strong className="text-neutral-700 underline">Política de Privacidad</strong> obligatoria.
-                        </span>
-                      </label>
-
-                      <label className="flex items-start gap-2.5 text-[10px] text-neutral-500 font-medium cursor-pointer leading-tight">
-                        <input
-                          type="checkbox"
-                          checked={form.politicaPublicidad}
-                          onChange={(e) => handleFormChange('politicaPublicidad', e.target.checked)}
-                          className="mt-0.5 accent-centenario-magenta h-3.5 w-3.5"
-                        />
-                        <span>Acepto el envío de Publicidad masiva según la Política de Tratamiento Comercial de Datos.</span>
-                      </label>
-
-                      {errors.politicaTerminos && (
-                        <p className="text-[10px] text-rose-500 font-bold flex items-center gap-1 font-mono">
-                          🚨 Debes aceptar los Términos obligatorios del botón checklist
-                        </p>
-                      )}
-                    </div>
-
                     {/* Step transition Buttons */}
-                    <div className="flex gap-2.5 pt-2">
+                    <div className="flex gap-2.5 pt-1 md:pt-2">
                       <button
                         type="button"
                         onClick={handleBack}
-                        className="w-1/3 py-4 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs font-black rounded-xl transition font-sans uppercase"
+                        className="w-1/3 py-3.5 md:py-4 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs font-black rounded-xl transition font-sans uppercase"
                       >
                         Atrás
                       </button>
 
                       <button
                         type="submit"
-                        className="w-2/3 py-4 bg-centenario-red hover:bg-red-800 text-white text-xs font-black rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-lg transform hover:scale-[1.01] transition duration-200 uppercase"
+                        className="w-2/3 py-3.5 md:py-4 bg-centenario-red hover:bg-red-800 text-white text-xs font-black rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-lg transform hover:scale-[1.01] transition duration-200 uppercase"
                       >
                         <span>Solicitar información</span>
                       </button>
@@ -372,8 +334,8 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
 
             </form>
 
-            <div className="bg-neutral-100 p-4 text-center border-t border-neutral-150 text-[10px] text-neutral-400 font-mono uppercase tracking-wider">
-              🛡️ Protección de datos garantizada • Innova S.A.C.
+            <div className="bg-neutral-100 py-3 md:p-4 text-center border-t border-neutral-150 text-[9.5px] md:text-[10px] text-neutral-400 font-mono uppercase tracking-wider">
+              🛡️ Protección de datos garantizada
             </div>
           </motion.div>
         </>
@@ -442,48 +404,50 @@ export function ExitIntentPopup({ onSubmitSuccess }: ExitIntentPopupProps) {
             initial={{ opacity: 0, scale: 0.9, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed left-4 right-4 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-neutral-900 text-white rounded-3xl overflow-hidden shadow-2xl z-50 max-w-md w-full font-sans border-4 border-centenario-yellow"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-neutral-900 text-white rounded-3xl overflow-hidden shadow-2xl z-50 max-w-[calc(100%-2rem)] w-[400px] md:max-w-md font-sans border-4 border-centenario-yellow"
           >
-            <div className="p-6 md:p-8 text-center space-y-6 relative overflow-hidden">
+            <div className="p-5 xs:p-6 md:p-8 text-center space-y-4 md:space-y-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-pink-600/10 rounded-full blur-2xl"></div>
 
               {/* Header icons alert clock */}
-              <div className="w-16 h-16 rounded-full bg-centenario-yellow/15 border-2 border-centenario-yellow flex items-center justify-center text-centenario-yellow mx-auto animate-pulse">
-                <AlarmClock className="w-8 h-8" />
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-centenario-yellow/15 border-2 border-centenario-yellow flex items-center justify-center text-centenario-yellow mx-auto animate-pulse">
+                <AlarmClock className="w-6 h-6 md:w-8 md:h-8" />
               </div>
 
               {/* Main discount incentives block */}
-              <div className="space-y-2">
-                <span className="text-[10px] text-centenario-yellow font-black uppercase font-mono tracking-widest bg-yellow-450/10 border border-yellow-400 pl-2.5 pr-2.5 py-1 rounded-full">
-                  ¡Cupo de Oferta Exclusiva!
+              <div className="space-y-1.5 md:space-y-2">
+                <span className="inline-block text-[9px] md:text-[10px] text-centenario-yellow font-black uppercase font-mono tracking-widest bg-yellow-450/10 border border-yellow-400 pl-2.5 pr-2.5 py-0.5 md:py-1 rounded-full">
+                  ¡Cupón de Oferta Exclusiva!
                 </span>
-                <h3 className="font-display font-black text-2xl md:text-3xl text-white tracking-tight leading-tight uppercase font-display pt-2">
+                <h3 className="font-display font-black text-xl md:text-3xl text-white tracking-tight leading-tight uppercase font-display pt-1 md:pt-2">
                   ¡Espera! No Te Vayas
                 </h3>
-                <p className="text-neutral-350 text-xs md:text-sm leading-relaxed max-w-sm mx-auto">
+                <p className="text-neutral-350 text-[11px] md:text-sm leading-relaxed max-w-sm mx-auto">
                   Registra tus datos en este instante y recibe un <strong className="text-centenario-yellow font-extrabold uppercase">Bono de Descuento de S/ 500 adicionales</strong> aplicables directamente sobre precio del lote.
                 </p>
               </div>
 
               {/* Highlight badge of price reduction */}
-              <div className="bg-neutral-950 p-4 border border-neutral-800 rounded-2xl">
-                <span className="text-[9px] font-mono text-neutral-450 uppercase tracking-widest block">BONO EXCLUSIVO DE JUNIO</span>
-                <span className="text-3xl md:text-4xl text-[#D2007A] font-display font-black tracking-tight font-mono mt-1 block">
+              <div className="bg-neutral-950 p-3 md:p-4 border border-neutral-800 rounded-2xl">
+                <span className="text-[8px] md:text-[9px] font-mono text-neutral-450 uppercase tracking-widest block">BONO EXCLUSIVO DE DÍA DEL PADRE</span>
+                <span className="text-2xl md:text-4xl text-[#D2007A] font-display font-black tracking-tight font-mono mt-0.5 md:mt-1 block">
                   - S/ 500 Dcto.
                 </span>
               </div>
 
               {/* Dual button lines */}
               <div className="space-y-2">
-                <button
-                  onClick={handleOpenLeadForm}
-                  className="w-full py-4 bg-centenario-yellow hover:bg-amber-400 text-neutral-900 text-xs font-black rounded-xl shadow-lg transition duration-200 uppercase cursor-pointer"
+                <a
+                  href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1DESCUENTO+-500%21+por+Día+del+Padre&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 md:py-4 bg-centenario-yellow hover:bg-amber-400 text-neutral-900 text-[11px] md:text-xs font-black rounded-xl shadow-lg transition duration-200 uppercase cursor-pointer block text-center"
                 >
                   ¡Asegurar mi Descuento Ahora!
-                </button>
+                </a>
                 <button
                   onClick={handleClose}
-                  className="w-full py-2 bg-transparent text-neutral-400 hover:text-white text-xs font-semibold hover:underline cursor-pointer"
+                  className="w-full py-1.5 bg-transparent text-neutral-400 hover:text-white text-[11px] md:text-xs font-semibold hover:underline cursor-pointer"
                 >
                   Dejar pasar esta oportunidad única
                 </button>
@@ -525,7 +489,7 @@ export function SuccessPopup({ isOpen, onClose, leadDetails }: SuccessPopupProps
             initial={{ opacity: 0, scale: 0.9, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed left-4 right-4 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-white rounded-3xl overflow-hidden shadow-2xl z-50 max-w-md w-full font-sans text-neutral-800 border-t-8 border-emerald-500"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl overflow-hidden shadow-2xl z-50 max-w-[calc(100%-2rem)] w-[400px] md:max-w-md font-sans text-neutral-800 border-t-8 border-emerald-500"
           >
             <div className="p-6 md:p-8 text-center space-y-6 relative overflow-hidden">
               <button
@@ -594,6 +558,197 @@ export function SuccessPopup({ isOpen, onClose, leadDetails }: SuccessPopupProps
             </div>
           </motion.div>
         </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ==========================================
+   4. AUTOPLAY / TIMER SOCIAL PROOF TOASTS COMPONENT
+   ========================================== */
+interface SocialProofToastsProps {
+  onOpenLeadPopup: () => void;
+}
+
+export function SocialProofToasts({ onOpenLeadPopup }: SocialProofToastsProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toastsList = [
+    {
+      id: 1,
+      author: "Carlos Mendoza",
+      message: "reservó su visita guiada gratuita de este sábado.",
+      time: "hace 4 min",
+      source: "WhatsApp",
+      tag: "#Visitas",
+      color: "bg-emerald-950/80 text-emerald-400 border-emerald-500/30",
+      icon: "Calendar"
+    },
+    {
+      id: 2,
+      author: "Atención • Cupos Limitados",
+      message: "quedan solo 4 cupos para la visita guiada SIN COSTO.",
+      time: "hace instantes",
+      source: "Urgencia",
+      tag: "#Cupos",
+      color: "bg-amber-950/80 text-amber-400 border-amber-500/30",
+      icon: "Flame"
+    },
+    {
+      id: 3,
+      author: "Sofía & Luis Ramos",
+      message: "programaron cita en oficina para ver la maqueta este lunes.",
+      time: "hace 12 min",
+      source: "Reunión",
+      tag: "#Planos",
+      color: "bg-pink-950/80 text-pink-400 border-[#D2007A]/30",
+      icon: "Users"
+    },
+    {
+      id: 4,
+      author: "¡Bono S/ 500 Otorgado!",
+      message: "un cliente se registró y aseguró su descuento extra hoy.",
+      time: "hace 24 min",
+      source: "Web",
+      tag: "#Ahorra",
+      color: "bg-blue-950/80 text-blue-400 border-blue-500/30",
+      icon: "Gift"
+    },
+    {
+      id: 5,
+      author: "Lote Reservado",
+      message: "un cliente realizó la separación de su lote en la Mz. K.",
+      time: "hace 1 hora",
+      source: "Innova CRM",
+      tag: "#Separaciones",
+      color: "bg-orange-950/80 text-orange-400 border-orange-500/30",
+      icon: "Home"
+    },
+    {
+      id: 6,
+      author: "Milagros Cárdenas",
+      message: "coordinó visita guiada con movilidad familiar gratuita.",
+      time: "hace 18 min",
+      source: "Call Center",
+      tag: "#Transporte",
+      color: "bg-indigo-950/80 text-indigo-400 border-indigo-500/30",
+      icon: "MapPin"
+    }
+  ];
+
+  useEffect(() => {
+    // Initial delay of 8 seconds before showing first toast on page mount
+    const initialTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 8000);
+
+    return () => clearTimeout(initialTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    // Toast stays shown for 8.5 seconds, then closes
+    const hideTimer = setTimeout(() => {
+      setIsVisible(false);
+    }, 8500);
+
+    return () => clearTimeout(hideTimer);
+  }, [isVisible, currentIndex]);
+
+  useEffect(() => {
+    if (isVisible) return;
+
+    // Wait 14 seconds between different notifications
+    const nextTimer = setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % toastsList.length);
+      setIsVisible(true);
+    }, 14000);
+
+    return () => clearTimeout(nextTimer);
+  }, [isVisible]);
+
+  const currentToast = toastsList[currentIndex];
+
+  const renderIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Calendar':
+        return <Calendar className="w-4 h-4" />;
+      case 'Flame':
+        return <Flame className="w-4 h-4" />;
+      case 'Users':
+        return <Users className="w-4 h-4" />;
+      case 'Gift':
+        return <Gift className="w-4 h-4" />;
+      case 'Home':
+        return <Home className="w-4 h-4" />;
+      case 'MapPin':
+        return <MapPin className="w-4 h-4" />;
+      default:
+        return <Bell className="w-4 h-4" />;
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, x: -50, y: 50, scale: 0.9 }}
+          animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+          exit={{ opacity: 0, x: -100, scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 280, damping: 28 }}
+          className="fixed bottom-24 left-4 z-40 w-[290px] md:w-[320px] bg-zinc-950/95 backdrop-blur-md border border-neutral-800 rounded-2xl shadow-2xl p-3 cursor-pointer hover:border-neutral-700 transition"
+          onClick={() => {
+            setIsVisible(false);
+            onOpenLeadPopup();
+          }}
+        >
+          <div className="flex gap-3 items-start relative pr-5">
+            {/* Round icon circle representing activity style */}
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-inner border ${currentToast.color}`}>
+              {renderIcon(currentToast.icon)}
+            </div>
+
+            {/* Text message contents */}
+            <div className="space-y-0.5 text-left font-sans min-w-0 flex-1">
+              {/* Dynamic Status pulse + Author Name */}
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse shrink-0 inline-block"></span>
+                <span className="text-[12.5px] font-black text-white hover:text-centenario-magenta transition-colors line-clamp-1">
+                  {currentToast.author}
+                </span>
+              </div>
+              
+              {/* Custom message text body */}
+              <p className="text-[11px] text-neutral-400 font-semibold leading-relaxed">
+                {currentToast.message}
+              </p>
+
+              {/* Timestamp, Source and Badge hashtag */}
+              <div className="flex items-center justify-between pt-1 mt-1 border-t border-neutral-900 text-[10px] text-neutral-500 font-mono">
+                <span className="truncate">
+                  {currentToast.time} • {currentToast.source}
+                </span>
+                <span className="text-[#D2007A] font-black shrink-0 font-sans tracking-wide ml-1">
+                  {currentToast.tag}
+                </span>
+              </div>
+            </div>
+
+            {/* Click to dismiss btn */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsVisible(false);
+              }}
+              className="absolute -top-1 -right-2 p-1 text-neutral-500 hover:text-white rounded-full transition"
+              aria-label="Cerrar notificacion"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

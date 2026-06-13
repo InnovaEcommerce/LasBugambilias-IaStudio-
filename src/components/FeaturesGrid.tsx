@@ -17,7 +17,7 @@ export default function FeaturesGrid() {
     },
     {
       icon: Trees,
-      title: 'Áreas de recreación',
+      title: 'Áreas de arborización',
     },
     {
       icon: Smile,
@@ -25,7 +25,7 @@ export default function FeaturesGrid() {
     },
     {
       icon: Droplet,
-      title: 'Servicios de luz y agua colectivos',
+      title: 'Luz y agua colectiva',
     },
     {
       icon: Milestone,
@@ -33,7 +33,7 @@ export default function FeaturesGrid() {
     },
     {
       icon: Trophy,
-      title: 'Zonas deportivas',
+      title: 'Zonas recreativas',
     },
   ];
 
@@ -90,7 +90,7 @@ export default function FeaturesGrid() {
                     </div>
 
                     {/* Title (Title-cased, semibold neutral-800 like image) */}
-                    <h4 className="font-sans font-extrabold text-[12.5px] md:text-[13px] text-neutral-800 tracking-tight leading-snug">
+                    <h4 className="font-sans font-extrabold text-[15.5px] md:text-[16.5px] text-neutral-800 tracking-tight leading-snug">
                       {feat.title}
                     </h4>
                   </motion.div>

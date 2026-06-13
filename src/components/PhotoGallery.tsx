@@ -29,7 +29,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
     {
       id: 4,
       title: 'Losas deportivas multiusos construidas',
-      tag: 'Zonas deportivas',
+      tag: 'Zonas recreativas',
       imageUrl: 'https://images.unsplash.com/photo-1544698310-74ea9d1c8258?auto=format&fit=crop&q=80&w=1200',
     },
     {
@@ -68,10 +68,10 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
             {/* Section Heading */}
             <div className="text-center md:text-left space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-[#FFD100] font-mono bg-pink-850/80 px-3 py-1 rounded-full border border-white/15">
-                Vista del Proyecto
+                +150 clientes nos avalan
               </span>
               <h2 className="font-sans font-black text-3xl md:text-4xl text-white tracking-tight leading-none uppercase">
-                Galería de Fotos y Diseños
+                conoce nuestro proyecto
               </h2>
               <div className="w-16 h-1 bg-[#FFD100] md:mx-0 mx-auto rounded-full mt-2"></div>
             </div>
@@ -147,7 +147,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
                     ¿TE GUSTÓ EL PROYECTO?
                   </span>
                   <p className="font-sans font-extrabold text-[#111111] text-base md:text-lg leading-tight">
-                    ¡Coordina una visita guiada para conocer la urbanización!
+                    ¡Coordina tu visita guiada SIN COSTO y disfruta en familia!
                   </p>
                 </div>
 
@@ -155,7 +155,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
                   onClick={onOpenLeadPopup}
                   className="px-7 py-3.5 bg-[#FFD100] hover:bg-amber-400 text-neutral-900 font-black text-sm rounded-full flex items-center gap-2 shadow-md transition-all duration-300 transform active:scale-95 shrink-0 self-center"
                 >
-                  <span className="uppercase tracking-wider">Coordinar mi visita</span>
+                  <span className="uppercase tracking-wider">Coordina tu visita</span>
                   <ArrowRight className="w-4 h-4 text-neutral-900 stroke-[3px]" />
                 </button>
 

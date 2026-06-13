@@ -1,4 +1,4 @@
-import { ShieldCheck, Check, MapPin } from 'lucide-react';
+import { ShieldCheck, Check, MapPin, Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react';
 import { Lead } from '../types';
 import LeadCard from './LeadCard';
 import { useDynamicImages } from '../hooks/useDynamicImages';
@@ -52,7 +52,7 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
               </div>
 
               {/* Overlapping Yellow Circle */}
-              <div className="absolute right-[-94px] top-1/2 -translate-y-1/2 w-28 h-28 rounded-full bg-[#FFD100] border-4 border-white shadow-2xl flex flex-col items-center justify-center text-center font-sans z-20 scale-[1.05] transition-transform hover:scale-110 duration-200">
+              <div className="absolute right-[-69px] top-1/2 -translate-y-1/2 w-28 h-28 rounded-full bg-[#FFD100] border-4 border-white shadow-2xl flex flex-col items-center justify-center text-center font-sans z-20 scale-[1.05] transition-transform hover:scale-110 duration-200">
                 <span className="text-sm font-display font-black text-[#D2007A] leading-[1.1] uppercase font-sans">
                   Crédito
                 </span>
@@ -99,7 +99,7 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
           <div className="absolute inset-0 bg-neutral-950/15" />
 
           {/* Floating safety badge (Scaled cleanly for mobile screens) */}
-          <div className="absolute top-4 left-4 flex items-center select-none">
+          <div className="absolute top-[26px] left-4 flex items-center select-none">
             
             {/* Red container pill */}
             <div className="bg-[#D2007A] text-white pl-4 pr-10 py-3 rounded-2xl shadow-xl flex flex-col items-start relative z-10 border border-white/10">
@@ -115,7 +115,7 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
             </div>
 
             {/* Yellow circle overlapping */}
-            <div className="absolute left-[112px] w-18 h-18 rounded-full bg-[#FFD100] border border-white shadow-xl flex flex-col items-center justify-center text-center font-sans z-20">
+            <div className="absolute left-[157px] w-18 h-18 rounded-full bg-[#FFD100] border border-white shadow-xl flex flex-col items-center justify-center text-center font-sans z-20">
               <span className="text-[9.5px] font-sans font-black text-[#D2007A] leading-[1.1] uppercase leading-none">
                 Crédito
               </span>
@@ -127,13 +127,13 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
           </div>
 
           {/* Images label Bottom-Left */}
-          <span className="absolute bottom-3 left-4 text-[9px] font-bold text-white/90 leading-none select-none drop-shadow-md bg-black/35 px-2 py-1 rounded">
-            Imágenes referenciales Hornos
+          <span className="absolute bottom-[22px] left-4 text-[9px] font-bold text-white/90 leading-none select-none drop-shadow-md bg-black/35 px-2 py-1 rounded">
+            Imágenes referenciales
           </span>
         </div>
 
         {/* B. Horizontal white information capsule matching Image 2 exactly */}
-        <div className="mx-4 -mt-4.5 relative z-20 bg-white border border-neutral-150 py-3.5 px-4.5 rounded-full shadow-md flex items-center justify-between text-neutral-800">
+        <div className="mx-4 -mt-4.5 relative z-20 bg-white py-3.5 px-4.5 rounded-full shadow-md flex items-center justify-between text-neutral-800">
           
           {/* Location display detail block */}
           <div className="flex items-center gap-1.5 xs:gap-2">
@@ -180,36 +180,27 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
         </div>
 
         {/* D. Overlapping floating Share Pill bar */}
-        <div className="-mt-3.5 flex justify-center relative z-20">
+        <div className="mt-[-4px] flex justify-center relative z-20">
           <div className="bg-white px-4 py-2 rounded-full shadow-md border border-neutral-100 flex items-center gap-3">
             <span className="text-[9.5px] font-bold text-neutral-500 uppercase tracking-wider">
               Compartir
             </span>
             <div className="flex items-center gap-2">
               {/* Facebook */}
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors">
-                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current">
-                  <path d="M14 13.5h2.5l1-3H14V8.6c0-.8.2-1.1 1-1.1h1.5V4.6a20 20 0 00-2.3-.1c-2.3 0-3.7 1.3-3.7 3.8v2.2H8v3h2.5v7h3.5v-7z"/>
-                </svg>
+              <a href="https://www.facebook.com/innovainversiones.oficial" target="_blank" rel="noopener noreferrer" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors cursor-pointer">
+                <Facebook className="w-3 h-3" />
+              </a>
+              {/* Instagram */}
+              <a href="https://www.instagram.com/innovainversiones.oficial" target="_blank" rel="noopener noreferrer" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors cursor-pointer">
+                <Instagram className="w-3 h-3" />
+              </a>
+              {/* Youtube */}
+              <a href="https://www.youtube.com/@innovainversiones" target="_blank" rel="noopener noreferrer" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors cursor-pointer">
+                <Youtube className="w-3 h-3" />
               </a>
               {/* WhatsApp */}
-              <a href="https://wa.me" target="_blank" rel="noopener noreferrer" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors">
-                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current">
-                  <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.844.5 3.57 1.373 5.068L2.03 21.97l5.053-1.327c1.455.795 3.111 1.258 4.873 1.258a10.04 10.04 0 007.87-3.87 10.04 10.04 0 002.174-6.13c0-5.523-4.48-10.004-10.003-10.004zm5.83 14.155c-.244.686-1.201 1.252-1.666 1.309-.452.057-.9.278-2.91-.497-2.42-.932-3.95-3.374-4.072-3.535-.122-.16-.948-1.258-.948-2.398 0-1.14.596-1.7.808-1.921.21-.222.463-.278.618-.278.155 0 .31.006.442.012.138.006.326-.052.509.39.188.455.64 1.57.696 1.684.055.114.094.248.016.4-.078.156-.15.26-.294.434-.144.173-.304.385-.43.518-.14.144-.287.3-.122.585.166.284.736 1.213 1.58 1.966.864.773 1.59 1.012 1.895 1.164.304.152.48.128.663-.078.182-.206.786-.913.996-1.223.21-.31.42-.26.702-.155.282.105 1.785.84 2.095.996.31.155.514.23.58.344.067.114.067.66-.177 1.346z"/>
-                </svg>
-              </a>
-              {/* Mail */}
-              <a href="mailto:info@innova.com.pe" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors">
-                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none"/>
-                  <polyline points="22,6 12,13 2,6" fill="none"/>
-                </svg>
-              </a>
-              {/* Twitter / X */}
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors">
-                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
+              <a href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%EF%BF%BD%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" className="w-5.5 h-5.5 rounded-full bg-neutral-600 hover:bg-[#D2007A] flex items-center justify-center text-white transition-colors cursor-pointer">
+                <MessageCircle className="w-3 h-3" />
               </a>
             </div>
           </div>

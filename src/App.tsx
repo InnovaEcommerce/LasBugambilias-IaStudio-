@@ -15,7 +15,7 @@ import ReferralBanner from './components/ReferralBanner';
 import AppPromo from './components/AppPromo';
 import WhatsAppBubble from './components/WhatsAppBubble';
 import Footer from './components/Footer';
-import { LeadPopup, ExitIntentPopup, SuccessPopup } from './components/Popups';
+import { LeadPopup, ExitIntentPopup, SuccessPopup, SocialProofToasts } from './components/Popups';
 import { Lead } from './types';
 import LeadCard from './components/LeadCard';
 import AdminPanel from './components/AdminPanel';
@@ -32,32 +32,7 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
 
-  useEffect(() => {
-    // Dynamically inject Fesosa Chatbot script
-    const script = document.createElement('script');
-    script.src = 'https://dashboard.fesosa.com/embed.js';
-    script.charset = 'utf-8';
-    script.type = 'text/javascript';
-    script.async = true;
 
-    script.onload = () => {
-      if (typeof (window as any).initializeChatbot === 'function') {
-        (window as any).initializeChatbot({
-          companyId: '3bed21b8-7e24-11f0-8706-b9c07083abfb',
-          imageProfile: 'https://s3.amazonaws.com/unicorp.bot.imageschat.dev/1ff0e2fb-c6b8-4386-9e0f-9154b6230da5.png',
-          nameCompany: 'INNOVA Inversiones'
-        });
-      }
-    };
-
-    document.body.appendChild(script);
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
 
   const isAdminRoute = currentPath.endsWith('/0000000001') || currentPath.endsWith('/0000000001/');
 
@@ -237,6 +212,9 @@ export default function App() {
         onClose={() => setIsSuccessPopupOpen(false)}
         leadDetails={submittedLead}
       />
+
+      {/* Sequential timed social proof conversion notifications */}
+      <SocialProofToasts onOpenLeadPopup={handleOpenGeneralPopup} />
 
     </div>
   );

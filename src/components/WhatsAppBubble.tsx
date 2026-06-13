@@ -13,7 +13,7 @@ export default function WhatsAppBubble() {
     return () => clearTimeout(timer);
   }, []);
 
-  const whatsappUrl = 'https://wa.me/51926289293';
+  const whatsappUrl = 'https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%EF%BF%BD%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias&type=phone_number&app_absent=0';
 
   return (
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3.5 select-none font-sans">
@@ -43,7 +43,7 @@ export default function WhatsAppBubble() {
                 <span className="text-[10px] text-neutral-450 uppercase font-mono font-bold tracking-wider">Asesora Online</span>
               </div>
               <p className="leading-relaxed text-neutral-700">
-                ¡Hola! 😊 ¿Listo para agendar tu visita guiada a <strong className="text-[#D2007A]">Las Bugambilias</strong>? Escríbenos para enviarte el plano de lotes por PDF.
+                ¡Hola! 😊 ¿Listo para agendar tu visita a <strong className="text-[#D2007A]">Las Bugambilias</strong>? Escríbenos para enviarte tu REGALO🎁 Plano de Casa Modelo en PDF.
               </p>
             </div>
 

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 // Static fallbacks
-import heroDevelopmentImg from '../assets/images/hero_development_1780838935963.png';
-import mapPlanImg from '../assets/images/map_plan_1780838955196.png';
+import heroDevelopmentImg from '../assets/images/hero_development_1780838935963.jpg';
+import mapPlanImg from '../assets/images/plano-ventas.jpg';
 import familySocialProofImg from '../assets/images/family_social_proof_1780838972150.png';
 import huachoPlotImg from '../assets/images/huacho_plot_1780839015281.png';
 import planiciePlotImg from '../assets/images/planicie_plot_1780839032182.png';
