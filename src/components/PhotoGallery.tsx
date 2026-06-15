@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Camera, ArrowRight, Play, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -13,7 +13,28 @@ function getGoogleDriveImageUrl(url: string | undefined): string {
   return url;
 }
 
-function GoogleDriveVideoPlayer({ 
+// Global declaration to prevent TypeScript errors for the YouTube Iframe Player API
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady: (() => void) | undefined;
+  }
+}
+
+/**
+ * Universal video parser to extract YouTube video ID from various link formats.
+ */
+function parseYouTubeId(url: string | undefined): string | null {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  if (match && match[2] && match[2].length === 11) {
+    return match[2];
+  }
+  return null;
+}
+
+function UniversalVideoPlayer({ 
   url, 
   title, 
   onEnded,
@@ -27,16 +48,58 @@ function GoogleDriveVideoPlayer({
   const [useIframe, setUseIframe] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Intersection Observer / Visibilidad estado
+  const [isIntersecting, setIsIntersecting] = useState(false);
 
+  // YouTube States and References
+  const youtubeId = parseYouTubeId(url);
+  const isYoutube = !!youtubeId;
+  const ytPlayerRef = useRef<any>(null);
+  const [ytPlayerReady, setYtPlayerReady] = useState(false);
+
+  // 1. Detect dynamic viewport visibility with Intersection Observer
   useEffect(() => {
-    // Reset fallback and mute status when source URL changes
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.15 } // Activar reproducción automática al estar 15% visible
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // 2. Control native video playback dynamically based on scrolling visibility
+  useEffect(() => {
+    if (!isYoutube && !useIframe && videoRef.current) {
+      if (isIntersecting) {
+        videoRef.current.play().catch(err => {
+          console.log("El autoplay del video fue bloqueado temporalmente por regulaciones del explorador:", err);
+        });
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isIntersecting, url, useIframe, isYoutube]);
+
+  // Reset fallback logic and initial muted state when source URL shifts
+  useEffect(() => {
     setUseIframe(false);
     setIsMuted(true);
+    setYtPlayerReady(false);
   }, [url]);
 
+  // 3. Fallback backup timer for unmonitored iframe states to ensure auto-scrolling is never stuck
   useEffect(() => {
     if (useIframe && onEnded) {
-      // Backup timer to auto-advance if using iframe fallback
       const timer = setTimeout(() => {
         onEnded();
       }, durationMs);
@@ -44,59 +107,153 @@ function GoogleDriveVideoPlayer({
     }
   }, [useIframe, onEnded, durationMs]);
 
+  // 4. Initialize and Manage YouTube Player API lazily
   useEffect(() => {
-    if (!useIframe && videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.play().catch(err => {
-        console.log("Autoplay was blocked or stream failed to load programmatically:", err);
-      });
-    }
-  }, [url, useIframe]);
+    if (!isYoutube) return;
 
-  if (url.includes('drive.google.com')) {
-    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (match && match[1]) {
-      const videoId = match[1];
-      // High-performance direct CDN content distribution stream that bypasses virus scan confirmation
-      // and plays the original full-quality (up to 1080p) MP4 natively inside the HTML5 player.
-      const videoSrc = `https://drive.usercontent.google.com/download?id=${videoId}&export=download&confirm=t`;
-      // High-quality native embed player optimized with mute and autoplay configurations.
-      const iframeSrc = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1&mute=1`;
+    let active = true;
+    let player: any = null;
 
-      if (useIframe) {
-        return (
-          <iframe
-            src={iframeSrc}
-            className="absolute inset-0 w-full h-full border-0 rounded-[24px]"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-            title={title}
-          />
-        );
+    const initPlayer = () => {
+      if (!active) return;
+      try {
+        const targetId = `yt-player-${youtubeId}`;
+        player = new window.YT.Player(targetId, {
+          height: '100%',
+          width: '100%',
+          videoId: youtubeId,
+          playerVars: {
+            autoplay: isIntersecting ? 1 : 0,
+            mute: 1,
+            controls: 1,
+            rel: 0,
+            showinfo: 0,
+            modestbranding: 1,
+            playsinline: 1,
+            vq: 'hd1080' // Fuerza de manera preferencial 1080p HD para máxima resolución
+          },
+          events: {
+            onReady: (event: any) => {
+              if (!active) return;
+              setYtPlayerReady(true);
+              
+              // Ajusta la calidad máxima sugerida a HD 1080p usando los controladores del API de YouTube
+              if (event.target.setPlaybackQuality) {
+                event.target.setPlaybackQuality('hd1080');
+              }
+              
+              if (isIntersecting) {
+                event.target.playVideo();
+              } else {
+                event.target.pauseVideo();
+              }
+            },
+            onStateChange: (event: any) => {
+              if (!active) return;
+              // Event state 0 significa que terminó de reproducirse el video (ENDED)
+              if (event.data === 0 && onEnded) {
+                onEnded();
+              }
+            }
+          }
+        });
+        ytPlayerRef.current = player;
+      } catch (err) {
+        console.error("No se pudo instanciar el reproductor de YouTube API:", err);
+      }
+    };
+
+    const loadYT = () => {
+      if (window.YT && window.YT.Player) {
+        initPlayer();
+        return;
       }
 
-      return (
+      // Si el script de la API de YouTube no se ha inyectado aún, lo inyectamos dinámicamente
+      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+      }
+
+      // Verificación cíclica rápida para instanciar una vez esté cargada
+      const interval = setInterval(() => {
+        if (window.YT && window.YT.Player) {
+          clearInterval(interval);
+          initPlayer();
+        }
+      }, 100);
+
+      return () => clearInterval(interval);
+    };
+
+    loadYT();
+
+    return () => {
+      active = false;
+      if (player && typeof player.destroy === 'function') {
+        try {
+          player.destroy();
+        } catch (e) {
+          // silent cleanup
+        }
+      }
+      setYtPlayerReady(false);
+    };
+  }, [url, youtubeId]);
+
+  // 5. Control YouTube play/pause state programmatically when user scrolls
+  useEffect(() => {
+    if (isYoutube && ytPlayerRef.current && ytPlayerReady) {
+      try {
+        if (isIntersecting) {
+          ytPlayerRef.current.playVideo();
+        } else {
+          ytPlayerRef.current.pauseVideo();
+        }
+      } catch (e) {
+        console.warn("Error al controlar reproducción de YouTube por visibilidad:", e);
+      }
+    }
+  }, [isIntersecting, ytPlayerReady, isYoutube]);
+
+  // Toggle Mute handler supporting both native HTML5 video and YouTube API calls
+  const handleToggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const nextMuteState = !isMuted;
+    setIsMuted(nextMuteState);
+
+    if (isYoutube) {
+      if (ytPlayerRef.current && ytPlayerReady) {
+        try {
+          if (nextMuteState) {
+            ytPlayerRef.current.mute();
+          } else {
+            ytPlayerRef.current.unMute();
+          }
+        } catch (err) {
+          console.warn("Fallo al mutar/desmutar el video de YouTube:", err);
+        }
+      }
+    }
+  };
+
+  // RENDERING ENGINE
+  // ===================================
+  
+  return (
+    <div ref={containerRef} className="absolute inset-0 w-full h-full bg-black rounded-[24px] overflow-hidden">
+      
+      {/* CASE A: YOUTUBE VIDEO CAROUSEL PLATFORM (PREPARADO PARA EL FUTURO) */}
+      {isYoutube ? (
         <div className="absolute inset-0 w-full h-full">
-          <video
-            ref={videoRef}
-            src={videoSrc}
-            autoPlay
-            muted={isMuted}
-            playsInline
-            controls
-            className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
-            onEnded={onEnded}
-            onError={() => {
-              console.warn("Direct video CDN stream restricted or failed, falling back to Google Drive iframe player");
-              setUseIframe(true);
-            }}
-          />
-          {/* Mute toggle widget to override browser silent restrictions */}
+          {/* Iframe target placeholder container for YT integration */}
+          <div id={`yt-player-${youtubeId}`} className="absolute inset-0 w-full h-full object-cover rounded-[24px]" />
+          
+          {/* Unmute/Mute overlay control widget */}
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsMuted(!isMuted);
-            }}
+            onClick={handleToggleMute}
             className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white hover:bg-white hover:text-black z-20 transition-all duration-300 shadow-md flex items-center gap-1.5 text-xs border border-white/20 select-none cursor-pointer"
             title={isMuted ? "Activar Sonido" : "Silenciar"}
           >
@@ -113,42 +270,108 @@ function GoogleDriveVideoPlayer({
             )}
           </button>
         </div>
-      );
-    }
-  }
+      ) : (
+        
+        /* CASE B: GOOGLE DRIVE VIDEO OR DIRECT HOSTED STREAMS */
+        url.includes('drive.google.com') ? (
+          (() => {
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+              const videoId = match[1];
+              
+              // Direct URL mapped to Google's specialized high-speed content delivery networks (CDNs).
+              // It completely bypasses Google Drive's classic virus scan confirmation page and allows
+              // standard browsers to stream the raw high-bitrate video natively in up to 1080p full quality.
+              const videoSrc = `https://drive.usercontent.google.com/download?id=${videoId}&export=download&confirm=t`;
+              
+              const iframeSrc = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1&mute=1`;
 
-  return (
-    <div className="absolute inset-0 w-full h-full">
-      <video
-        ref={videoRef}
-        src={url}
-        autoPlay
-        muted={isMuted}
-        playsInline
-        controls
-        className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
-        onEnded={onEnded}
-      />
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsMuted(!isMuted);
-        }}
-        className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white hover:bg-white hover:text-black z-20 transition-all duration-300 shadow-md flex items-center gap-1.5 text-xs border border-white/20 select-none cursor-pointer"
-        title={isMuted ? "Activar Sonido" : "Silenciar"}
-      >
-        {isMuted ? (
-          <>
-            <VolumeX className="w-4 h-4 text-[#FFD100]" />
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Activar Sonido</span>
-          </>
+              if (useIframe) {
+                return (
+                  <iframe
+                    src={iframeSrc}
+                    className="absolute inset-0 w-full h-full border-0 rounded-[24px]"
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    title={title}
+                  />
+                );
+              }
+
+              return (
+                <div className="absolute inset-0 w-full h-full">
+                  <video
+                    ref={videoRef}
+                    src={videoSrc}
+                    autoPlay
+                    muted={isMuted}
+                    playsInline
+                    controls
+                    className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
+                    onEnded={onEnded}
+                    onError={() => {
+                      console.warn("El CDN directo de Google Drive falló o tiene restricciones, activando fallback a iframe oficial...");
+                      setUseIframe(true);
+                    }}
+                  />
+                  
+                  {/* Unmute/Mute overlay control widget */}
+                  <button
+                    onClick={handleToggleMute}
+                    className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white hover:bg-white hover:text-black z-20 transition-all duration-300 shadow-md flex items-center gap-1.5 text-xs border border-white/20 select-none cursor-pointer"
+                    title={isMuted ? "Activar Sonido" : "Silenciar"}
+                  >
+                    {isMuted ? (
+                      <>
+                        <VolumeX className="w-4 h-4 text-[#FFD100]" />
+                        <span className="font-extrabold uppercase tracking-wider text-[10px]">Activar Sonido</span>
+                      </>
+                    ) : (
+                      <>
+                        <Volume2 className="w-4 h-4 text-green-400 animate-pulse" />
+                        <span className="font-extrabold uppercase tracking-wider text-[10px]">Silenciar</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              );
+            }
+            return null;
+          })()
         ) : (
-          <>
-            <Volume2 className="w-4 h-4 text-green-400 animate-pulse" />
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Silenciar</span>
-          </>
-        )}
-      </button>
+          
+          /* REGULAR DIRECT HTML5 MP4 STREAM */
+          <div className="absolute inset-0 w-full h-full">
+            <video
+              ref={videoRef}
+              src={url}
+              autoPlay
+              muted={isMuted}
+              playsInline
+              controls
+              className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
+              onEnded={onEnded}
+            />
+            <button
+              onClick={handleToggleMute}
+              className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white hover:bg-white hover:text-black z-20 transition-all duration-300 shadow-md flex items-center gap-1.5 text-xs border border-white/20 select-none cursor-pointer"
+              title={isMuted ? "Activar Sonido" : "Silenciar"}
+            >
+              {isMuted ? (
+                <>
+                  <VolumeX className="w-4 h-4 text-[#FFD100]" />
+                  <span className="font-extrabold uppercase tracking-wider text-[10px]">Activar Sonido</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-4 h-4 text-green-400 animate-pulse" />
+                  <span className="font-extrabold uppercase tracking-wider text-[10px]">Silenciar</span>
+                </>
+              )}
+            </button>
+          </div>
+        )
+      )}
     </div>
   );
 }
@@ -257,7 +480,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
                     transition={{ duration: 0.5 }}
                     className="absolute inset-0 w-full h-full"
                   >
-                    <GoogleDriveVideoPlayer
+                    <UniversalVideoPlayer
                       url={slides[currentIndex].videoUrl || ''}
                       title={slides[currentIndex].title}
                       onEnded={handleNext}
