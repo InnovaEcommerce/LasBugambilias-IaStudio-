@@ -8,7 +8,7 @@ function getGoogleDriveImageUrl(url: string | undefined): string {
   if (url.includes('drive.google.com')) {
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     if (match && match[1]) {
-      return `https://docs.google.com/uc?export=download&id=${match[1]}`;
+      return `https://lh3.googleusercontent.com/d/${match[1]}`;
     }
   }
   return url;
@@ -53,10 +53,17 @@ function UniversalVideoPlayer({
   
   // El estado inicial del mute dependerá de si el usuario ya hizo clic en la web o no
   const [isMuted, setIsMuted] = useState(!hasUserInteracted);
+  const [hasStarted, setHasStarted] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
+
+  const isDriveVideo = url.includes('drive.google.com');
+  const driveVideoId = isDriveVideo ? (url.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1] || null) : null;
+  const videoSrc = driveVideoId 
+    ? `https://drive.usercontent.google.com/download?id=${driveVideoId}&export=download&confirm=t`
+    : url;
 
   const youtubeId = parseYouTubeId(url);
   const isYoutube = !!youtubeId;
@@ -95,10 +102,11 @@ function UniversalVideoPlayer({
     }
   }, [url, isYoutube, useIframe]);
 
-  // 3. CONTROL DE REPRODUCCIÓN NATIVO BASADO EN EL SCROLL (PLAY/PAUSA SIN REINICIAR)
+  // 3. CONTROL DE REPRODUCCIÓN NATIVO: REPRODUCIR SOLO AL ENTRAR AL VIEWPORT Y SEGUIR HASTA EL FIN
   useEffect(() => {
     if (!isYoutube && !useIframe && videoRef.current) {
-      if (isIntersecting) {
+      if (isIntersecting && !hasStarted) {
+        setHasStarted(true);
         videoRef.current.muted = isMuted;
         videoRef.current.play().catch(err => {
           console.log("Autoplay bloqueado con sonido, reintentando mutiado de respaldo:", err);
@@ -106,17 +114,16 @@ function UniversalVideoPlayer({
           setIsMuted(true);
           videoRef.current!.play().catch(e => console.error(e));
         });
-      } else {
-        videoRef.current.pause();
       }
     }
-  }, [isIntersecting, isYoutube, useIframe, isMuted]);
+  }, [isIntersecting, isYoutube, useIframe, isMuted, hasStarted]);
 
   // Resetear estados al cambiar de slide
   useEffect(() => {
     setUseIframe(false);
     setIsMuted(!hasUserInteracted);
     setYtPlayerReady(false);
+    setHasStarted(false);
   }, [url, hasUserInteracted]);
 
   // 4. CONTROL DE API DE YOUTUBE: Inicialización estable una sola vez por recurso
@@ -161,11 +168,10 @@ function UniversalVideoPlayer({
                 event.target.unMute();
               }
 
-              // Aplicar estado de reproducción inicial basado en visibilidad actual
-              if (isIntersecting) {
+              // Aplicar reproducción inicial cuando es visible y no ha empezado
+              if (isIntersecting && !hasStarted) {
+                setHasStarted(true);
                 event.target.playVideo();
-              } else {
-                event.target.pauseVideo();
               }
             },
             onStateChange: (event: any) => {
@@ -217,20 +223,19 @@ function UniversalVideoPlayer({
     };
   }, [url, youtubeId]); // Excluido 'isIntersecting' para evitar re-instanciación del iframe al hacer scroll
 
-  // 4b. CONTROL DE REPRODUCCIÓN RECONECTADO DE YOUTUBE: Play/Pausa al hacer Scroll
+  // 4b. CONTROL DE REPRODUCCIÓN RECONECTADO DE YOUTUBE: Iniciar una sola vez cuando entra al viewport y seguir sin pausas
   useEffect(() => {
     if (isYoutube && ytPlayerRef.current && ytPlayerReady) {
-      try {
-        if (isIntersecting) {
+      if (isIntersecting && !hasStarted) {
+        setHasStarted(true);
+        try {
           ytPlayerRef.current.playVideo();
-        } else {
-          ytPlayerRef.current.pauseVideo();
+        } catch (e) {
+          console.warn("Error al controlar reproducción de YouTube por visibilidad:", e);
         }
-      } catch (e) {
-        console.warn("Error al controlar reproducción de YouTube por visibilidad:", e);
       }
     }
-  }, [isIntersecting, ytPlayerReady, isYoutube]);
+  }, [isIntersecting, ytPlayerReady, isYoutube, hasStarted]);
 
   // Manejador del botón manual de Mute/Unmute
   const handleToggleMute = (e: React.MouseEvent) => {
@@ -256,9 +261,33 @@ function UniversalVideoPlayer({
             <span className="font-extrabold uppercase text-[10px]">{isMuted ? "Activar Sonido" : "Silenciar"}</span>
           </button>
         </div>
+      ) : isDriveVideo && useIframe && driveVideoId ? (
+        <div className="absolute inset-0 w-full h-full">
+          <iframe 
+            src={`https://drive.google.com/file/d/${driveVideoId}/preview?autoplay=1&mute=${isMuted ? 1 : 0}`} 
+            className="absolute inset-0 w-full h-full border-0 rounded-[24px]" 
+            allow="autoplay; encrypted-media" 
+            title={title} 
+          />
+        </div>
       ) : (
         <div className="absolute inset-0 w-full h-full">
-          <video ref={videoRef} src={url} autoPlay={isIntersecting} muted={isMuted} playsInline controls className="absolute inset-0 w-full h-full object-cover rounded-[24px]" onEnded={onEnded} />
+          <video 
+            ref={videoRef} 
+            src={videoSrc} 
+            autoPlay={isIntersecting} 
+            muted={isMuted} 
+            playsInline 
+            controls 
+            className="absolute inset-0 w-full h-full object-cover rounded-[24px]" 
+            onEnded={onEnded} 
+            onError={() => {
+              if (isDriveVideo) {
+                console.warn("Direct stream from Google Drive failed, switching to iframe preview fallback...");
+                setUseIframe(true);
+              }
+            }}
+          />
           <button onClick={handleToggleMute} className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white z-20 text-xs flex items-center gap-1.5 cursor-pointer">
             {isMuted ? <VolumeX className="w-4 h-4 text-[#FFD100]" /> : <Volume2 className="w-4 h-4 text-green-400" />}
             <span className="font-extrabold uppercase text-[10px]">{isMuted ? "Activar Sonido" : "Silenciar"}</span>
@@ -292,12 +321,12 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
     return () => document.removeEventListener('click', handleGlobalClick);
   }, []);
 
-  // Tu lista de slides integrada con tus enlaces limpios de YouTube
+  // Tu lista de slides integrada con tus enlaces limpios de YouTube y Google Drive
   const slides = [
     { id: 1, title: 'Proyecto Las Bugambilias de San Isidro - La Joya', tag: 'Lotes Disponibles', videoUrl: 'https://www.youtube.com/watch?v=5jCMD-j5x6E', type: 'video' },
     { id: 2, title: 'Garantía INNOVA', tag: 'Confianza y Garantía', imageUrl: 'https://drive.google.com/file/d/1J0OOJ4y05WwODpToofSsimdrXHMRWcJm/view?usp=sharing', type: 'image' },
     { id: 3, title: 'Asesoramiento personalizado', tag: 'Asesoramiento Personalizado', imageUrl: 'https://drive.google.com/file/d/1H_EEFrPDSV2VeXW641c6AX_HmhQMwbZj/view?usp=drive_link', type: 'image' },
-    { id: 4, title: '+16,000 m2 áreas verdes', tag: '+16,000 m2 áreas verdes', videoUrl: 'https://www.youtube.com/watch?v=wn5bxBV4sRp', type: 'video' }, // Ejemplo futuro de YT
+    { id: 4, title: '+16,000 m2 áreas verdes', tag: '+16,000 m2 áreas verdes', videoUrl: 'https://drive.google.com/file/d/1wn5bxBV4sRpvk4NA3EjmAKp3uFOM_IE_/view?usp=drive_link', type: 'video' },
     { id: 5, title: 'Ingreso señalizado', tag: 'Ingreso Señalizado', imageUrl: 'https://drive.google.com/file/d/16OrnQY4ZUyNW3Xgq2rk5xfglbGGA0-o0/view?usp=drive_link', type: 'image' },
     { id: 6, title: 'Áreas de juego', tag: 'separa tu lote hoy!', imageUrl: 'https://drive.google.com/file/d/1HjcGwfzD4U1ftx9YkuWqHnUyo1H6NO9h/view?usp=drive_link', type: 'image' }
   ];
@@ -350,7 +379,17 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
                     />
                   </motion.div>
                 ) : (
-                  <motion.img key={currentIndex} src={getGoogleDriveImageUrl(slides[currentIndex].imageUrl)} alt={slides[currentIndex].title} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="absolute inset-0 w-full h-full object-cover" />
+                  <motion.img 
+                    key={currentIndex} 
+                    src={getGoogleDriveImageUrl(slides[currentIndex].imageUrl)} 
+                    alt={slides[currentIndex].title} 
+                    referrerPolicy="no-referrer"
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }} 
+                    transition={{ duration: 0.5 }} 
+                    className="absolute inset-0 w-full h-full object-cover" 
+                  />
                 )}
               </AnimatePresence>
 
