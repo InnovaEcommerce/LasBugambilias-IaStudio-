@@ -29,7 +29,7 @@ import {
 import { compressImage } from '../utils/imageCompressor';
 import { 
   subscribeToLeads, 
-  deleteLeadFromFirestore, 
+  deleteLeadLocal, 
   LeadWithMeta 
 } from '../services/leadsService';
 
@@ -38,7 +38,7 @@ interface PreviewStatus {
 }
 
 export default function AdminPanel() {
-  const { images, loading: imagesLoading, error: firebaseError, saveImages } = useDynamicImages();
+  const { images, loading: imagesLoading, error: storageError, saveImages } = useDynamicImages();
   
   // Tab active state: 'images' | 'crm'
   const [activeTab, setActiveTab] = useState<'images' | 'crm'>('crm');
@@ -126,7 +126,7 @@ export default function AdminPanel() {
     }
   };
 
-  // 1. Subscribe to Firestore leads in real-time on mount
+  // 1. Subscribe to leads local database on mount
   useEffect(() => {
     setCrmLoading(true);
     const unsubscribe = subscribeToLeads(
@@ -162,7 +162,7 @@ export default function AdminPanel() {
   const handleDeleteLead = async (id: string) => {
     if (confirm('¿Estás completamente seguro de eliminar permanentemente este prospecto?')) {
       try {
-        await deleteLeadFromFirestore(id);
+        await deleteLeadLocal(id);
       } catch (err: any) {
         alert('Error al eliminar registro: ' + err.message);
       }
@@ -318,7 +318,7 @@ export default function AdminPanel() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => setSaveSuccess(false), 5000);
     } catch (err: any) {
-      setSaveError(err.message || 'Error al guardar en la base de datos de Firestore.');
+      setSaveError(err.message || 'Error al guardar en el almacenamiento local.');
     } finally {
       setIsSaving(false);
     }
@@ -450,7 +450,7 @@ export default function AdminPanel() {
           </button>
         </div>
 
-        {/* TAB 1: REAL-TIME FIRESTORE CRM */}
+        {/* TAB 1: LOCAL CRM GESTOR PIPELINE */}
         {activeTab === 'crm' && (
           <div className="space-y-6">
             
@@ -865,12 +865,12 @@ export default function AdminPanel() {
         {activeTab === 'images' && (
           <form onSubmit={handleSubmitImages} className="space-y-8">
             
-            {firebaseError && (
+            {storageError && (
               <div className="p-4 bg-red-950/50 border border-red-800/60 rounded-2xl flex items-start gap-3 text-red-300 text-sm">
                 <AlertCircle className="shrink-0 mt-0.5 text-red-400" size={18} />
                 <div>
-                  <p className="font-bold mb-1 col-span-1">Error de Firestore</p>
-                  <p className="text-slate-400">{firebaseError}</p>
+                  <p className="font-bold mb-1 col-span-1">Error de Almacenamiento</p>
+                  <p className="text-slate-400">{storageError}</p>
                 </div>
               </div>
             )}
@@ -879,8 +879,8 @@ export default function AdminPanel() {
               <div className="p-4 bg-emerald-950/60 border border-emerald-800/80 rounded-2xl flex items-center gap-3 text-emerald-200 text-sm animate-fade-in" id="save-success-notification">
                 <CheckCircle className="shrink-0 text-emerald-400" size={20} />
                 <div>
-                  <p className="font-semibold">¡Imágenes guardadas con éxito en Firestore!</p>
-                  <p className="text-xs text-emerald-400/80 font-semibold mt-1">La base de datos se actualizó correctamente. El sitio público reflejará los cambios instantáneamente.</p>
+                  <p className="font-semibold">¡Imágenes guardadas con éxito!</p>
+                  <p className="text-xs text-emerald-400/80 font-semibold mt-1">Los cambios se guardaron localmente y el sitio público reflejará los cambios instantáneamente.</p>
                 </div>
               </div>
             )}

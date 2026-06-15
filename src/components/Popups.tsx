@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRight, UserCheck, Calendar, Flame, Users, Gift, Home, MapPin, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lead } from '../types';
-import { saveLeadToFirestore } from '../services/leadsService';
+import { saveLeadLocal } from '../services/leadsService';
 
 /* ==========================================
    1. MAIN LEAD CAPTURE FORM POPUP COMPONENT
@@ -102,7 +102,7 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
     const origenStr = 'formulario popup';
 
     try {
-      await saveLeadToFirestore(form, {
+      await saveLeadLocal(form, {
         origen: origenStr,
       });
     } catch (dbError) {

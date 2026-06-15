@@ -50,10 +50,11 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-45 transition-all duration-300 ${
-          isScrolled ? 'bg-white shadow-md py-1.5' : 'bg-white py-3'
+          isScrolled ? 'bg-white shadow-md' : 'bg-white'
         }`}
+        style={{ height: '63px' }}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center justify-between">
           
           {/* Logo Brand Representation block hanging down - Image 1 */}
           <a

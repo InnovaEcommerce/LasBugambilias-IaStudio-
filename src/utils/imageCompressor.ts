@@ -1,7 +1,7 @@
 /**
  * Utility to compress and resize images on the client-side.
  * This ensures they load incredibly fast, use minimal bandwidth,
- * and easily fit within the Firestore 1MB document size limit as a Base64 string.
+ * and easily fit within local storage size limits as a Base64 string.
  */
 export function compressImage(file: File, maxWidth = 1000, maxHeight = 1000, quality = 0.75): Promise<string> {
   return new Promise((resolve, reject) => {

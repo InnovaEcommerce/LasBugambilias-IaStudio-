@@ -47,7 +47,7 @@ const subscribers: Set<(leads: LeadWithMeta[]) => void> = new Set();
 /**
  * Saves a lead to local storage with direct metadata attributes.
  */
-export async function saveLeadToFirestore(
+export async function saveLeadLocal(
   lead: Lead,
   extra: { origen: 'formulario principal' | 'formulario popup' | string }
 ): Promise<string> {
@@ -147,7 +147,7 @@ export async function updateLeadFields(id: string, fields: Partial<LeadWithMeta>
 /**
  * Deletes a lead.
  */
-export async function deleteLeadFromFirestore(id: string): Promise<void> {
+export async function deleteLeadLocal(id: string): Promise<void> {
   const currentLeads = getLocalLeads();
   const updated = currentLeads.filter((l) => l.id !== id);
   saveLocalLeads(updated);

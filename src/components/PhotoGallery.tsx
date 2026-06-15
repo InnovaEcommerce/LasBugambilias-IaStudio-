@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Camera, ArrowRight, Play, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -13,26 +13,54 @@ function getGoogleDriveImageUrl(url: string | undefined): string {
   return url;
 }
 
-function GoogleDriveVideoPlayer({ url, title, onEnded }: { url: string; title: string; onEnded?: () => void }) {
+function GoogleDriveVideoPlayer({ 
+  url, 
+  title, 
+  onEnded,
+  durationMs = 35000
+}: { 
+  url: string; 
+  title: string; 
+  onEnded?: () => void;
+  durationMs?: number;
+}) {
   const [useIframe, setUseIframe] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Reset fallback and mute status when source URL changes
+    setUseIframe(false);
+    setIsMuted(true);
+  }, [url]);
 
   useEffect(() => {
     if (useIframe && onEnded) {
-      // Backup timer of 35 seconds to auto-advance if using iframe fallback
+      // Backup timer to auto-advance if using iframe fallback
       const timer = setTimeout(() => {
         onEnded();
-      }, 35000);
+      }, durationMs);
       return () => clearTimeout(timer);
     }
-  }, [useIframe, onEnded]);
+  }, [useIframe, onEnded, durationMs]);
+
+  useEffect(() => {
+    if (!useIframe && videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play().catch(err => {
+        console.log("Autoplay was blocked or stream failed to load programmatically:", err);
+      });
+    }
+  }, [url, useIframe]);
 
   if (url.includes('drive.google.com')) {
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     if (match && match[1]) {
       const videoId = match[1];
-      const videoSrc = `https://drive.google.com/uc?id=${videoId}&export=download`;
-      // The embed link ensures Google Drive's native web player loads with high quality stream,
-      // optimized for cross-platform playback without quota issues!
+      // High-performance direct CDN content distribution stream that bypasses virus scan confirmation
+      // and plays the original full-quality (up to 1080p) MP4 natively inside the HTML5 player.
+      const videoSrc = `https://drive.usercontent.google.com/download?id=${videoId}&export=download&confirm=t`;
+      // High-quality native embed player optimized with mute and autoplay configurations.
       const iframeSrc = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1&mute=1`;
 
       if (useIframe) {
@@ -48,33 +76,80 @@ function GoogleDriveVideoPlayer({ url, title, onEnded }: { url: string; title: s
       }
 
       return (
-        <video
-          src={videoSrc}
-          autoPlay
-          muted
-          playsInline
-          controls
-          className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
-          onEnded={onEnded}
-          onError={() => {
-            console.warn("Direct video stream failed/restricted, falling back to Google Drive iframe player");
-            setUseIframe(true);
-          }}
-        />
+        <div className="absolute inset-0 w-full h-full">
+          <video
+            ref={videoRef}
+            src={videoSrc}
+            autoPlay
+            muted={isMuted}
+            playsInline
+            controls
+            className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
+            onEnded={onEnded}
+            onError={() => {
+              console.warn("Direct video CDN stream restricted or failed, falling back to Google Drive iframe player");
+              setUseIframe(true);
+            }}
+          />
+          {/* Mute toggle widget to override browser silent restrictions */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMuted(!isMuted);
+            }}
+            className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white hover:bg-white hover:text-black z-20 transition-all duration-300 shadow-md flex items-center gap-1.5 text-xs border border-white/20 select-none cursor-pointer"
+            title={isMuted ? "Activar Sonido" : "Silenciar"}
+          >
+            {isMuted ? (
+              <>
+                <VolumeX className="w-4 h-4 text-[#FFD100]" />
+                <span className="font-extrabold uppercase tracking-wider text-[10px]">Activar Sonido</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-4 h-4 text-green-400 animate-pulse" />
+                <span className="font-extrabold uppercase tracking-wider text-[10px]">Silenciar</span>
+              </>
+            )}
+          </button>
+        </div>
       );
     }
   }
 
   return (
-    <video
-      src={url}
-      autoPlay
-      muted
-      playsInline
-      controls
-      className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
-      onEnded={onEnded}
-    />
+    <div className="absolute inset-0 w-full h-full">
+      <video
+        ref={videoRef}
+        src={url}
+        autoPlay
+        muted={isMuted}
+        playsInline
+        controls
+        className="absolute inset-0 w-full h-full object-cover rounded-[24px]"
+        onEnded={onEnded}
+      />
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsMuted(!isMuted);
+        }}
+        className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white hover:bg-white hover:text-black z-20 transition-all duration-300 shadow-md flex items-center gap-1.5 text-xs border border-white/20 select-none cursor-pointer"
+        title={isMuted ? "Activar Sonido" : "Silenciar"}
+      >
+        {isMuted ? (
+          <>
+            <VolumeX className="w-4 h-4 text-[#FFD100]" />
+            <span className="font-extrabold uppercase tracking-wider text-[10px]">Activar Sonido</span>
+          </>
+        ) : (
+          <>
+            <Volume2 className="w-4 h-4 text-green-400 animate-pulse" />
+            <span className="font-extrabold uppercase tracking-wider text-[10px]">Silenciar</span>
+          </>
+        )}
+      </button>
+    </div>
   );
 }
 
@@ -90,6 +165,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
       tag: '+150 Clientes Satisfechos',
       videoUrl: 'https://drive.google.com/file/d/1bJvxfoBvNEmkP_zHILGoQSQUbtrDkjxz/view?usp=drive_link',
       type: 'video',
+      duration: 35000,
     },
     {
       id: 2,
@@ -111,6 +187,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
       tag: '+16,000 m2 áreas verdes',
       videoUrl: 'https://drive.google.com/file/d/1wn5bxBV4sRpvk4NA3EjmAKp3uFOM_IE_/view?usp=drive_link',
       type: 'video',
+      duration: 25000,
     },
     {
       id: 5,
@@ -166,7 +243,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
               </h2>
               <div className="w-16 h-1 bg-[#FFD100] md:mx-0 mx-auto rounded-full mt-2"></div>
             </div>
-
+ 
             {/* Dynamic Image/Video Slideshow Container styled exact as Image 3 */}
             <div className="relative w-full bg-neutral-900 rounded-[24px] overflow-hidden shadow-2xl h-[340px] xs:h-[400px] md:h-[550px]">
               
@@ -184,6 +261,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
                       url={slides[currentIndex].videoUrl || ''}
                       title={slides[currentIndex].title}
                       onEnded={handleNext}
+                      durationMs={slides[currentIndex].duration || 35000}
                     />
                   </motion.div>
                 ) : (
@@ -212,17 +290,17 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
               </div>
 
               {/* Center-Top Title Badge (Image 3 style: top center label) */}
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full text-[8px] font-bold text-white uppercase tracking-wider hidden sm:flex items-center gap-1.5 font-sans">
-                <Camera className="w-3.5 h-3.5 text-[#FFD100]" />
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/85 backdrop-blur-md px-3 py-1.5 md:px-4.5 md:py-2.5 rounded-full text-[12px] md:text-[13px] font-extrabold text-white uppercase tracking-widest flex items-center gap-2 border border-white/30 font-sans shadow-lg select-text">
+                <Camera className="w-4 h-4 text-[#FFD100] stroke-[2.5px]" />
                 <span>{slides[currentIndex].tag}</span>
               </div>
 
               {/* Image referential disclaimer tag right bottom */}
               <div 
-                style={{ fontSize: '12px' }}
+                style={{ fontSize: '13px' }}
                 className="absolute bottom-4 right-4 text-white/80 font-semibold uppercase tracking-wider bg-black/45 backdrop-blur-sm px-2 px-2.5 py-1 rounded"
               >
-                Imágenes reales y referenciales
+                <span style={{ fontSize: '13px' }}>Imágenes reales y referenciales</span>
               </div>
 
               {/* Left / Right chevron buttons floating at the exact middle */}

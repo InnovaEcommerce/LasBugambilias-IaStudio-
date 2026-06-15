@@ -158,23 +158,28 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                     }} 
                     className="text-2.5xl md:text-3xl uppercase tracking-tight text-center md:text-left"
                   >
-                    VISÍTANOS EN NUESTRA OFICINA
+                    VISITA NUESTRA OFICINA
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     
                     {/* Left Column: Address */}
-                    <div className="flex items-center gap-4">
-                      <div style={{ backgroundColor: '#d2007a' }} className="w-14 h-14 rounded-full flex items-center justify-center text-white shrink-0">
+                    <a 
+                      href="https://maps.app.goo.gl/gndDDuCDEJWJKkXCA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 group cursor-pointer"
+                    >
+                      <div style={{ backgroundColor: '#d2007a' }} className="w-14 h-14 rounded-full flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-all duration-300">
                         <MapPin className="w-7 h-7" />
                       </div>
                       <div 
-                        style={{ fontSize: '16px', color: '#525252' }}
-                        className="font-semibold font-sans leading-snug"
+                        style={{ fontSize: '16px', color: '#525252', fontWeight: 'normal' }}
+                        className="font-normal font-sans leading-snug group-hover:text-black transition-colors duration-300"
                       >
                         Calle Octavio Muñoz Najar N° 137, oficina 204, Cercado, Arequipa
                       </div>
-                    </div>
+                    </a>
 
                     {/* Right Column: Clock */}
                     <div className="flex items-center gap-4">
@@ -184,14 +189,14 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                       <div className="text-neutral-800 text-sm md:text-[15px] font-semibold font-sans leading-snug">
                         <strong className="font-bold">Horario Atención:</strong>
                         <p 
-                          style={{ fontSize: '16px', color: '#525252' }}
-                          className="mt-0.5"
+                          style={{ fontSize: '16px', color: '#525252', fontWeight: 'normal' }}
+                          className="mt-0.5 font-normal"
                         >
                           Lunes a Domingo
                         </p>
                         <p 
-                          style={{ fontSize: '16px', color: '#525252' }}
-                          className="mt-0.5"
+                          style={{ fontSize: '16px', color: '#525252', fontWeight: 'normal' }}
+                          className="mt-0.5 font-normal"
                         >
                           09:00 am - 06:00 pm
                         </p>
@@ -245,7 +250,7 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                       {/* Left side: Red Circle Pin & Location Address */}
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#ff3366] shrink-0 border border-neutral-200/50 shadow-md">
-                          <MapPin className="w-6 h-6 text-[#E53E3E] stroke-[1.8px]" />
+                          <MapPin className="w-6 h-6 text-[#D2007A] stroke-[1.8px]" />
                         </div>
                         <span className="font-sans font-semibold text-neutral-800 text-base md:text-[17px] tracking-tight select-text">
                           Proy. Las Bugambilias - La Joya - Arequipa
@@ -255,33 +260,20 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                       {/* Right side: Stylized Google Maps direct link */}
                       <div className="flex items-center gap-3">
                         
-                        {/* Google Maps Pin Button styled as a clean circular plate */}
+                        {/* Google Maps Pin Button styled as a clean premium plate */}
                         <a
-                          href="https://maps.app.goo.gl/L9MXNXk6Q518VENt5"
+                          href="https://maps.app.goo.gl/ZftqZu32KXqTT7JUA"
                           target="_blank"
                           rel="noreferrer"
                           title="Abrir con Google Maps"
-                          className="w-12 h-12 rounded-full bg-[#f0f4f9] hover:bg-[#e1e9f4] border border-neutral-200/50 shadow-sm flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 shrink-0"
+                          className="h-[60px] w-[140px] pl-[5px] pr-[5px] rounded-full bg-white hover:bg-[#f0f4f9] border border-neutral-200/50 shadow-sm flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 shrink-0"
                         >
-                          <svg viewBox="0 0 100 100" className="w-7 h-7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            {/* Green right/bottom segment */}
-                            <path d="M50 95C50 95 85 58.7 85 36.2C85 31.2 83.8 26.5 81.7 22.3L50 54V95Z" fill="#34A853" />
-                            
-                            {/* Blue top-right segment */}
-                            <path d="M81.7 22.3C75.2 9.2 60.7 .8 44.2 .1V39.5L81.7 22.3Z" fill="#4285F4" />
-                            
-                            {/* Yellow middle-left segment */}
-                            <path d="M30 14.5C20.5 20.4 15 30.5 15 36.2C15 58.7 50 95 50 95V54L30 14.5Z" fill="#FBBC05" />
-                            
-                            {/* Red top-left segment */}
-                            <path d="M44.2 .1C38.9 .5 33.7 2.1 29 4.9L44.2 39.5V .1Z" fill="#EA4335" />
-
-                            {/* White inner spacer */}
-                            <circle cx="50" cy="36.2" r="14" fill="#FFFFFF" />
-                            
-                            {/* Blue inner center circle */}
-                            <circle cx="50" cy="36.2" r="8" fill="#4285F4" />
-                          </svg>
+                          <img 
+                            src="https://drive.google.com/thumbnail?id=15jvPnenKGaTKwoLFSKQrqu6tfg_6J9U7&sz=w500" 
+                            alt="Google Maps Logo" 
+                            className="h-11 w-auto object-contain"
+                            referrerPolicy="no-referrer"
+                          />
                         </a>
 
                       </div>

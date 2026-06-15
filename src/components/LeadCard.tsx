@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Lead } from '../types';
-import { saveLeadToFirestore } from '../services/leadsService';
+import { saveLeadLocal } from '../services/leadsService';
 
 interface LeadCardProps {
   onSubmitSuccess: (lead: Lead) => void;
@@ -92,7 +92,7 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
     const origenStr = 'Formulario Principal';
 
     try {
-      await saveLeadToFirestore(form, {
+      await saveLeadLocal(form, {
         origen: origenStr,
       });
     } catch (dbError) {
@@ -221,7 +221,7 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
                   className={`w-full px-4 py-3 bg-[#FAF9F6] border-none text-neutral-800 text-xs font-bold placeholder:text-neutral-450 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D2007A] ${
                     errors.celular ? 'ring-2 ring-pink-650' : ''
                   }`}
-                  style={{ fontFamily: 'system-ui' }}
+                  style={{ fontFamily: 'system-ui', fontWeight: 'bold' }}
                 />
                 {errors.celular && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] text-[#D2007A] font-black uppercase" title={errors.celular}>!</span>}
               </div>
