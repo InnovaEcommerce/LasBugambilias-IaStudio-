@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Phone, Database, FileSpreadsheet, Compass } from 'lucide-react';
+import { Menu, X, Phone, Database, FileSpreadsheet, Compass, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface HeaderProps {
@@ -64,7 +64,8 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
             <img 
               src="https://app.innovainversiones.com/logo_buganbilias.svg" 
               alt="Logo Las Bugambilias" 
-              className="h-[57px] w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              className="object-contain group-hover:scale-105 transition-transform duration-300"
+              style={{ width: '80px', height: '70px' }}
               referrerPolicy="no-referrer"
             />
           </a>
@@ -88,19 +89,23 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
           <div className="hidden md:flex items-center gap-3">
             {/* Direct Call Button */}
             <a
-              href="tel:+51926289293"
-              className="px-5 py-3 bg-[#E9EAF0] hover:bg-[#DEDFE5] text-[#0C152B] font-black text-[13px] xl:text-[14px] rounded-xl transition duration-200 shadow-sm font-sans inline-flex items-center justify-center gap-1"
+              href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 bg-[#E9EAF0] hover:bg-[#DEDFE5] text-[#0C152B] font-black text-[13px] xl:text-[14px] rounded-xl transition duration-200 shadow-sm font-sans inline-flex items-center justify-center gap-1.5"
+              style={{ height: '45px' }}
             >
-              📞 <span className="font-sans font-black">926 289 293</span>
+              <MessageCircle className="w-4 h-4 text-[#D2007A] fill-[#D2007A] shrink-0" />
+              <span className="font-sans font-bold text-[18px] leading-[26px]">926 289 293</span>
             </a>
 
             {/* ¡Regístrate AQUÍ! Button - Image styled */}
             <button
               onClick={onOpenLeadPopup}
               id="header-cta-register"
-              className="px-6 py-3 bg-[#FFD100] hover:bg-amber-400 text-[#D2007A] font-black text-[13px] xl:text-[14px] rounded-xl shadow-sm transition-all duration-300 font-sans"
+              className="px-6 py-3 bg-[#FFD100] hover:bg-amber-400 text-[#D2007A] font-black text-[16px] leading-[21px] rounded-xl shadow-sm transition-all duration-300 font-sans"
             >
-              ¡Regístrate <span className="font-black uppercase font-sans">AQUÍ!</span>
+              ¡Regístrate <span className="font-black uppercase font-sans text-[18px]">AQUÍ!</span>
             </button>
           </div>
 
@@ -159,11 +164,14 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
 
               <div className="space-y-2">
                 <a
-                  href="tel:+51926289293"
+                  href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setIsOpenMenu(false)}
-                  className="w-full py-3 bg-[#E9EAF0] text-[#0C152B] rounded-xl text-center font-black text-sm block shadow-sm"
+                  className="w-full py-3 bg-[#E9EAF0] text-[#0C152B] rounded-xl flex items-center justify-center gap-1.5 font-black text-sm block shadow-sm"
                 >
-                  📞 926 289 293
+                  <MessageCircle className="w-4 h-4 text-[#D2007A] fill-[#D2007A] shrink-0" />
+                  <span>926 289 293</span>
                 </a>
                 <button
                   onClick={() => {

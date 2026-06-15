@@ -17,8 +17,18 @@ export interface SiteImages {
   related3SantaClara: string;
 }
 
+export function getGoogleDriveImageUrl(url: string): string {
+  if (url && url.includes('drive.google.com')) {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      return `https://lh3.googleusercontent.com/d/${match[1]}`;
+    }
+  }
+  return url;
+}
+
 export const defaultImages: SiteImages = {
-  heroBanner: heroDevelopmentImg,
+  heroBanner: 'https://drive.google.com/file/d/1eCHLIzbBca5jB-UZmBMHZSiATYE13m81/view?usp=drive_link',
   mapPlan: mapPlanImg,
   testimonialsFamily: familySocialProofImg,
   related1Huacho: huachoPlotImg,

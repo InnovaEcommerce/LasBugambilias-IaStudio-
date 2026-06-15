@@ -3,13 +3,11 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import SubHeroBar from './components/SubHeroBar';
 import TabsAndDescription from './components/TabsAndDescription';
-import FeaturesGrid from './components/FeaturesGrid';
 import PhotoGallery from './components/PhotoGallery';
 import TerrainSelector from './components/TerrainSelector';
-import LocationSection from './components/LocationSection';
 import FinancingCalculator from './components/FinancingCalculator';
 import BackupAndHistory from './components/BackupAndHistory';
-import RelatedProjects from './components/RelatedProjects';
+
 import Testimonials from './components/Testimonials';
 import ReferralBanner from './components/ReferralBanner';
 import AppPromo from './components/AppPromo';
@@ -44,26 +42,26 @@ export default function App() {
 
   // Floating sticky scroll positions state
   const [scrollState, setScrollState] = useState<'inline' | 'floating' | 'docked'>('inline');
-//d
+
   useEffect(() => {
     const handleScroll = () => {
       const track = document.getElementById('main-scroll-track');
-      const locationSec = document.getElementById('mapa');
-      if (!track || !locationSec) return;
+      if (!track) return;
 
       const trackRect = track.getBoundingClientRect();
-      const locationRect = locationSec.getBoundingClientRect();
+      const scrollY = window.scrollY;
 
-      // Trigger point details
-      const startFloatingThreshold = 595; 
-      
-      // Floating lead form height is approximately 630px
-      // Stop floating when location section starts getting near the viewport bottom
-      const pinThreshold = 770;
+      // Absolute top on inline is 748px. Floating top is 96px.
+      // Transition is seamless when scroll reaches exactly 748 - 96 = 652px
+      const scrollThreshold = 652; 
 
-      if (locationRect.top <= pinThreshold) {
+      // Dock precisely when the bottom of track (end of calculator) is near the card's viewport bottom
+      // Card height is approx. 620px, plus 96px floating top + 40px margin = 756px
+      const dockThreshold = 756;
+
+      if (trackRect.bottom <= dockThreshold) {
         setScrollState('docked');
-      } else if (trackRect.top < -startFloatingThreshold) {
+      } else if (scrollY >= scrollThreshold) {
         setScrollState('floating');
       } else {
         setScrollState('inline');
@@ -131,9 +129,6 @@ export default function App() {
           {/* Visual Premium Image Carousels */}
           <PhotoGallery onOpenLeadPopup={handleOpenGeneralPopup} />
 
-          {/* High Converting Features Grid representing Amenities */}
-          <FeaturesGrid />
-
           {/* Interactive Lots Selector Map visual representation */}
           <TerrainSelector onOpenWithLot={handleOpenPopupWithDetails} />
 
@@ -144,9 +139,9 @@ export default function App() {
           <div 
             className={`hidden lg:block transition-all duration-300 ${
               scrollState === 'inline' 
-                ? 'absolute top-[695px] right-4 xl:right-[calc((100vw-1280px)/2+24px)] w-full max-w-sm z-30 animate-none'
+                ? 'absolute top-[748px] right-4 xl:right-[calc((100vw-1280px)/2+24px)] w-full max-w-sm z-30 animate-none'
                 : scrollState === 'floating'
-                ? 'fixed top-[100px] right-4 xl:right-[calc((100vw-1280px)/2+24px)] w-full max-w-sm z-40'
+                ? 'fixed top-[96px] right-4 xl:right-[calc((100vw-1280px)/2+24px)] w-full max-w-sm z-40'
                 : 'absolute bottom-[40px] right-4 xl:right-[calc((100vw-1280px)/2+24px)] w-full max-w-sm z-30 animate-none'
             }`}
           >
@@ -157,14 +152,10 @@ export default function App() {
 
         </div>
 
-        {/* Connected Google Maps coordinates & Attendance Offices */}
-        <LocationSection />
-
         {/* Corporate stats summary under Centenario Brand */}
         <BackupAndHistory />
 
-        {/* Alternative catalog options */}
-        <RelatedProjects />
+
 
         {/* User reviews sliding layout (CENTEGENTE) */}
         <Testimonials />

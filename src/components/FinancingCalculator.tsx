@@ -48,8 +48,11 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
               <span className="text-xs font-black uppercase tracking-widest text-[#FFD100] bg-white/10 px-3 py-1 rounded-full border border-white/15">
                 FACILIDADES DE PAGO
               </span>
-              <h2 className="font-sans font-black text-3xl md:text-4xl text-white tracking-tight leading-none uppercase mt-1">
-                Financia Tu Rapilote
+              <h2 
+                style={{ marginTop: '10px', marginLeft: '0px', marginBottom: '0px' }}
+                className="font-sans font-black text-3xl md:text-4xl text-white tracking-tight leading-none uppercase"
+              >
+                Financia Tu LOTE hoy mismo
               </h2>
               <div className="w-16 h-1 bg-[#FFD100] md:mx-0 mx-auto rounded-full mt-2"></div>
             </div>
@@ -57,9 +60,21 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
             {/* Combined Comparison Board */}
             <div className="relative group mt-16 text-left">
               
-              {/* Centered circular yellow badge exactly matching Image 5 - shifted to have 280px margin left on Desktop/PC (100px left from 380px) */}
-              <div className="absolute top-[-44px] left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 md:ml-[280px] flex w-24 h-24 rounded-full bg-[#FFD100] border-4 border-[#D2007A] text-neutral-950 font-sans font-extrabold text-[11px] text-center items-center justify-center shadow-2xl uppercase leading-none z-25 select-none transition-transform hover:scale-105 duration-200">
-                <span className="px-1 text-[#D2007A] font-black leading-tight text-[11.5px]">
+              {/* Centered circular yellow badge exactly matching Image 5 - shifted 20px to the right on Desktop/PC (297px margin-left) */}
+              <div 
+                style={{ marginLeft: '297px' }}
+                className="absolute top-[-44px] left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 flex w-24 h-24 rounded-full bg-[#FFD100] border-4 border-[#D2007A] text-neutral-950 font-sans font-extrabold text-[11px] text-center items-center justify-center shadow-2xl uppercase leading-none z-25 select-none transition-transform hover:scale-105 duration-200"
+              >
+                <span 
+                  style={{
+                    fontSize: '13px',
+                    paddingLeft: '0px',
+                    paddingRight: '0px',
+                    paddingTop: '10px',
+                    lineHeight: '15px'
+                  }}
+                  className="text-[#D2007A] font-black text-center"
+                >
                   Compra tu<br />lote<br />hoy
                 </span>
               </div>
@@ -200,7 +215,7 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                     {/* Cuota inicial */}
                     <div className="space-y-1">
                       <div className="flex justify-between font-mono text-[10px] font-bold text-neutral-300">
-                        <span>CUOTA INICIAL APORTADA (MÍN. S/ 1,998)</span>
+                        <span>CUOTA INICIAL (MÍN. S/ 1,998)</span>
                         <span className="text-[#FFD100] font-black">S/ {downPayment.toLocaleString('es-PE')}</span>
                       </div>
                       <input
@@ -236,7 +251,7 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
                 {/* Display Simulator math result */}
                 <div className="p-6 bg-white/5 rounded-2xl border border-white/5 text-center flex flex-col justify-center items-center space-y-4">
                   <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-[#FFD100]">
-                    Cuota Referencial LB
+                    Cuota Referencial
                   </span>
                   <div className="text-4xl md:text-5xl font-sans font-black text-white font-mono leading-none">
                     S/ {currentQuota.toLocaleString('es-PE')}

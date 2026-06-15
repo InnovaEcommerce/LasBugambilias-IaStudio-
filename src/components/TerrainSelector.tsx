@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Target, Search, CheckCircle, Landmark } from 'lucide-react';
+import { Target, Search, CheckCircle, Landmark, MapPin, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useDynamicImages } from '../hooks/useDynamicImages';
 
@@ -77,46 +77,220 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
               <span className="text-xs font-bold uppercase tracking-widest text-[#D2007A] font-mono bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
                 Plano del Proyecto
               </span>
-              <h2 className="font-sans font-black text-3xl md:text-4xl text-neutral-900 tracking-tight leading-none uppercase">
-                Elige tu Lote Hoy
+              <h2 
+                style={{ marginRight: '0px', paddingLeft: '2px', marginBottom: '8px', marginTop: '9px' }}
+                className="font-sans font-black text-3xl md:text-4xl text-neutral-900 tracking-tight leading-none uppercase"
+              >
+                Elige tu lote propio!
               </h2>
               <div className="w-16 h-1 bg-[#D2007A] md:mx-0 mx-auto rounded-full mt-2"></div>
             </div>
 
             {/* Start Overlay state */}
             {!started ? (
-              <a 
-                href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1QUIERO+PLANO+PDF%21+de+1+etapa+del+proyecto+LB&type=phone_number&app_absent=0"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative block w-full h-[400px] md:h-[500px] rounded-[32px] overflow-hidden shadow-2xl group border border-neutral-200 cursor-pointer"
-              >
-                <img
-                  src={images.mapPlan}
-                  alt="Planificación Las Bugambilias"
-                  referrerPolicy="no-referrer"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-neutral-950/75 flex flex-col items-center justify-center text-center p-6 md:p-8" />
+              <div className="flex flex-col gap-6">
+                <a 
+                  href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1QUIERO+PLANO+PDF%21+de+1+etapa+del+proyecto+LB&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative block w-full h-[400px] md:h-[500px] rounded-[32px] overflow-hidden shadow-2xl group border border-neutral-200 cursor-pointer"
+                >
+                  <img
+                    src={images.mapPlan}
+                    alt="Planificación Las Bugambilias"
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-neutral-950/75 flex flex-col items-center justify-center text-center p-6 md:p-8" />
 
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-8 space-y-6">
-                  <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 animate-pulse">
-                    <Target className="w-8 h-8 text-[#FFD100]" />
-                  </div>
-                  <div className="space-y-3 max-w-lg">
-                    <span className="text-xs uppercase font-mono bg-[#D2007A] text-white px-3 py-1 rounded-full font-bold">
-                      Buscador Interactivo de Lotes
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-8 space-y-5">
+                    <div className="transform transition-transform duration-300 group-hover:scale-105">
+                      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                        {/* The box in the middle/right */}
+                        <rect x="22" y="10" width="28" height="28" rx="2" />
+                        {/* Divider inside box */}
+                        <path d="M36 10v28" />
+                        <path d="M36 24h14" />
+
+                        {/* Vertical arrow on the left */}
+                        <path d="M14 10v28" />
+                        <path d="M11 13l3-3 3 3" />
+                        <path d="M11 35l3 3 3-3" />
+
+                        {/* Horizontal arrow on the bottom */}
+                        <path d="M22 46h28" />
+                        <path d="M25 43l-3 3 3 3" />
+                        <path d="M47 43l3 3-3 3" />
+                      </svg>
+                    </div>
+                    <div className="max-w-md">
+                      <p 
+                        style={{ height: '84px', width: '300px' }}
+                        className="font-sans font-extrabold text-lg sm:text-xl md:text-[21px] text-white tracking-normal leading-snug"
+                      >
+                        Mira el plano del proyecto, elige tu lote y cotízalo
+                      </p>
+                    </div>
+
+                    <span className="px-8 py-[14px] bg-[#FFD100] group-hover:bg-amber-400 text-[#0c152b] font-black text-sm rounded-full shadow-xl transition-all duration-300 md:animate-bounce uppercase tracking-wider inline-flex items-center justify-center select-none">
+                      PLANO PDF AQUÍ
                     </span>
-                    <p className="font-sans font-black text-xl md:text-2xl text-white tracking-tight leading-snug uppercase">
-                      Mira el plano del proyecto, elige tu lote y cotízalo
-                    </p>
+                  </div>
+                </a>
+
+                {/* Relocated Physical Office locator block right above the map/grid area */}
+                <div 
+                  id="oficinas" 
+                  style={{ height: '190px', width: '801px', marginTop: '70px', paddingLeft: '46px', paddingTop: '30px' }}
+                  className="bg-white p-6 md:p-10 rounded-3xl border border-neutral-100 shadow-sm flex flex-col gap-8 font-sans select-text"
+                >
+                  <h3 
+                    style={{ 
+                      fontFamily: 'system-ui', 
+                      fontWeight: 'bold', 
+                      color: '#D2007A',
+                      lineHeight: '30px',
+                      fontSize: '30px',
+                      marginBottom: '-10px',
+                      marginRight: '0px',
+                      marginLeft: '0px',
+                      marginTop: '5px'
+                    }} 
+                    className="text-2.5xl md:text-3xl uppercase tracking-tight text-center md:text-left"
+                  >
+                    VISÍTANOS EN NUESTRA OFICINA
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    
+                    {/* Left Column: Address */}
+                    <div className="flex items-center gap-4">
+                      <div style={{ backgroundColor: '#d2007a' }} className="w-14 h-14 rounded-full flex items-center justify-center text-white shrink-0">
+                        <MapPin className="w-7 h-7" />
+                      </div>
+                      <div 
+                        style={{ fontSize: '16px', color: '#525252' }}
+                        className="font-semibold font-sans leading-snug"
+                      >
+                        Calle Octavio Muñoz Najar N° 137, oficina 204, Cercado, Arequipa
+                      </div>
+                    </div>
+
+                    {/* Right Column: Clock */}
+                    <div className="flex items-center gap-4">
+                      <div style={{ backgroundColor: '#d2007a' }} className="w-14 h-14 rounded-full flex items-center justify-center text-white shrink-0">
+                        <Clock className="w-7 h-7" />
+                      </div>
+                      <div className="text-neutral-800 text-sm md:text-[15px] font-semibold font-sans leading-snug">
+                        <strong className="font-bold">Horario Atención:</strong>
+                        <p 
+                          style={{ fontSize: '16px', color: '#525252' }}
+                          className="mt-0.5"
+                        >
+                          Lunes a Domingo
+                        </p>
+                        <p 
+                          style={{ fontSize: '16px', color: '#525252' }}
+                          className="mt-0.5"
+                        >
+                          09:00 am - 06:00 pm
+                        </p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div id="ubicacion-ideal-container" className="space-y-4">
+                  {/* Title corresponding to the clean editorial style of the image */}
+                  <div className="text-left mt-2">
+                    <h2 
+                      style={{ 
+                        fontFamily: 'system-ui', 
+                        fontWeight: 'bold', 
+                        color: '#D2007A',
+                        fontSize: '30px',
+                        lineHeight: '30px',
+                        paddingLeft: '0px',
+                        marginLeft: '0px',
+                        marginTop: '45px',
+                        marginBottom: '25px'
+                      }}
+                      className="text-2.5xl md:text-3.5xl uppercase tracking-tight"
+                    >
+                      UBICACIÓN estratégica
+                    </h2>
                   </div>
 
-                  <span className="px-8 py-4 bg-[#FFD100] group-hover:bg-amber-400 text-neutral-950 font-black text-sm rounded-full shadow-xl transition-all duration-300 md:animate-bounce uppercase tracking-wider inline-flex items-center justify-center select-none">
-                    PLANO PDF AQUÍ
-                  </span>
+                  {/* Outer Card of the Map representing the image */}
+                  <div className="bg-white rounded-[32px] border border-neutral-200/50 shadow-md hover:shadow-lg transition-all duration-350 overflow-hidden">
+                    
+                    {/* Map Iframe block - Flush with the top, left and right edges */}
+                    <div style={{ height: '400px' }} className="relative w-full">
+                      <iframe
+                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110142.77947277184!2d-71.98767098041122!3d-16.621707854263466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9143d7003bc2807d%3A0x661ec878c3c3fcd!2sLas%20Bugambilias%20de%20San%20Isidro!5e0!3m2!1ses-419!2spe!4v1781455338847!5m2!1ses-419!2spe"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0, height: '400px' }}
+                        allowFullScreen={true}
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        title="Ubicación de Nueva La Joya Arequipa"
+                      />
+                    </div>
+
+                    {/* White bottom bar containing GPS markers and Quick Nav links */}
+                    <div className="bg-white px-6 py-5 md:px-8 md:py-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-neutral-100">
+                      
+                      {/* Left side: Red Circle Pin & Location Address */}
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#ff3366] shrink-0 border border-neutral-200/50 shadow-md">
+                          <MapPin className="w-6 h-6 text-[#E53E3E] stroke-[1.8px]" />
+                        </div>
+                        <span className="font-sans font-semibold text-neutral-800 text-base md:text-[17px] tracking-tight select-text">
+                          Proy. Las Bugambilias - La Joya - Arequipa
+                        </span>
+                      </div>
+
+                      {/* Right side: Stylized Google Maps direct link */}
+                      <div className="flex items-center gap-3">
+                        
+                        {/* Google Maps Pin Button styled as a clean circular plate */}
+                        <a
+                          href="https://maps.app.goo.gl/L9MXNXk6Q518VENt5"
+                          target="_blank"
+                          rel="noreferrer"
+                          title="Abrir con Google Maps"
+                          className="w-12 h-12 rounded-full bg-[#f0f4f9] hover:bg-[#e1e9f4] border border-neutral-200/50 shadow-sm flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 shrink-0"
+                        >
+                          <svg viewBox="0 0 100 100" className="w-7 h-7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            {/* Green right/bottom segment */}
+                            <path d="M50 95C50 95 85 58.7 85 36.2C85 31.2 83.8 26.5 81.7 22.3L50 54V95Z" fill="#34A853" />
+                            
+                            {/* Blue top-right segment */}
+                            <path d="M81.7 22.3C75.2 9.2 60.7 .8 44.2 .1V39.5L81.7 22.3Z" fill="#4285F4" />
+                            
+                            {/* Yellow middle-left segment */}
+                            <path d="M30 14.5C20.5 20.4 15 30.5 15 36.2C15 58.7 50 95 50 95V54L30 14.5Z" fill="#FBBC05" />
+                            
+                            {/* Red top-left segment */}
+                            <path d="M44.2 .1C38.9 .5 33.7 2.1 29 4.9L44.2 39.5V .1Z" fill="#EA4335" />
+
+                            {/* White inner spacer */}
+                            <circle cx="50" cy="36.2" r="14" fill="#FFFFFF" />
+                            
+                            {/* Blue inner center circle */}
+                            <circle cx="50" cy="36.2" r="8" fill="#4285F4" />
+                          </svg>
+                        </a>
+
+                      </div>
+
+                    </div>
+
+                  </div>
                 </div>
-              </a>
+              </div>
             ) : (
               /* Interactive Terrain Selector Applet */
               <div className="w-full bg-neutral-50 rounded-[32px] border border-neutral-200 overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-12">

@@ -416,8 +416,11 @@ export function ExitIntentPopup({ onSubmitSuccess }: ExitIntentPopupProps) {
 
               {/* Main discount incentives block */}
               <div className="space-y-1.5 md:space-y-2">
-                <span className="inline-block text-[9px] md:text-[10px] text-centenario-yellow font-black uppercase font-mono tracking-widest bg-yellow-450/10 border border-yellow-400 pl-2.5 pr-2.5 py-0.5 md:py-1 rounded-full">
-                  ¡Cupón de Oferta Exclusiva!
+                <span 
+                  style={{ fontSize: '12px' }}
+                  className="inline-block text-centenario-yellow font-black uppercase font-mono tracking-widest bg-yellow-450/10 border border-yellow-400 pl-2.5 pr-2.5 py-0.5 md:py-1 rounded-full"
+                >
+                  ¡Cupón Exclusivo!
                 </span>
                 <h3 className="font-display font-black text-xl md:text-3xl text-white tracking-tight leading-tight uppercase font-display pt-1 md:pt-2">
                   ¡Espera! No Te Vayas
@@ -597,7 +600,7 @@ export function SocialProofToasts({ onOpenLeadPopup }: SocialProofToastsProps) {
     },
     {
       id: 3,
-      author: "Sofía & Luis Ramos",
+      author: "Sofía y Luis Ramos",
       message: "programaron cita en oficina para ver la maqueta este lunes.",
       time: "hace 12 min",
       source: "Reunión",
@@ -726,7 +729,7 @@ export function SocialProofToasts({ onOpenLeadPopup }: SocialProofToastsProps) {
               </p>
 
               {/* Timestamp, Source and Badge hashtag */}
-              <div className="flex items-center justify-between pt-1 mt-1 border-t border-neutral-900 text-[10px] text-neutral-500 font-mono">
+              <div className="flex items-center justify-between pt-1 mt-1 border-t border-neutral-800 text-[10px] text-neutral-500 font-mono">
                 <span className="truncate">
                   {currentToast.time} • {currentToast.source}
                 </span>

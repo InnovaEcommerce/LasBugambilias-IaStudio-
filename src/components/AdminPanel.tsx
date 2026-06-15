@@ -1,5 +1,5 @@
 import { useState, useEffect, FormEvent, DragEvent } from 'react';
-import { useDynamicImages, SiteImages, defaultImages } from '../hooks/useDynamicImages';
+import { useDynamicImages, SiteImages, defaultImages, getGoogleDriveImageUrl } from '../hooks/useDynamicImages';
 import { 
   Save, 
   ArrowLeft, 
@@ -1013,7 +1013,7 @@ export default function AdminPanel() {
                             {currentVal.trim() !== '' ? (
                               <>
                                 <img
-                                  src={currentVal}
+                                  src={getGoogleDriveImageUrl(currentVal)}
                                   alt={`Previsualización de ${label}`}
                                   className={`w-full h-full object-cover transition-opacity duration-300 ${
                                     status === 'valid' ? 'opacity-100' : 'opacity-20'

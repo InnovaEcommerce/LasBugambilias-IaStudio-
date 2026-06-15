@@ -1,7 +1,7 @@
 import { ShieldCheck, Check, MapPin, Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react';
 import { Lead } from '../types';
 import LeadCard from './LeadCard';
-import { useDynamicImages } from '../hooks/useDynamicImages';
+import { useDynamicImages, getGoogleDriveImageUrl } from '../hooks/useDynamicImages';
 
 interface HeroProps {
   onSubmitSuccess: (lead: Lead) => void;
@@ -20,7 +20,7 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
         
         {/* Background drone photography */}
         <img
-          src={images.heroBanner}
+          src={getGoogleDriveImageUrl(images.heroBanner)}
           alt="Residencial Las Bugambilias en La Joya Arequipa"
           referrerPolicy="no-referrer"
           className="absolute inset-0 w-full h-full object-cover select-none object-center"
@@ -40,23 +40,29 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
               
               {/* Red/pink container */}
               <div className="bg-[#D2007A] text-white px-8 py-5 rounded-[28px] shadow-2xl border-4 border-white/20 flex flex-col items-start pr-16 relative z-10">
-                <span className="text-lg md:text-xl font-display font-extrabold uppercase tracking-widest text-white leading-none">
+                <span className="text-[23px] font-display font-extrabold uppercase tracking-widest text-white leading-none">
                   COMPRA
                 </span>
                 <span className="text-3xl md:text-5xl font-display font-black uppercase text-[#FFD100] mt-1.5 tracking-tight leading-none font-sans">
                   100% SEGURA
                 </span>
-                <span className="text-sm md:text-lg font-sans font-semibold text-white mt-2 leading-none">
+                <span className="text-[22px] font-sans font-semibold text-white mt-2 leading-none">
                   1ra ETAPA
                 </span>
               </div>
 
               {/* Overlapping Yellow Circle */}
               <div className="absolute right-[-69px] top-1/2 -translate-y-1/2 w-28 h-28 rounded-full bg-[#FFD100] border-4 border-white shadow-2xl flex flex-col items-center justify-center text-center font-sans z-20 scale-[1.05] transition-transform hover:scale-110 duration-200">
-                <span className="text-sm font-display font-black text-[#D2007A] leading-[1.1] uppercase font-sans">
+                <span 
+                  style={{ fontSize: '17px', lineHeight: '17px' }}
+                  className="font-display font-black text-[#D2007A] uppercase font-sans"
+                >
                   Crédito
                 </span>
-                <span className="text-sm font-display font-black text-[#D2007A] leading-[1.1] uppercase font-sans">
+                <span 
+                  style={{ fontSize: '17px', lineHeight: '17px' }}
+                  className="font-display font-black text-[#D2007A] uppercase font-sans"
+                >
                   directo
                 </span>
               </div>
@@ -92,7 +98,7 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
         {/* A. Drone Visual Cover photo block with layout labels inside */}
         <div className="relative w-full h-[250px] xs:h-[280px] overflow-hidden bg-neutral-900 shadow-inner">
           <img
-            src={images.heroBanner}
+            src={getGoogleDriveImageUrl(images.heroBanner)}
             alt="Residencial Las Bugambilias en La Joya Arequipa"
             className="w-full h-full object-cover select-none object-center"
           />
@@ -128,7 +134,7 @@ export default function Hero({ onSubmitSuccess }: HeroProps) {
 
           {/* Images label Bottom-Left */}
           <span className="absolute bottom-[22px] left-4 text-[9px] font-bold text-white/90 leading-none select-none drop-shadow-md bg-black/35 px-2 py-1 rounded">
-            Imágenes referenciales
+            Imágenes reales y referenciales
           </span>
         </div>
 

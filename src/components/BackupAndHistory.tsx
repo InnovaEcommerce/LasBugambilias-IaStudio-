@@ -3,16 +3,16 @@ import { ArrowRight } from 'lucide-react';
 export default function BackupAndHistory() {
   const stats = [
     {
-      value: '+10',
-      unit: 'proyectos',
-      label: 'entregados',
+      value: '+16,000',
+      unit: 'm2 área',
+      label: 'verde',
       bgGradient: 'from-black/75 via-black/40 to-transparent',
       imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=600', // chef grilling / family bbq feel
     },
     {
       value: '+15',
       unit: 'años',
-      label: 'junto a ti',
+      label: 'de experiencia',
       bgGradient: 'from-black/75 via-black/40 to-transparent',
       imageUrl: 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&q=80&w=600', // people socializing / picnicking outdoor feel
     },
@@ -42,8 +42,18 @@ export default function BackupAndHistory() {
           {/* Left Block Description */}
           <div className="col-span-5 space-y-6 text-left">
             <div className="space-y-1.5 uppercase font-display font-black tracking-tight select-none">
-              <span className="text-[15px] block font-semibold text-[#D2007A] font-sans">CON EL</span>
-              <span className="text-2xl md:text-3xl block text-[#D2007A] tracking-tight font-sans">RESPALDO DE</span>
+              <span 
+                style={{ marginBottom: '-2px' }}
+                className="text-[15px] block font-semibold text-[#D2007A] font-sans"
+              >
+                CON EL
+              </span>
+              <span 
+                style={{ marginBottom: '10px' }}
+                className="text-2xl md:text-3xl block text-[#D2007A] tracking-tight font-sans"
+              >
+                RESPALDO DE
+              </span>
               
               {/* Centenario Logo representation (Grid of squares and name) */}
               <div className="flex items-center gap-3.5 justify-start pt-2">
@@ -70,7 +80,10 @@ export default function BackupAndHistory() {
               <p className="font-extrabold text-neutral-900 text-lg md:text-xl">
                 Invierte con confianza en un futuro seguro para tu familia.
               </p>
-              <p className="text-neutral-500 text-sm">
+              <p 
+                style={{ fontSize: '16px' }}
+                className="text-neutral-500 text-sm"
+              >
                 ¡Haz una compra 100% segura con INNOVA Inversiones! Disfruta de una residencial moderna concebida con la mayor calidad, solidez de entrega y confiabilidad del mercado.
               </p>
             </div>
@@ -78,7 +91,8 @@ export default function BackupAndHistory() {
             <div className="pt-2">
               <a
                 href="#financiamiento"
-                className="inline-block px-8 py-3.5 bg-[#FFD100] hover:bg-amber-400 text-[#D2007A] font-black text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform active:scale-95 animate-none"
+                style={{ fontSize: '18px' }}
+                className="inline-block px-8 py-3.5 bg-[#FFD100] hover:bg-amber-400 text-[#D2007A] font-black uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform active:scale-95 animate-none"
               >
                 ¡Conocer más!
               </a>
