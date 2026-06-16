@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRight, UserCheck, Calendar, Flame, Users, Gift, Home, MapPin, Bell } from 'lucide-react';
+import { X, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRight, UserCheck, Calendar, Flame, Users, Gift, Home, MapPin, Bell, AlertCircle, Percent } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lead } from '../types';
 import { saveLeadLocal } from '../services/leadsService';
@@ -349,32 +349,134 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
    ========================================== */
 interface ExitIntentPopupProps {
   onSubmitSuccess: (lead: Lead) => void;
+  isDisabled?: boolean;
 }
 
-export function ExitIntentPopup({ onSubmitSuccess }: ExitIntentPopupProps) {
+export function ExitIntentPopup({ onSubmitSuccess, isDisabled = false }: ExitIntentPopupProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
+  const [isDelayFinished, setIsDelayFinished] = useState(false);
+  const [isExternallyDisabled, setIsExternallyDisabled] = useState(false);
 
+  // 1. Initial page delay of 5 seconds before activation is active
   useEffect(() => {
-    // Only bind desktop mouse listeners
+    const timer = setTimeout(() => {
+      setIsDelayFinished(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Check if user has rejected/closed the modal in the last 48 hours
+  const checkClosedRestriction = (): boolean => {
+    try {
+      const lastClosed = localStorage.getItem('innova_exit_intent_closed');
+      if (lastClosed) {
+        const closedTime = parseInt(lastClosed, 10);
+        if (!isNaN(closedTime)) {
+          const distance = Date.now() - closedTime;
+          // 48 hours in milliseconds = 172800000 ms
+          if (distance < 48 * 60 * 60 * 1000) {
+            return true;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("LocalStorage check failed:", e);
+    }
+    return false;
+  };
+
+  // Check if a registration has already occurred
+  const checkLeadCaptured = (): boolean => {
+    try {
+      const leads = localStorage.getItem('innova_leads');
+      if (leads) {
+        const parsed = JSON.parse(leads);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return true;
+        }
+      }
+    } catch (e) {
+      console.warn("LocalStorage lead parse failed:", e);
+    }
+    return false;
+  };
+
+  // Update external state when an 'innova_lead_submitted' event is received
+  useEffect(() => {
+    const handleLeadSubmitted = () => {
+      setIsExternallyDisabled(true);
+    };
+    window.addEventListener('innova_lead_submitted', handleLeadSubmitted);
+    return () => {
+      window.removeEventListener('innova_lead_submitted', handleLeadSubmitted);
+    };
+  }, []);
+
+  // 2. Desktop mouseleave & Mobile inactivity detection
+  useEffect(() => {
+    // If delay hasn't finished, already triggered, externally disabled, or has restriction - do not activate
+    if (!isDelayFinished || hasTriggered || isDisabled || isExternallyDisabled || checkClosedRestriction() || checkLeadCaptured()) {
+      return;
+    }
+
+    const isMobileDevice = window.innerWidth < 768 || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    let inactivityTimer: NodeJS.Timeout | null = null;
+
+    const triggerModal = () => {
+      setIsOpen(true);
+      setHasTriggered(true);
+    };
+
+    // Desktop: tracking top screen exit intent mouse leave
     const handleMouseLeave = (e: MouseEvent) => {
-      if (hasTriggered) return;
-      
-      // If cursor leaves the top boundary of screen (Exit intent)
       if (e.clientY < 20) {
-        setIsOpen(true);
-        setHasTriggered(true);
+        triggerModal();
       }
     };
-    
-    document.addEventListener('mouseleave', handleMouseLeave);
-    return () => {
-      document.removeEventListener('mouseleave', handleMouseLeave);
+
+    // Mobile: Inactivity tracking for 25 seconds
+    const resetInactivityTimer = () => {
+      if (inactivityTimer) clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        triggerModal();
+      }, 25000); // 25 seconds
     };
-  }, [hasTriggered]);
+
+    if (!isMobileDevice) {
+      // Desktop Setup
+      document.addEventListener('mouseleave', handleMouseLeave);
+    } else {
+      // Mobile Setup: Detect interactions to keep mobile countdown reset
+      resetInactivityTimer();
+      window.addEventListener('scroll', resetInactivityTimer, { passive: true });
+      window.addEventListener('touchstart', resetInactivityTimer, { passive: true });
+      window.addEventListener('touchmove', resetInactivityTimer, { passive: true });
+      window.addEventListener('touchend', resetInactivityTimer, { passive: true });
+      window.addEventListener('click', resetInactivityTimer, { passive: true });
+    }
+
+    return () => {
+      if (!isMobileDevice) {
+        document.removeEventListener('mouseleave', handleMouseLeave);
+      } else {
+        if (inactivityTimer) clearTimeout(inactivityTimer);
+        window.removeEventListener('scroll', resetInactivityTimer);
+        window.removeEventListener('touchstart', resetInactivityTimer);
+        window.removeEventListener('touchmove', resetInactivityTimer);
+        window.removeEventListener('touchend', resetInactivityTimer);
+        window.removeEventListener('click', resetInactivityTimer);
+      }
+    };
+  }, [isDelayFinished, hasTriggered, isDisabled, isExternallyDisabled]);
 
   const handleClose = () => {
     setIsOpen(false);
+    try {
+      localStorage.setItem('innova_exit_intent_closed', Date.now().toString());
+    } catch (e) {
+      console.warn("Failed to set exit intent limit tag:", e);
+    }
   };
 
   const handleOpenLeadForm = () => {
@@ -393,9 +495,9 @@ export function ExitIntentPopup({ onSubmitSuccess }: ExitIntentPopupProps) {
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
+            animate={{ opacity: 0.65 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-neutral-950 z-50 pointer-events-auto"
+            className="fixed inset-0 bg-neutral-950/80 backdrop-blur-sm z-50 pointer-events-auto"
             onClick={handleClose}
           />
 
@@ -411,7 +513,7 @@ export function ExitIntentPopup({ onSubmitSuccess }: ExitIntentPopupProps) {
 
               {/* Header icons alert clock */}
               <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-centenario-yellow/15 border-2 border-centenario-yellow flex items-center justify-center text-centenario-yellow mx-auto animate-pulse">
-                <AlarmClock className="w-6 h-6 md:w-8 md:h-8" />
+                <AlertCircle className="w-6 h-6 md:w-8 md:h-8" />
               </div>
 
               {/* Main discount incentives block */}
@@ -431,8 +533,11 @@ export function ExitIntentPopup({ onSubmitSuccess }: ExitIntentPopupProps) {
               </div>
 
               {/* Highlight badge of price reduction */}
-              <div className="bg-neutral-950 p-3 md:p-4 border border-neutral-800 rounded-2xl">
-                <span className="text-[8px] md:text-[9px] font-mono text-neutral-450 uppercase tracking-widest block">BONO EXCLUSIVO DE DÍA DEL PADRE</span>
+              <div className="bg-neutral-950 p-3 md:p-4 border border-neutral-805 rounded-2xl relative">
+                <div className="absolute top-2 right-2 text-neutral-600">
+                  <Percent className="w-4 h-4 opacity-30" />
+                </div>
+                <span className="text-[8px] md:text-[9px] font-mono text-neutral-400 uppercase tracking-widest block">BONO EXCLUSIVO DE RETENCIÓN</span>
                 <span className="text-2xl md:text-4xl text-[#D2007A] font-display font-black tracking-tight font-mono mt-0.5 md:mt-1 block">
                   - S/ 500 Dcto.
                 </span>
@@ -441,9 +546,10 @@ export function ExitIntentPopup({ onSubmitSuccess }: ExitIntentPopupProps) {
               {/* Dual button lines */}
               <div className="space-y-2">
                 <a
-                  href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1DESCUENTO+-500%21+por+Día+del+Padre&type=phone_number&app_absent=0"
+                  href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1DESCUENTO+-500%21+Bono+Especial+Innova&type=phone_number&app_absent=0"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={handleClose}
                   className="w-full py-3.5 md:py-4 bg-centenario-yellow hover:bg-amber-400 text-neutral-900 text-[11px] md:text-xs font-black rounded-xl shadow-lg transition duration-200 uppercase cursor-pointer block text-center"
                 >
                   ¡Asegurar mi Descuento Ahora!

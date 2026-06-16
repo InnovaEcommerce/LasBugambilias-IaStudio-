@@ -14,12 +14,9 @@ export default function FinancingCalculator({ onOpenWithPlan }: FinancingCalcula
   // Mortgage math computation (9.5% annual rate for direct financing)
   const calculateQuota = () => {
     const principal = lotPrice - downPayment;
-    const monthlyRate = 0.095 / 12;
-    const totalPayments = months;
     if (principal <= 0) return 0;
     
-    const quota = (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / 
-                  (Math.pow(1 + monthlyRate, totalPayments) - 1);
+    const quota = principal / months;
     
     return Math.round(quota);
   };

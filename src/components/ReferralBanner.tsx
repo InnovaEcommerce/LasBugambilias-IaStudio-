@@ -31,7 +31,7 @@ export default function ReferralBanner({ onOpenWithPlan }: ReferralBannerProps) 
             </h2>
 
             <p className="text-neutral-600 text-xs md:text-sm leading-relaxed font-semibold">
-              Si eres propietario o copropietario de un lote con Innova, refiere a familiares y/o amigos. Registra sus datos y si compran, podrás ganar una <span className="text-[#D2007A] font-black">Tarjeta Visa Compras con un saldo de S/1,000</span> para comprar lo que desees. No hay límites en la cantidad de referidos.
+              Si eres propietario o copropietario de un lote con Innova, refiere a familiares y/o amigos. Registra sus datos y si compran, podrás ganar una <span className="text-[#D2007A] font-black">Tarjeta Visa Compras con un saldo de S/500</span> para comprar lo que desees. No hay límites en la cantidad de referidos.
             </p>
 
             <div className="flex justify-center lg:justify-start pt-2">
@@ -63,7 +63,7 @@ export default function ReferralBanner({ onOpenWithPlan }: ReferralBannerProps) 
                   GANA HASTA
                 </span>
                 <div className="font-display font-black text-3xl md:text-4xl text-neutral-950 tracking-tighter leading-none mt-1 font-sans">
-                  S/1,000
+                  S/500
                 </div>
                 <p className="text-[10px] uppercase font-mono font-bold text-neutral-800 tracking-wide mt-2 max-w-[125px] mx-auto leading-tight">
                   Saldo Tarjeta Visa por Compra
