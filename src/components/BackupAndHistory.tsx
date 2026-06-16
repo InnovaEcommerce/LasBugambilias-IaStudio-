@@ -1,4 +1,8 @@
 import { ArrowRight } from 'lucide-react';
+import areaVerdeImg from '../assets/images/images-BackupAndHistory/area_verde.jpg';
+import expImg from '../assets/images/images-BackupAndHistory/años_exp.jpg';
+import familiaImg from '../assets/images/images-BackupAndHistory/familias_felices.png';
+import residenciaImg from '../assets/images/images-BackupAndHistory/residencia_pais.jpg';
 
 export default function BackupAndHistory() {
   const stats = [
@@ -7,28 +11,28 @@ export default function BackupAndHistory() {
       unit: 'm2 área',
       label: 'verde',
       bgGradient: 'from-black/75 via-black/40 to-transparent',
-      imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=600', // chef grilling / family bbq feel
+      imageUrl: areaVerdeImg,
     },
     {
       value: '+15',
       unit: 'años',
       label: 'de experiencia',
       bgGradient: 'from-black/75 via-black/40 to-transparent',
-      imageUrl: 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&q=80&w=600', // people socializing / picnicking outdoor feel
+      imageUrl: expImg  
     },
     {
       value: '+150',
       unit: 'familias',
       label: 'felices',
       bgGradient: 'from-black/75 via-black/40 to-transparent',
-      imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=600',
+      imageUrl: familiaImg,
     },
     {
       value: '+5',
       unit: 'residenciales',
       label: 'en el país',
       bgGradient: 'from-black/75 via-black/40 to-transparent',
-      imageUrl: 'https://images.unsplash.com/photo-1590069261209-f8e9b8642343?auto=format&fit=crop&q=80&w=600',
+      imageUrl: residenciaImg,
     },
   ];
 

@@ -206,7 +206,7 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                   </div>
                 </div>
 
-                <div id="ubicacion-ideal-container" className="space-y-4">
+                <div id="mapa" className="space-y-4 scroll-mt-32">
                   {/* Title corresponding to the clean editorial style of the image */}
                   <div className="text-left mt-2">
                     <h2 
