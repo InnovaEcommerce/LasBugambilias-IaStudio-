@@ -28,7 +28,7 @@ export default function AppPromo() {
             </div>
 
             {/* Middle Image: imagen_cajachina */}
-            <div className="group overflow-hidden rounded-2xl border border-white/10 shadow-lg aspect-[4/3] md:aspect-[3/4] lg:aspect-[1/1] bg-neutral-900 flex items-center justify-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+            <div className="group overflow-hidden rounded-2xl border border-white/10 shadow-lg aspect-[4/3] md:aspect-[3/4] lg:aspect-[4/5] bg-neutral-900 flex items-center justify-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
               <img 
                 src={imageCajachina} 
                 alt="Proyecto Las Bugambilias - Área de Recreación" 

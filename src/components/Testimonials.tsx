@@ -1,22 +1,24 @@
 import { Star } from 'lucide-react';
 import { useDynamicImages } from '../hooks/useDynamicImages';
+import janetImg from '../assets/images/images-testimonials/janet.png';
+import luchinImg from '../assets/images/images-testimonials/luchin.png';
 
 export default function Testimonials() {
   const { images } = useDynamicImages();
   const reviews = [
     {
       id: 1,
-      title: 'Entrega de terrenos',
-      proyecto: 'Urbanización Valle Real',
-      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
-      quote: 'Hoy ha sido uno de los días más importantes – al fin hemos logrado el sueño que hemos perseguido durante años: tener nuestro propio lote',
+      title: 'JANNET ESCATE',
+      proyecto: 'Las Bugambilias',
+      avatarUrl: janetImg,
+      quote: 'El proyecto me dio la tranquilidad legal y de obras reales que necesitaba para tomar esta gran decisión.',
     },
     {
       id: 2,
       title: 'Atilio Luque',
-      proyecto: 'Urbanización Santa María',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
-      quote: 'Lo que más me gusto del financiamiento de Centenario fueron las facilidades de pago',
+      proyecto: 'Las Bugambilias',
+      avatarUrl: luchinImg,
+      quote: 'Lo que más me gusto del financiamiento de Innova Inversiones fueron las facilidades de pago',
     },
   ];
 
