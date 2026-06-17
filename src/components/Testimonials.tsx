@@ -15,7 +15,7 @@ export default function Testimonials() {
     },
     {
       id: 2,
-      title: 'Atilio Luque',
+      title: 'Luis Sifientes',
       proyecto: 'Las Bugambilias',
       avatarUrl: luchinImg,
       quote: 'Lo que más me gusto del financiamiento de Innova Inversiones fueron las facilidades de pago',

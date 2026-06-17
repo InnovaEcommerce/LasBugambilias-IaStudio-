@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import areaVerdeImg from '../assets/images/images-BackupAndHistory/area_verde.jpg';
 import expImg from '../assets/images/images-BackupAndHistory/años_exp.jpg';
@@ -35,6 +36,32 @@ export default function BackupAndHistory() {
       imageUrl: residenciaImg,
     },
   ];
+
+  const [activeIdx, setActiveIdx] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      // Calculate dynamic active index based on card width + gap
+      const cardWidth = 260; // card width is set to min-w-[260px]
+      const gap = 16;       // flex gap-4 is 16px
+      const index = Math.round(scrollLeft / (cardWidth + gap));
+      setActiveIdx(Math.min(Math.max(0, index), stats.length - 1));
+    }
+  };
+
+  const scrollToIdx = (idx: number) => {
+    if (scrollRef.current) {
+      const cardWidth = 260;
+      const gap = 16;
+      scrollRef.current.scrollTo({
+        left: idx * (cardWidth + gap),
+        behavior: 'smooth'
+      });
+      setActiveIdx(idx);
+    }
+  };
 
   return (
     <section className="bg-white py-14 md:py-20 font-sans">
@@ -170,11 +197,15 @@ export default function BackupAndHistory() {
           </div>
 
           {/* Side-by-side or horizontal swipable cards preview precisely mimicking Image 6 */}
-          <div className="flex gap-4 overflow-x-auto pb-6 pt-1 snap-x snap-mandatory scrollbar-none scroll-smooth">
-            {stats.slice(0, 2).map((stat, idx) => (
+          <div 
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex gap-4 overflow-x-auto pb-6 pt-1 px-4 snap-x snap-mandatory scrollbar-none scroll-smooth"
+          >
+            {stats.map((stat, idx) => (
               <div
                 key={idx}
-                className="relative h-56 min-w-[240px] w-[260px] rounded-[24px] overflow-hidden shadow-lg flex flex-col justify-end p-5 text-left font-sans snap-start shrink-0 border border-neutral-100/50"
+                className="relative h-56 min-w-[260px] w-[260px] rounded-[24px] overflow-hidden shadow-lg flex flex-col justify-end p-5 text-left font-sans snap-center shrink-0 border border-neutral-100/50"
               >
                 {/* Background Image */}
                 <img
@@ -207,10 +238,18 @@ export default function BackupAndHistory() {
 
           {/* Dots carousels indicators - matching Image 6 style */}
           <div className="flex justify-center items-center gap-1.5 mt-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-neutral-200" />
-            <span className="w-2.5 h-2.5 rounded-full bg-neutral-200" />
-            <span className="w-2.5 h-2.5 rounded-full bg-neutral-200" />
-            <span className="w-10 h-1.5 rounded-full bg-[#D2007A]" />
+            {stats.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => scrollToIdx(idx)}
+                className={`transition-all duration-300 rounded-full h-2 focus:outline-none ${
+                  activeIdx === idx 
+                    ? 'w-10 bg-[#D2007A]' 
+                    : 'w-2 h-2 bg-neutral-200'
+                }`}
+                aria-label={`Ir al slide ${idx + 1}`}
+              />
+            ))}
           </div>
 
           {/* Bottom Yellow CTA capsule Button */}

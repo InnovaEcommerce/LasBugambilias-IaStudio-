@@ -123,10 +123,9 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                         <path d="M47 43l3 3-3 3" />
                       </svg>
                     </div>
-                    <div className="max-w-md">
+                    <div className="max-w-md flex justify-center">
                       <p 
-                        style={{ height: '84px', width: '300px' }}
-                        className="font-sans font-extrabold text-lg sm:text-xl md:text-[21px] text-white tracking-normal leading-snug"
+                        className="font-sans font-extrabold text-lg sm:text-xl md:text-[21px] text-white tracking-normal leading-snug max-w-[300px] w-full"
                       >
                         Mira el plano del proyecto, elige tu lote y cotízalo
                       </p>
@@ -141,27 +140,25 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                 {/* Relocated Physical Office locator block right above the map/grid area */}
                 <div 
                   id="oficinas" 
-                  style={{ height: '190px', width: '801px', marginTop: '70px', paddingLeft: '46px', paddingTop: '30px' }}
-                  className="bg-white p-6 md:p-10 rounded-3xl border border-neutral-100 shadow-sm flex flex-col gap-8 font-sans select-text"
+                  className="bg-white p-6 md:pl-11 md:pt-8 md:pb-8 md:pr-10 rounded-3xl border border-neutral-100 shadow-sm flex flex-col gap-6 md:gap-8 font-sans select-text w-full max-w-[801px] mt-10 md:mt-16"
                 >
                   <h3 
                     style={{ 
                       fontFamily: 'system-ui', 
                       fontWeight: 'bold', 
                       color: '#D2007A',
-                      lineHeight: '30px',
-                      fontSize: '30px',
-                      marginBottom: '-10px',
+                      lineHeight: '1.2',
+                      marginBottom: '-4px',
                       marginRight: '0px',
                       marginLeft: '0px',
                       marginTop: '5px'
                     }} 
-                    className="text-2.5xl md:text-3xl uppercase tracking-tight text-center md:text-left"
+                    className="text-2xl md:text-3xl uppercase tracking-tight text-center md:text-left"
                   >
                     VISITA NUESTRA OFICINA
                   </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
                     
                     {/* Left Column: Address */}
                     <a 
@@ -214,14 +211,12 @@ export default function TerrainSelector({ onOpenWithLot }: TerrainSelectorProps)
                         fontFamily: 'system-ui', 
                         fontWeight: 'bold', 
                         color: '#D2007A',
-                        fontSize: '30px',
-                        lineHeight: '30px',
                         paddingLeft: '0px',
                         marginLeft: '0px',
                         marginTop: '45px',
                         marginBottom: '25px'
                       }}
-                      className="text-2.5xl md:text-3.5xl uppercase tracking-tight"
+                      className="text-2xl md:text-3.5xl uppercase tracking-tight text-center md:text-left"
                     >
                       UBICACIÓN estratégica
                     </h2>
