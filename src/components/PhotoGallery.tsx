@@ -323,7 +323,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
 
   // Tu lista de slides integrada con tus enlaces limpios de YouTube y Google Drive
   const slides = [
-    { id: 1, title: 'Proyecto Las Bugambilias de San Isidro - La Joya', tag: 'Lotes Disponibles', videoUrl: 'https://www.youtube.com/watch?v=5jCMD-j5x6E', type: 'video' },
+    { id: 1, title: 'Proyecto Las Bugambilias de San Isidro - La Joya', tag: 'Lotes Disponibles', videoUrl: 'https://www.youtube.com/embed/5jCMD-j5x6E?enablejsapi=1&origin=https://innovainversiones.com', type: 'video' },
     { id: 2, title: 'Garantía INNOVA', tag: 'Confianza y Garantía', imageUrl: 'https://drive.google.com/file/d/1J0OOJ4y05WwODpToofSsimdrXHMRWcJm/view?usp=sharing', type: 'image' },
     { id: 3, title: 'Asesoramiento personalizado', tag: 'Asesoramiento Personalizado', imageUrl: 'https://drive.google.com/file/d/1H_EEFrPDSV2VeXW641c6AX_HmhQMwbZj/view?usp=drive_link', type: 'image' },
     { id: 4, title: '+16,000 m2 áreas verdes', tag: '+16,000 m2 áreas verdes', videoUrl: 'https://drive.google.com/file/d/1wn5bxBV4sRpvk4NA3EjmAKp3uFOM_IE_/view?usp=drive_link', type: 'video' },
