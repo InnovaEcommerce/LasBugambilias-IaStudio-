@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Phone, Database, FileSpreadsheet, Compass, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { trackContact } from '../utils/pixel';
 
 interface HeaderProps {
   onOpenLeadPopup: () => void;
@@ -93,6 +94,7 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
               href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackContact('Header Phone Button')}
               className="px-5 bg-[#E9EAF0] hover:bg-[#DEDFE5] text-[#0C152B] font-black text-[13px] xl:text-[14px] rounded-xl transition duration-200 shadow-sm font-sans inline-flex items-center justify-center gap-1.5"
               style={{ height: '45px' }}
             >
@@ -168,7 +170,10 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
                   href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => setIsOpenMenu(false)}
+                  onClick={() => {
+                    setIsOpenMenu(false);
+                    trackContact('Mobile Header Button');
+                  }}
                   className="w-full py-3 bg-[#E9EAF0] text-[#0C152B] rounded-xl flex items-center justify-center gap-1.5 font-black text-sm block shadow-sm"
                 >
                   <MessageCircle className="w-4 h-4 text-[#D2007A] fill-[#D2007A] shrink-0" />

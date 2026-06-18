@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Lead } from '../types';
 import { saveLeadLocal } from '../services/leadsService';
+import { trackLead, trackInitiateRegistration } from '../utils/pixel';
 
 interface LeadCardProps {
   onSubmitSuccess: (lead: Lead) => void;
@@ -75,6 +76,7 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
   const handleNextStep = () => {
     if (validateStep1()) {
       setActiveStep(2);
+      trackInitiateRegistration(2, 'Formulario Principal');
     }
   };
 
@@ -119,6 +121,9 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
 
     leadsList.unshift(googleSheetsStyledLead);
     localStorage.setItem('innova_leads', JSON.stringify(leadsList));
+    
+    // Track successful Lead with Meta Pixel
+    trackLead(origenStr);
     
     // Broadcast submit action to other panels
     window.dispatchEvent(new Event('innova_lead_submitted'));

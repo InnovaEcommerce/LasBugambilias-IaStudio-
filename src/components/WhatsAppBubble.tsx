@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MessageCircle, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { trackContact } from '../utils/pixel';
 
 export default function WhatsAppBubble() {
   const [showTeaser, setShowTeaser] = useState(false);
@@ -52,7 +53,10 @@ export default function WhatsAppBubble() {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              onClick={() => setShowTeaser(false)}
+              onClick={() => {
+                setShowTeaser(false);
+                trackContact('WhatsApp Teaser');
+              }}
               className="block text-center py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold rounded-lg tracking-wide shadow-sm transition"
             >
               Iniciar Chat WhatsApp
@@ -66,6 +70,7 @@ export default function WhatsAppBubble() {
         href={whatsappUrl}
         target="_blank"
         rel="noreferrer"
+        onClick={() => trackContact('WhatsApp Floating Bubble')}
         className="relative w-16 h-16 bg-[#25D366]/10 rounded-full flex items-center justify-center transition-transform duration-300 transform hover:scale-110 active:scale-95 group relative cursor-pointer"
         aria-label="Contactar por WhatsApp"
       >

@@ -3,6 +3,7 @@ import { X, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRig
 import { motion, AnimatePresence } from 'motion/react';
 import { Lead } from '../types';
 import { saveLeadLocal } from '../services/leadsService';
+import { trackLead, trackInitiateRegistration } from '../utils/pixel';
 
 /* ==========================================
    1. MAIN LEAD CAPTURE FORM POPUP COMPONENT
@@ -82,6 +83,7 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
     }
     setErrors({});
     setStep(2);
+    trackInitiateRegistration(2, 'Formulario Popup');
   };
 
   const handleBack = () => {
@@ -129,6 +131,9 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
 
     leadsList.unshift(newLead);
     localStorage.setItem('innova_leads', JSON.stringify(leadsList));
+    
+    // Track successful Lead with Meta Pixel
+    trackLead(origenStr);
     
     // Broadcast submit action across tabs & context
     window.dispatchEvent(new Event('innova_lead_submitted'));
