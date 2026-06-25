@@ -90,27 +90,27 @@ export async function saveLeadLocal(
 
   saveLocalLeads([newLead, ...currentLeads]);
 
-  // Attempt to forward the new lead to Google Sheets via our Express backend
-  try {
-    const apiPath = '/lasbugambilias/api/leads';
-    console.log('[leadsService] Requesting backend sync to Google Sheets, path:', apiPath);
-    const response = await fetch(apiPath, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newLead),
+  // Attempt to forward the new lead to Google Sheets via our Express backend in the background (non-blocking)
+  const apiPath = '/lasbugambilias/api/leads';
+  console.log('[leadsService] Initiating non-blocking background sync to Google Sheets, path:', apiPath);
+  fetch(apiPath, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newLead),
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        console.warn('[leadsService] Background sync failed with status:', response.status);
+      } else {
+        const resJson = await response.json();
+        console.log('[leadsService] Background sync completed successfully:', resJson);
+      }
+    })
+    .catch((error) => {
+      console.error('[leadsService] Background sync network error:', error);
     });
-    
-    if (!response.ok) {
-      console.warn('[leadsService] Sync request failed with status:', response.status);
-    } else {
-      const resJson = await response.json();
-      console.log('[leadsService] Sync request completed successfully:', resJson);
-    }
-  } catch (error) {
-    console.error('[leadsService] Network error during backend sync request:', error);
-  }
 
   return id;
 }

@@ -109,8 +109,12 @@ async function startServer() {
       
       console.log("[SERVER] Received lead backend submission:", leadData);
 
+      // Return instant success response to the client
+      res.json({ success: true, message: "Lead received, processing in background" });
+
       if (!webhookUrl) {
-        return res.json({ success: true, message: "Processed locally. Webhook URL missing." });
+        console.log("[SERVER] Webhook URL is missing. Processed locally only.");
+        return;
       }
 
       const formattedData = {
@@ -139,20 +143,30 @@ async function startServer() {
       });
       const finalUrl = urlObj.toString();
 
-      const response = await fetch(finalUrl, {
+      // Execute Google Sheets API Webhook asynchronously in the background
+      fetch(finalUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formattedData),
         redirect: "follow"
+      })
+      .then(async (response) => {
+        const responseText = await response.text();
+        if (!response.ok) {
+          console.error(`[SERVER] Google Sheets webhook failed with status ${response.status}:`, responseText);
+        } else {
+          console.log("[SERVER] Lead forwarded successfully to Google Sheets Webhook (background):", responseText);
+        }
+      })
+      .catch((error) => {
+        console.error("[SERVER] Error forwarding lead in background:", error);
       });
 
-      const responseText = await response.text();
-      if (!response.ok) throw new Error(`Google Sheets returned status ${response.status}`);
-
-      return res.json({ success: true, message: "Lead forwarded successfully", details: responseText });
     } catch (error: any) {
-      console.error("[SERVER] Error forwarding lead:", error);
-      return res.status(500).json({ success: false, error: error.message });
+      console.error("[SERVER] Error processing lead submission:", error);
+      if (!res.headersSent) {
+        return res.status(500).json({ success: false, error: error.message });
+      }
     }
   });
 
