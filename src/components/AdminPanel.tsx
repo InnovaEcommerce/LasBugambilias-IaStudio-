@@ -398,7 +398,7 @@ export default function AdminPanel() {
 
           <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
             <button
-              onClick={() => window.location.href = '/'}
+              onClick={() => window.location.href = import.meta.env.BASE_URL}
               className="flex items-center gap-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm"
             >
               <ArrowLeft size={14} />
