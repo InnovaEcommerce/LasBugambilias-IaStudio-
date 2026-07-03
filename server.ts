@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -178,6 +177,7 @@ async function startServer() {
   // ==========================================
   if (process.env.NODE_ENV !== "production") {
     console.log("[SERVER] Starting in DEVELOPMENT mode...");
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
