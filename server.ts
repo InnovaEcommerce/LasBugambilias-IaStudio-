@@ -59,6 +59,9 @@ async function startServer() {
       }
 
       const formattedData = {
+
+        origen:"LP_LasBugambilias",
+
         fecha: leadData.fecha || "",
         campaña: leadData.campaña || "Landing Page LB",
         formulario: leadData.formulario || "formulario principal",
