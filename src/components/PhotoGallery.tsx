@@ -261,7 +261,7 @@ function UniversalVideoPlayer({
             <span className="font-extrabold uppercase text-[10px]">{isMuted ? "Activar Sonido" : "Silenciar"}</span>
           </button>
         </div>
-      ) : isDriveVideo && useIframe && driveVideoId ? (
+      ) : isDriveVideo && driveVideoId ? (
         <div className="absolute inset-0 w-full h-full">
           <iframe 
             src={`https://drive.google.com/file/d/${driveVideoId}/preview?autoplay=1&mute=${isMuted ? 1 : 0}`} 
@@ -270,30 +270,25 @@ function UniversalVideoPlayer({
             title={title} 
           />
         </div>
-      ) : (
+      ) : videoSrc ? (
         <div className="absolute inset-0 w-full h-full">
           <video 
             ref={videoRef} 
-            src={videoSrc} 
             autoPlay={isIntersecting} 
             muted={isMuted} 
             playsInline 
             controls 
             className="absolute inset-0 w-full h-full object-cover rounded-[24px]" 
             onEnded={onEnded} 
-            onError={() => {
-              if (isDriveVideo) {
-                console.warn("Direct stream from Google Drive failed, switching to iframe preview fallback...");
-                setUseIframe(true);
-              }
-            }}
-          />
+          >
+            <source src={videoSrc} type="video/mp4" />
+          </video>
           <button onClick={handleToggleMute} className="absolute bottom-16 left-4 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full text-white z-20 text-xs flex items-center gap-1.5 cursor-pointer">
             {isMuted ? <VolumeX className="w-4 h-4 text-[#FFD100]" /> : <Volume2 className="w-4 h-4 text-green-400" />}
             <span className="font-extrabold uppercase text-[10px]">{isMuted ? "Activar Sonido" : "Silenciar"}</span>
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -326,7 +321,7 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
     { id: 1, title: 'Proyecto Las Bugambilias de San Isidro - La Joya', tag: 'Lotes Disponibles', videoUrl: 'https://www.youtube.com/embed/5jCMD-j5x6E?enablejsapi=1&origin=https://innovainversiones.com', type: 'video' },
     { id: 2, title: 'Garantía INNOVA', tag: 'Confianza y Garantía', imageUrl: 'https://drive.google.com/file/d/1J0OOJ4y05WwODpToofSsimdrXHMRWcJm/view?usp=sharing', type: 'image' },
     { id: 3, title: 'Asesoramiento personalizado', tag: 'Asesoramiento Personalizado', imageUrl: 'https://drive.google.com/file/d/1H_EEFrPDSV2VeXW641c6AX_HmhQMwbZj/view?usp=drive_link', type: 'image' },
-    { id: 4, title: '+16,000 m2 áreas verdes', tag: '+16,000 m2 áreas verdes', videoUrl: 'https://drive.google.com/file/d/1wn5bxBV4sRpvk4NA3EjmAKp3uFOM_IE_/view?usp=drive_link', type: 'video' },
+    { id: 4, title: '+16,000 m2 áreas verdes', tag: '+16,000 m2 áreas verdes', videoUrl: 'https://www.youtube.com/embed/tM3Vvd_Hua0?enablejsapi=1&origin=https://innovainversiones.com', type: 'video' },
     { id: 5, title: 'Ingreso señalizado', tag: 'Ingreso Señalizado', imageUrl: 'https://drive.google.com/file/d/16OrnQY4ZUyNW3Xgq2rk5xfglbGGA0-o0/view?usp=drive_link', type: 'image' },
     { id: 6, title: 'Áreas de juego', tag: 'separa tu lote hoy!', imageUrl: 'https://drive.google.com/file/d/1HjcGwfzD4U1ftx9YkuWqHnUyo1H6NO9h/view?usp=drive_link', type: 'image' }
   ];
