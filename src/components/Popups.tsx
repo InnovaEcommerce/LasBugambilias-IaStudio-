@@ -44,9 +44,7 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
     const err: Partial<Record<keyof Lead, string>> = {};
     
     if (!form.lead.trim()) {
-      err.lead = 'Ingresa tu nombre y apellido completo';
-    } else if (form.lead.trim().split(' ').length < 2) {
-      err.lead = 'Por favor ingresa nombre y apellido';
+      err.lead = 'Ingresa tu nombre';
     }
     
     // Email regex validate
@@ -72,9 +70,7 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
   const handleNext = () => {
     const stepErrors: Partial<Record<keyof Lead, string>> = {};
     if (!form.lead.trim()) {
-      stepErrors.lead = 'Ingresa tu nombre y apellido completo';
-    } else if (form.lead.trim().split(' ').length < 2) {
-      stepErrors.lead = 'Ingresa al menos un nombre y un apellido completo';
+      stepErrors.lead = 'Ingresa tu nombre';
     }
     
     if (Object.keys(stepErrors).length > 0) {

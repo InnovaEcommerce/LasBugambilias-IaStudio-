@@ -1,4 +1,5 @@
 import { Lead } from '../types';
+import { sendToBrevo } from '../components/FormBrevo';
 
 export interface LeadWithMeta extends Lead {
   id: string;
@@ -89,6 +90,15 @@ export async function saveLeadLocal(
   };
 
   saveLocalLeads([newLead, ...currentLeads]);
+
+  // Parallel non-blocking send to Brevo
+  sendToBrevo({
+    lead: newLead.lead,
+    correo: newLead.correo,
+    celular: newLead.celular,
+  }).catch((err) => {
+    console.error('[leadsService] Brevo parallel send error:', err);
+  });
 
   // Attempt to forward the new lead to Google Sheets via our Express backend in the background (non-blocking)
   const apiPath = '/lasbugambilias/api/leads';

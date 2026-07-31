@@ -1,37 +1,128 @@
-import { Star } from 'lucide-react';
-import { useDynamicImages } from '../hooks/useDynamicImages';
-import janetImg from '../assets/images/images-testimonials/janet.png';
-import luchinImg from '../assets/images/images-testimonials/luchin.png';
+import { useState, useEffect, useCallback } from 'react';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import fam1Image from '../assets/images/images-testimonials/fam1.webp';
+import fam2Image from '../assets/images/images-testimonials/fam2.webp';
+import fam3Image from '../assets/images/images-testimonials/fam3.webp';
+import fam4Image from '../assets/images/images-testimonials/fam4.webp';
+import fam5Image from '../assets/images/images-testimonials/fam5.webp';
+import fam6Image from '../assets/images/images-testimonials/fam6.webp';
+import fam7Image from '../assets/images/images-testimonials/fam7.webp';
+import fam8Image from '../assets/images/images-testimonials/fam8.webp';
+import fam9Image from '../assets/images/images-testimonials/fam9.webp';
+
+export interface FamilyCard {
+  id: string;
+  familyName: string;
+  imageUrl: string;
+  role: string;
+  description: string;
+}
+
+export const SATISFIED_FAMILIES: FamilyCard[] = [
+  {
+    id: 'fam-1',
+    familyName: 'Apaza Barriga',
+    imageUrl: fam1Image,
+    role: 'Lote J-20',
+    description: 'Orgullosos propietarios de su lote campestre en La Joya, listos para construir un hogar de ensueño para su familia.',
+  },
+  {
+    id: 'fam-2',
+    familyName: 'Cornejo García',
+    imageUrl: fam2Image,
+    role: 'Lote P-1',
+    description: 'Lograron adquirir su terreno a un paso del campo con financiamiento directo y sin intermediarios molestos.',
+  },
+  {
+    id: 'fam-3',
+    familyName: 'Bendezu Olivares',
+    imageUrl: fam3Image,
+    role: 'Lote K-10',
+    description: 'Aseguraron el futuro de sus hijos con una excelente inversión de alta plusvalía en el proyecto de La Joya.',
+  },
+  {
+    id: 'fam-4',
+    familyName: 'Gutiérrez Mendoza',
+    imageUrl: fam4Image,
+    role: 'Lote B-15',
+    description: 'Felices de haber encontrado la combinación perfecta de naturaleza, seguridad y facilidades de pago para su inversión.',
+  },
+  {
+    id: 'fam-5',
+    familyName: 'Huamán Quispe',
+    imageUrl: fam5Image,
+    role: 'Lote C-08',
+    description: 'Agradecidos por la asesoría transparente y la rapidez en los trámites de titulación para su lote propio.',
+  },
+  {
+    id: 'fam-6',
+    familyName: 'Vargas Romero',
+    imageUrl: fam6Image,
+    role: 'Lote D-04',
+    description: 'Eligieron el mejor espacio para su casa de campo con amplias áreas verdes y excelente clima todo el año.',
+  },
+  {
+    id: 'fam-7',
+    familyName: 'Salazar Flores',
+    imageUrl: fam7Image,
+    role: 'Lote E-12',
+    description: 'Cumplieron el sueño de tener una propiedad segura en una zona de constante desarrollo y alta rentabilidad.',
+  },
+  {
+    id: 'fam-8',
+    familyName: 'Ramos Morales',
+    imageUrl: fam8Image,
+    role: 'Lote F-07',
+    description: 'Inversionistas satisfechos con el respaldo y la seriedad que ofrece Innova Inversiones en cada etapa del proyecto.',
+  },
+  {
+    id: 'fam-9',
+    familyName: 'Pérez Castillo',
+    imageUrl: fam9Image,
+    role: 'Lote M-03',
+    description: 'Listos para disfrutar de fines de semana inolvidables junto a su familia en su nuevo terreno campestre.',
+  },
+];
 
 export default function Testimonials() {
-  const { images } = useDynamicImages();
-  const reviews = [
-    {
-      id: 1,
-      title: 'JANNET ESCATE',
-      proyecto: 'Las Bugambilias',
-      avatarUrl: janetImg,
-      quote: 'El proyecto me dio la tranquilidad legal y de obras reales que necesitaba para tomar esta gran decisión.',
-    },
-    {
-      id: 2,
-      title: 'Luis Sifientes',
-      proyecto: 'Las Bugambilias',
-      avatarUrl: luchinImg,
-      quote: 'Lo que más me gusto del financiamiento de Innova Inversiones fueron las facilidades de pago',
-    },
-  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const total = SATISFIED_FAMILIES.length;
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % total);
+  }, [total]);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
+  }, [total]);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isPaused, handleNext]);
+
+  // For desktop side-by-side view, get current and next family card
+  const firstCard = SATISFIED_FAMILIES[currentIndex];
+  const secondCard = SATISFIED_FAMILIES[(currentIndex + 1) % total];
 
   return (
-    <section className="bg-[#FFD100] py-14 md:py-20 font-sans text-neutral-900 relative overflow-hidden">
-      
+    <section 
+      id="testimonios"
+      className="bg-[#FFD100] py-14 md:py-20 font-sans text-neutral-900 relative overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       {/* Decorative background gradients */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-300/30 rounded-full blur-3xl pointer-events-none" />
 
       {/* DESKTOP VIEW: hidden on mobile, shown on lg screens and up */}
       <div className="hidden lg:grid max-w-7xl mx-auto px-4 md:px-8 relative z-10 grid-cols-12 gap-10 items-center">
-        
         {/* Left Branding Block */}
         <div className="col-span-4 space-y-4 text-left relative">
           <span className="text-[10px] font-black uppercase tracking-widest text-white bg-[#D2007A] px-3.5 py-1 rounded-full font-mono">
@@ -43,17 +134,38 @@ export default function Testimonials() {
               CENTEGENTE
             </h2>
             <p className="font-sans font-extrabold text-[#111111] text-sm md:text-base leading-relaxed">
-              Invierte con confianza en un futuro seguro. ¡Compra hoy tu terreno con Centenario!
+              Invierte con confianza en un futuro seguro. ¡Familias felices disfrutando de su lote propio!
             </p>
           </div>
 
           <div className="flex gap-1 justify-start pt-2">
             {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} className="w-4 h-4 fill-[#D2007A] text-[#D2007A]" />
+              <Star key={s} className="w-5 h-5 fill-[#D2007A] text-[#D2007A]" />
             ))}
           </div>
 
-          {/* Curly Playful SVG Arrow pointing right on desktop (Image 8 Detail) */}
+          {/* Navigation buttons */}
+          <div className="flex items-center gap-3 pt-4">
+            <button
+              onClick={handlePrev}
+              aria-label="Anterior testimonio"
+              className="w-10 h-10 rounded-full bg-white text-[#D2007A] flex items-center justify-center shadow-md hover:bg-[#D2007A] hover:text-white transition-colors duration-200"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleNext}
+              aria-label="Siguiente testimonio"
+              className="w-10 h-10 rounded-full bg-white text-[#D2007A] flex items-center justify-center shadow-md hover:bg-[#D2007A] hover:text-white transition-colors duration-200"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <span className="text-xs font-bold text-neutral-800 ml-2">
+              {currentIndex + 1} / {total}
+            </span>
+          </div>
+
+          {/* Curly Playful SVG Arrow pointing right on desktop */}
           <div className="absolute right-[-40px] bottom-[-60px] w-40 h-24 text-[#D2007A] opacity-80 z-20 pointer-events-none">
             <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full transform rotate-[-5deg]">
               <path 
@@ -75,18 +187,18 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* Right Columns: Testimonial Cards with Overlapping Avatars (Image 8 Detail) */}
+        {/* Right Columns: Testimonial Cards with Overlapping Avatars */}
         <div className="col-span-8 grid grid-cols-2 gap-y-16 gap-x-6">
-          {reviews.map((rev) => (
+          {[firstCard, secondCard].map((fam, idx) => (
             <div
-              key={rev.id}
-              className="bg-white p-8 rounded-[32px] shadow-xl flex flex-col justify-between relative group mt-8 border border-neutral-100"
+              key={`${fam.id}-${idx}`}
+              className="bg-white p-8 rounded-[32px] shadow-xl flex flex-col justify-between relative group mt-8 border border-neutral-100 min-h-[260px] transition-all duration-300 hover:shadow-2xl"
             >
               {/* Overlapping Avatar centered at top edge */}
-              <div className="absolute top-[-40px] left-1/2 -hover:scale-105 transition-transform duration-300 -translate-x-1/2 w-20 h-20 rounded-full border-4 border-[#FFD100] overflow-hidden shadow-lg select-none">
+              <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-20 h-20 rounded-full border-4 border-[#FFD100] overflow-hidden shadow-lg select-none bg-neutral-100">
                 <img
-                  src={rev.avatarUrl}
-                  alt={rev.title}
+                  src={fam.imageUrl}
+                  alt={`Familia ${fam.familyName}`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -97,8 +209,8 @@ export default function Testimonials() {
               </div>
 
               {/* Quote Body */}
-              <p className="text-neutral-700 text-sm italic leading-relaxed text-center font-sans font-medium px-4">
-                {rev.quote}
+              <p className="text-neutral-700 text-sm italic leading-relaxed text-center font-sans font-medium px-2">
+                {fam.description}
               </p>
 
               {/* Bottom Double Quote */}
@@ -107,90 +219,122 @@ export default function Testimonials() {
               </div>
 
               {/* Author specifications details bottom centered */}
-              <div className="text-center pt-3 border-t border-neutral-150/60 mt-3">
-                <h4 className="font-display font-black text-sm text-[#D2007A] uppercase leading-none">
-                  {rev.title}
-                </h4>
-                <p className="text-[10px] text-neutral-400 mt-1 uppercase tracking-wider font-bold">
-                  {rev.proyecto}
+              <div className="text-center pt-3 border-t border-neutral-100 mt-3">
+                <h3 className="font-display font-black text-base text-[#D2007A] uppercase leading-none">
+                  Familia {fam.familyName}
+                </h3>
+                <p className="text-xs text-neutral-500 mt-1 font-bold uppercase tracking-wider">
+                  {fam.role}
                 </p>
               </div>
-
             </div>
           ))}
         </div>
 
         {/* Pagination Dots at very bottom spanning both columns */}
-        <div className="col-span-12 flex justify-center gap-2 pt-6">
-          <span className="w-8 h-2.5 rounded-full bg-[#D2007A]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-white/55 hover:bg-white cursor-pointer transition-colors" />
-          <span className="w-2.5 h-2.5 rounded-full bg-white/55 hover:bg-white cursor-pointer transition-colors" />
+        <div className="col-span-12 flex justify-center items-center gap-2 pt-6">
+          {SATISFIED_FAMILIES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              aria-label={`Ir al testimonio ${i + 1}`}
+              className={`transition-all duration-300 ${
+                i === currentIndex
+                  ? 'w-8 h-2.5 rounded-full bg-[#D2007A]'
+                  : 'w-2.5 h-2.5 rounded-full bg-white/60 hover:bg-white'
+              }`}
+            />
+          ))}
         </div>
-
       </div>
 
       {/* MOBILE-OPTIMIZED VIEW: shown on mobile, hidden on lg screens */}
       <div className="block lg:hidden max-w-xl mx-auto px-6 relative z-10 text-center">
-        
-        {/* Large red centered title CENTEGENTE */}
-        <h2 className="font-display font-black text-4xl text-[#D2007A] tracking-tighter leading-none uppercase mb-2">
+        <span className="text-[10px] font-black uppercase tracking-widest text-white bg-[#D2007A] px-3.5 py-1 rounded-full font-mono mb-3 inline-block">
+          Nuestra Comunidad
+        </span>
+        <h2 className="font-display font-black text-3xl sm:text-4xl text-[#D2007A] tracking-tighter leading-none uppercase mb-2">
           CENTEGENTE
         </h2>
+        <p className="text-xs text-neutral-900 font-bold mb-4">
+          Invierte con confianza en un futuro seguro.
+        </p>
 
         {/* Testimonial Card */}
-        <div className="bg-white p-6 rounded-[24px] shadow-xl relative mt-14 border border-neutral-100 text-left">
-          
-          {/* Circular avatar centered on top border - exactly matching Image 4 */}
-          <div className="absolute top-[-44px] left-1/2 -translate-x-1/2 w-[88px] h-[88px] rounded-full border-4 border-[#FFD100] overflow-hidden shadow-md select-none bg-neutral-100 animate-none">
+        <div className="bg-white p-6 rounded-[24px] shadow-xl relative mt-12 border border-neutral-100 text-left transition-all duration-300">
+          {/* Circular avatar centered on top border */}
+          <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-20 h-20 rounded-full border-4 border-[#FFD100] overflow-hidden shadow-md select-none bg-neutral-100">
             <img
-              src={images.testimonialsFamily}
-              alt="Familia de nuestra comunidad Innova"
+              src={firstCard.imageUrl}
+              alt={`Familia ${firstCard.familyName}`}
               className="w-full h-full object-cover"
             />
           </div>
 
           <div className="pt-8 space-y-2">
-            
             {/* Top Double Quote */}
-            <div className="text-left select-none text-[36px] font-serif text-[#D2007A] leading-none font-black -mb-2">
+            <div className="text-left select-none text-[32px] font-serif text-[#D2007A] leading-none font-black -mb-2">
               “
             </div>
 
-            {/* Quote text exactly formatted as Image 4 */}
-            <p className="text-neutral-800 text-[14px] leading-relaxed font-sans font-medium text-center px-2">
-              “...la entrega es una experiencia bonita ya que por fin tienes algo que es tuyo, que es propio”
+            {/* Quote text */}
+            <p className="text-neutral-800 text-[14px] leading-relaxed font-sans font-medium text-center px-2 italic">
+              {firstCard.description}
             </p>
 
             {/* Bottom details block with red/pink title and black subtitle */}
-            <div className="text-center pt-2 mt-4">
-              <h4 className="font-sans font-extrabold text-base text-[#D2007A] uppercase leading-tight tracking-tight">
-                Entrega de terrenos Casablanca
-              </h4>
+            <div className="text-center pt-3 border-t border-neutral-100 mt-4">
+              <h3 className="font-sans font-extrabold text-base text-[#D2007A] uppercase leading-tight tracking-tight">
+                Familia {firstCard.familyName}
+              </h3>
               <p className="text-[11px] text-neutral-500 font-bold uppercase tracking-wider mt-0.5">
-                Urbanización Casablanca
+                {firstCard.role}
               </p>
             </div>
 
             {/* Bottom Double Quote */}
-            <div className="text-right select-none text-[36px] font-serif text-[#D2007A] leading-none font-black -mt-2 animate-none">
+            <div className="text-right select-none text-[32px] font-serif text-[#D2007A] leading-none font-black -mt-2">
               ”
             </div>
+          </div>
+        </div>
 
+        {/* Mobile Navigation controls & indicators */}
+        <div className="flex justify-between items-center mt-6 px-2">
+          <button
+            onClick={handlePrev}
+            aria-label="Anterior"
+            className="w-9 h-9 rounded-full bg-white text-[#D2007A] flex items-center justify-center shadow-md active:scale-95 transition-transform"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* Carousel indicators */}
+          <div className="flex justify-center items-center gap-1.5">
+            {SATISFIED_FAMILIES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                aria-label={`Ir al testimonio ${i + 1}`}
+                className={`transition-all duration-300 ${
+                  i === currentIndex
+                    ? 'w-7 h-1.5 rounded-full bg-[#D2007A]'
+                    : 'w-1.5 h-1.5 rounded-full bg-white/60'
+                }`}
+              />
+            ))}
           </div>
 
+          <button
+            onClick={handleNext}
+            aria-label="Siguiente"
+            className="w-9 h-9 rounded-full bg-white text-[#D2007A] flex items-center justify-center shadow-md active:scale-95 transition-transform"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
-
-        {/* Carousel indicators exactly as Image 4 (First dot is slider rectangle, others are small bullet circles) */}
-        <div className="flex justify-center items-center gap-1.5 mt-8">
-          <span className="w-10 h-1.5 rounded-full bg-[#D2007A]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-        </div>
-
       </div>
-
     </section>
   );
 }
+

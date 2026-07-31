@@ -114,6 +114,38 @@ async function startServer() {
       // Return instant success response to the client
       res.json({ success: true, message: "Lead received, processing in background" });
 
+      // Forward lead to Brevo in the background
+      const brevoActionUrl = "https://6a4b9728.sibforms.com/serve/MUIFAPmPU1nhL_msIQzXxb6srr0nZWplC9DH0NsmXo9QYUTx1wCqN55qsQnW86v42myy0XJiXBIHaYSqKkEkDU7Eqy4MGsOaRHSLEPlSvu58RtTkFP_0pkuCJZPV7QyNCrE3SvbOZrrUUdtSHk9dZ14Z9MoPe9kInSwusSaJqdk3VXn6BgfEj434jUVSP4cj72dPvHeVNhW2PvEl3A==";
+      const fullName = (leadData.lead || "").trim();
+      const nameParts = fullName.split(" ").filter(Boolean);
+      const nombre = nameParts[0] || fullName;
+      const apellidos = nameParts.slice(1).join(" ") || "";
+      const email = (leadData.correo || "").trim();
+      const rawPhone = (leadData.celular || "").trim();
+      let cleanPhone = rawPhone.replace(/\D/g, "");
+      let countryCode = "+51";
+      if (cleanPhone.startsWith("51") && cleanPhone.length === 11) {
+        cleanPhone = cleanPhone.substring(2);
+        countryCode = "+51";
+      }
+
+      const brevoParams = new URLSearchParams();
+      brevoParams.append("NOMBRE", nombre);
+      brevoParams.append("APELLIDOS", apellidos);
+      brevoParams.append("EMAIL", email);
+      brevoParams.append("WHATSAPP__COUNTRY_CODE", countryCode);
+      brevoParams.append("WHATSAPP", cleanPhone);
+      brevoParams.append("email_address_check", "");
+      brevoParams.append("locale", "es");
+
+      fetch(brevoActionUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: brevoParams.toString(),
+      })
+        .then(() => console.log("[SERVER] Lead forwarded successfully to Brevo"))
+        .catch((err) => console.error("[SERVER] Error forwarding lead to Brevo:", err));
+
       if (!webhookUrl) {
         console.log("[SERVER] Webhook URL is missing. Processed locally only.");
         return;

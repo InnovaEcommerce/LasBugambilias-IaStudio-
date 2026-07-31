@@ -29,8 +29,6 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
     
     if (!form.lead.trim()) {
       errs.lead = 'Obligatorio';
-    } else if (form.lead.trim().split(' ').length < 2) {
-      errs.lead = 'Nombre y apellido';
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
