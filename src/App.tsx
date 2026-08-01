@@ -13,6 +13,7 @@ import ReferralBanner from './components/ReferralBanner';
 import AppPromo from './components/AppPromo';
 import WhatsAppBubble from './components/WhatsAppBubble';
 import Footer from './components/Footer';
+import { TermsModal } from './components/TermsModal';
 import { LeadPopup, ExitIntentPopup, SuccessPopup, SocialProofToasts } from './components/Popups';
 import { Lead } from './types';
 import LeadCard from './components/LeadCard';
@@ -39,6 +40,20 @@ export default function App() {
   const [prefilledComment, setPrefilledComment] = useState<string | undefined>(undefined);
   const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
   const [submittedLead, setSubmittedLead] = useState<Lead | null>(null);
+
+  // Terms & Privacy Modal state
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [termsModalTab, setTermsModalTab] = useState<'terms' | 'privacy'>('terms');
+
+  useEffect(() => {
+    const handleOpenTerms = (e: Event) => {
+      const customEvent = e as CustomEvent<{ tab?: 'terms' | 'privacy' }>;
+      setTermsModalTab(customEvent.detail?.tab || 'terms');
+      setIsTermsModalOpen(true);
+    };
+    window.addEventListener('open_terms_modal', handleOpenTerms);
+    return () => window.removeEventListener('open_terms_modal', handleOpenTerms);
+  }, []);
 
   // Floating sticky scroll positions state
   const [scrollState, setScrollState] = useState<'inline' | 'floating' | 'docked'>('inline');
@@ -206,6 +221,13 @@ export default function App() {
 
       {/* Sequential timed social proof conversion notifications */}
       <SocialProofToasts onOpenLeadPopup={handleOpenGeneralPopup} />
+
+      {/* Terms and Conditions / Privacy Policy Modal */}
+      <TermsModal
+        isOpen={isTermsModalOpen}
+        onClose={() => setIsTermsModalOpen(false)}
+        defaultTab={termsModalTab}
+      />
 
     </div>
   );

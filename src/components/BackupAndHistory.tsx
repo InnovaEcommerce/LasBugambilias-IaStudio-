@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import areaVerdeImg from '../assets/images/images-BackupAndHistory/area_verde.jpg';
 import expImg from '../assets/images/images-BackupAndHistory/años_exp.jpg';
-import familiaImg from '../assets/images/images-BackupAndHistory/familias_felices.png';
+import familiaImg from '../assets/images/images-BackupAndHistory/familias_felices.webp';
 import residenciaImg from '../assets/images/images-BackupAndHistory/residencia_pais.jpg';
 
 export default function BackupAndHistory() {
@@ -86,24 +86,13 @@ export default function BackupAndHistory() {
                 RESPALDO DE
               </span>
               
-              {/* Centenario Logo representation (Grid of squares and name) */}
-              <div className="flex items-center gap-3.5 justify-start pt-2">
-                {/* Visual block logo mimicking the pink block structure */}
-                <div className="grid grid-cols-2 gap-1 w-9 h-9 shrink-0">
-                  <div className="bg-[#D2007A] rounded-sm"></div>
-                  <div className="bg-[#D2007A] rounded-sm transform translate-y-0.5"></div>
-                  <div className="bg-[#D2007A] rounded-sm transform -translate-y-0.5"></div>
-                  <div className="bg-[#D2007A] rounded-sm"></div>
-                </div>
-
-                <div className="flex flex-col text-left">
-                  <span className="text-2xl font-display font-black tracking-tight text-neutral-900 leading-none">
-                    INNOVA
-                  </span>
-                  <span className="text-[8px] tracking-[4px] font-black uppercase text-neutral-500 leading-tight">
-                    GRUPO
-                  </span>
-                </div>
+              {/* INNOVA Inversiones Logo */}
+              <div className="flex items-center justify-start pt-2">
+                <img 
+                  src="/logo_innova_nombre.svg" 
+                  alt="INNOVA Inversiones" 
+                  className="h-11 w-auto object-contain"
+                />
               </div>
             </div>
 
@@ -121,9 +110,11 @@ export default function BackupAndHistory() {
 
             <div className="pt-2">
               <a
-                href="#financiamiento"
+                href="https://innovainversiones.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{ fontSize: '18px' }}
-                className="inline-block px-8 py-3.5 bg-[#FFD100] hover:bg-amber-400 text-[#D2007A] font-black uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform active:scale-95 animate-none"
+                className="inline-block px-8 py-3.5 bg-[#264D9C] hover:bg-[#1c3a77] text-white font-black uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform active:scale-95 animate-none"
               >
                 ¡Conocer más!
               </a>
@@ -176,23 +167,12 @@ export default function BackupAndHistory() {
             </h3>
 
             {/* Brand logo centered */}
-            <div className="flex items-center gap-3.5 justify-center">
-              {/* Visual red/pink interlocking squares Centenario logo design */}
-              <div className="grid grid-cols-2 gap-1 w-10 h-10 shrink-0">
-                <div className="bg-[#D2007A] rounded-sm"></div>
-                <div className="bg-[#D2007A] rounded-sm transform translate-y-0.5"></div>
-                <div className="bg-[#D2007A] rounded-sm transform -translate-y-0.5"></div>
-                <div className="bg-[#D2007A] rounded-sm"></div>
-              </div>
-
-              <div className="flex flex-col text-left">
-                <span className="text-2xl font-display font-black tracking-tight text-neutral-900 leading-none">
-                  INNOVA
-                </span>
-                <span className="text-[9px] tracking-[4px] font-black uppercase text-neutral-500 leading-tight">
-                  GRUPO
-                </span>
-              </div>
+            <div className="flex items-center justify-center pt-1">
+              <img 
+                src="/logo_innova_nombre.svg" 
+                alt="INNOVA Inversiones" 
+                className="h-11 w-auto object-contain"
+              />
             </div>
           </div>
 
@@ -255,7 +235,9 @@ export default function BackupAndHistory() {
           {/* Bottom Yellow CTA capsule Button */}
           <div className="pt-4 max-w-sm mx-auto">
             <a
-              href="#financiamiento"
+              href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%21+INNOVA%2C+deseo+recibir+m%C3%A1s+informaci%C3%B3n+sobre+los+lotes+y+financiamientos+del+proyecto+Las+Bugambilias&type=phone_number&app_absent=0"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full bg-[#FFD100] hover:bg-amber-400 text-neutral-900 border border-transparent font-black px-6 py-4 rounded-full text-center hover:scale-[1.01] transition-all text-sm uppercase block shadow-md tracking-wider transform active:scale-95 cursor-pointer"
             >
               Conocer más

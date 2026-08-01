@@ -112,7 +112,7 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
               style={{ height: '45px' }}
             >
               <Phone className="w-4 h-4 text-[#D2007A] fill-[#D2007A] shrink-0" />
-              <span className="font-sans font-bold text-[16px]">Llamar</span>
+              <span className="font-sans font-bold text-[15px]">926 289 293</span>
             </a>
           </div>
 
@@ -139,7 +139,7 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
               className="px-3 py-2 bg-[#E9EAF0] text-[#0C152B] font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-sm shrink-0"
             >
               <Phone className="w-3.5 h-3.5 text-[#D2007A] fill-[#D2007A]" />
-              <span>Llamar</span>
+              <span>926 289 293</span>
             </a>
 
             <button
@@ -211,7 +211,7 @@ export default function Header({ onOpenLeadPopup }: HeaderProps) {
                   className="w-full py-3 bg-[#E9EAF0] text-[#0C152B] rounded-xl flex items-center justify-center gap-2 font-black text-sm shadow-sm"
                 >
                   <Phone className="w-4 h-4 text-[#D2007A] fill-[#D2007A]" />
-                  <span>Llamar</span>
+                  <span>926 289 293</span>
                 </a>
               </div>
             </motion.div>

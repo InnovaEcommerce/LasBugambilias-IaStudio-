@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRight, UserCheck, Calendar, Flame, Users, Gift, Home, MapPin, Bell, AlertCircle, Percent } from 'lucide-react';
+import { X, Check, CheckCircle, ShieldAlert, Sparkles, AlarmClock, Smartphone, ArrowRight, UserCheck, Calendar, Flame, Users, Gift, Home, MapPin, Bell, AlertCircle, Percent } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lead } from '../types';
 import { saveLeadLocal } from '../services/leadsService';
@@ -23,8 +23,8 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
     correo: '',
     distrito: '',
     comentarios: initialComment || '',
-    politicaTerminos: true,
-    politicaPublicidad: true,
+    politicaTerminos: false,
+    politicaPublicidad: false,
     politicaPerfilamiento: false,
   });
 
@@ -61,6 +61,10 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
       err.celular = 'Ingresa tu número de teléfono móvil';
     } else if (!phoneRegex.test(form.celular)) {
       err.celular = 'Ingresa un celular de 9 dígitos (Inicia con 9)';
+    }
+
+    if (!form.politicaTerminos) {
+      err.politicaTerminos = 'Debes aceptar los Términos y Condiciones';
     }
 
     setErrors(err);
@@ -144,8 +148,8 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
       correo: '',
       distrito: '',
       comentarios: '',
-      politicaTerminos: true,
-      politicaPublicidad: true,
+      politicaTerminos: false,
+      politicaPublicidad: false,
       politicaPerfilamiento: false,
     });
     setErrors({});
@@ -309,6 +313,55 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
                         onChange={(e) => handleFormChange('comentarios', e.target.value)}
                         className="w-full p-3 font-sans font-semibold bg-neutral-50 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta text-neutral-800"
                       />
+                    </div>
+
+                    {/* Terms & Privacy Checkbox */}
+                    <div className="space-y-2 pt-1 font-sans">
+                      <div className="space-y-1">
+                        <div 
+                          onClick={() => handleFormChange('politicaTerminos', !form.politicaTerminos)}
+                          className="flex items-start gap-2.5 cursor-pointer select-none"
+                        >
+                          <div className={`w-4.5 h-4.5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 bg-neutral-50 transition-colors ${
+                            errors.politicaTerminos ? 'border-rose-500 ring-2 ring-rose-200' : 'border-neutral-300'
+                          }`}>
+                            {form.politicaTerminos && (
+                              <Check className="w-3.5 h-3.5 text-centenario-magenta stroke-[3px]" />
+                            )}
+                          </div>
+                          <span className="text-[11px] leading-tight text-neutral-700 font-medium">
+                            Acepto los{' '}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                window.dispatchEvent(new CustomEvent('open_terms_modal', { detail: { tab: 'terms' } }));
+                              }}
+                              className="underline font-bold text-neutral-900 hover:text-centenario-magenta"
+                            >
+                              Términos y Condiciones
+                            </button>{' '}
+                            y la{' '}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                window.dispatchEvent(new CustomEvent('open_terms_modal', { detail: { tab: 'privacy' } }));
+                              }}
+                              className="underline font-bold text-neutral-900 hover:text-centenario-magenta"
+                            >
+                              Política de Privacidad
+                            </button>{' '}
+                            <span className="text-rose-500 font-bold">*</span>
+                          </span>
+                        </div>
+                        {errors.politicaTerminos && (
+                          <p className="text-[10px] text-rose-500 font-extrabold flex items-center gap-1 font-mono pl-7">
+                            <ShieldAlert className="w-3 h-3 shrink-0" />
+                            {errors.politicaTerminos}
+                          </p>
+                        )}
+                      </div>
                     </div>
 
                     {/* Step transition Buttons */}
@@ -748,12 +801,32 @@ export function SocialProofToasts({ onOpenLeadPopup }: SocialProofToastsProps) {
   ];
 
   useEffect(() => {
-    // Initial delay of 8 seconds before showing first toast on page mount
+    // Initial delay before showing first toast on page mount
     const initialTimer = setTimeout(() => {
+      const finSection = document.getElementById('financiamiento') || document.getElementById('main-scroll-track');
+      if (finSection) {
+        const rect = finSection.getBoundingClientRect();
+        if (rect.bottom <= 0) return;
+      }
       setIsVisible(true);
-    }, 8000);
+    }, 16000);
 
     return () => clearTimeout(initialTimer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const targetSection = document.getElementById('financiamiento') || document.getElementById('main-scroll-track');
+      if (targetSection) {
+        const rect = targetSection.getBoundingClientRect();
+        if (rect.bottom <= 0) {
+          setIsVisible(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {

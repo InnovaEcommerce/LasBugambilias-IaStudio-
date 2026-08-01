@@ -16,8 +16,8 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
     correo: '',
     distrito: '',
     comentarios: '',
-    politicaTerminos: true,
-    politicaPublicidad: true,
+    politicaTerminos: false,
+    politicaPublicidad: false,
     politicaPerfilamiento: false,
   });
 
@@ -57,7 +57,7 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
 
     const errs: Partial<Record<keyof Lead, string>> = {};
     if (!form.politicaTerminos) {
-      errs.politicaTerminos = 'Debe aceptar';
+      errs.politicaTerminos = 'Debes aceptar los Términos y Condiciones';
     }
 
     setErrors(errs);
@@ -135,8 +135,8 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
       correo: '',
       distrito: '',
       comentarios: '',
-      politicaTerminos: true,
-      politicaPublicidad: true,
+      politicaTerminos: false,
+      politicaPublicidad: false,
       politicaPerfilamiento: false,
     });
     setErrors({});
@@ -271,34 +271,50 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
 
             {/* Terms checkpoints round design */}
             <div className="space-y-3 pt-1 text-xs text-neutral-850 font-semibold leading-snug">
-              {/* Policy 1 */}
-              <div 
-                onClick={() => handleFormChange('politicaTerminos', !form.politicaTerminos)}
-                className="flex items-start gap-3 cursor-pointer select-none"
-              >
-                <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-neutral-300">
-                  {form.politicaTerminos && (
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#D2007A]" />
-                  )}
+              {/* Single Required Terms & Privacy Checkbox */}
+              <div className="space-y-1">
+                <div 
+                  onClick={() => handleFormChange('politicaTerminos', !form.politicaTerminos)}
+                  className="flex items-start gap-3 cursor-pointer select-none"
+                >
+                  <div className={`w-5 h-5 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border ${
+                    errors.politicaTerminos ? 'border-red-600 ring-2 ring-red-400' : 'border-neutral-300'
+                  }`}>
+                    {form.politicaTerminos && (
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#D2007A]" />
+                    )}
+                  </div>
+                  <span className="text-[11px] leading-tight text-neutral-800">
+                    He leído y acepto los{' '}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.dispatchEvent(new CustomEvent('open_terms_modal', { detail: { tab: 'terms' } }));
+                      }}
+                      className="underline font-bold text-neutral-900 hover:text-[#D2007A]"
+                    >
+                      Términos y Condiciones
+                    </button>{' '}
+                    y la{' '}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.dispatchEvent(new CustomEvent('open_terms_modal', { detail: { tab: 'privacy' } }));
+                      }}
+                      className="underline font-bold text-neutral-900 hover:text-[#D2007A]"
+                    >
+                      Política de Privacidad
+                    </button>{' '}
+                    <span className="text-red-600 font-bold">*</span>
+                  </span>
                 </div>
-                <span className="text-[11px] leading-tight text-neutral-800">
-                  He leído y acepto los <a href="#legal" className="underline font-bold text-neutral-900">Términos y Condiciones</a> y la <a href="#legal" className="underline font-bold text-neutral-900">Política de Privacidad</a>
-                </span>
-              </div>
-
-              {/* Policy 2 */}
-              <div 
-                onClick={() => handleFormChange('politicaPublicidad', !form.politicaPublicidad)}
-                className="flex items-start gap-3 cursor-pointer select-none"
-              >
-                <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-neutral-300">
-                  {form.politicaPublicidad && (
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#D2007A]" />
-                  )}
-                </div>
-                <span className="text-[11px] leading-tight text-neutral-800">
-                  Acepto el envío de Publicidad según <a href="#legal" className="underline font-bold text-neutral-900">Política de Privacidad</a>
-                </span>
+                {errors.politicaTerminos && (
+                  <p className="text-[10px] text-red-600 font-extrabold pl-8">
+                    {errors.politicaTerminos}
+                  </p>
+                )}
               </div>
             </div>
           </div>

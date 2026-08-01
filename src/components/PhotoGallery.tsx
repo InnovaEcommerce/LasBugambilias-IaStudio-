@@ -420,10 +420,15 @@ export default function PhotoGallery({ onOpenLeadPopup }: PhotoGalleryProps) {
                     <span className="text-xs md:text-sm font-bold text-neutral-600 block mt-1">Aprovecha que sólo por esta semana es SIN COSTO</span>
                   </p>
                 </div>
-                <button onClick={onOpenLeadPopup} className="px-7 py-3.5 bg-[#FFD100] hover:bg-amber-400 text-neutral-900 font-black text-sm rounded-full flex items-center gap-2 shadow-md transition-all duration-300 transform active:scale-95 cursor-pointer">
+                <a 
+                  href="https://api.whatsapp.com/send/?phone=51926289293&text=%C2%A1Hola%21+INNOVA%2C+deseo+coordinar+una+visita+guiada+al+proyecto+Las+Bugambilias&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-7 py-3.5 bg-[#FFD100] hover:bg-amber-400 text-neutral-900 font-black text-sm rounded-full flex items-center gap-2 shadow-md transition-all duration-300 transform active:scale-95 cursor-pointer"
+                >
                   <span className="uppercase tracking-wider">Coordina tu visita</span>
                   <ArrowRight className="w-4 h-4 stroke-[3px]" />
-                </button>
+                </a>
               </div>
             </div>
 
