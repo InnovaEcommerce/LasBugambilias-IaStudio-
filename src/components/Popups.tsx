@@ -17,6 +17,7 @@ interface LeadPopupProps {
 
 export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: LeadPopupProps) {
   const [step, setStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [form, setForm] = useState<Lead>({
     lead: '',
     celular: '',
@@ -139,6 +140,7 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
     window.dispatchEvent(new Event('innova_lead_submitted'));
 
     onSubmitSuccess(form);
+    setIsSubmitted(true);
     
     // Reset form states
     setStep(1);
@@ -165,7 +167,10 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-neutral-900 z-50 pointer-events-auto"
-            onClick={onClose}
+            onClick={() => {
+              setIsSubmitted(false);
+              onClose();
+            }}
           />
 
           {/* Form Modal Panel */}
@@ -175,7 +180,47 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl overflow-hidden shadow-2xl z-50 max-w-[calc(100%-2rem)] w-[410px] md:max-w-lg font-sans text-neutral-800 flex flex-col max-h-[90vh]"
           >
-            {/* Header branding band with yellow top */}
+            {isSubmitted ? (
+              <div className="p-6 md:p-8 text-center space-y-4 my-auto font-sans relative">
+                <button
+                  onClick={() => {
+                    setIsSubmitted(false);
+                    onClose();
+                  }}
+                  className="absolute top-4 right-4 p-1 text-neutral-400 hover:text-neutral-600 rounded-full hover:bg-neutral-100 transition"
+                  aria-label="Cerrar"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="w-16 h-16 bg-pink-50 text-[#D2007A] rounded-full flex items-center justify-center mx-auto border-2 border-pink-200 shadow-sm">
+                  <CheckCircle className="w-9 h-9 stroke-[2.5px]" />
+                </div>
+                <div className="space-y-1">
+                  <span className="inline-block text-[10px] text-[#D2007A] font-black uppercase font-mono tracking-widest bg-pink-50 px-3 py-1 rounded-full border border-pink-200">
+                    ¡REGISTRO EXITOSO!
+                  </span>
+                  <h3 className="font-display font-black text-xl text-neutral-900 leading-tight uppercase font-sans pt-1">
+                    ¡Gracias por registrarte!
+                  </h3>
+                </div>
+                <p className="text-xs md:text-sm text-neutral-600 leading-relaxed max-w-xs mx-auto font-medium">
+                  Tu solicitud ha sido enviada con éxito. Un asesor de <strong className="text-neutral-900 font-extrabold">INNOVA Inversiones</strong> se contactará contigo vía llamadas o WhatsApp a la brevedad.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSubmitted(false);
+                    onClose();
+                  }}
+                  className="w-full py-3.5 bg-[#D2007A] hover:bg-pink-800 text-white font-black text-xs rounded-xl uppercase transition cursor-pointer shadow-md tracking-wide"
+                >
+                  Entendido, volver a la web
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Header branding band with yellow top */}
             <div className="bg-centenario-yellow py-3 md:py-4 px-5 md:px-6 flex justify-between items-center border-b border-amber-200">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-centenario-magenta" />
@@ -391,6 +436,8 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
             <div className="bg-neutral-100 py-3 md:p-4 text-center border-t border-neutral-150 text-[9.5px] md:text-[10px] text-neutral-400 font-mono uppercase tracking-wider">
               🛡️ Protección de datos garantizada
             </div>
+              </>
+            )}
           </motion.div>
         </>
       )}

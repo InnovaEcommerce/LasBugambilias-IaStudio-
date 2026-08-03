@@ -38,8 +38,7 @@ export default function App() {
   // Popups visibility states
   const [isLeadPopupOpen, setIsLeadPopupOpen] = useState(false);
   const [prefilledComment, setPrefilledComment] = useState<string | undefined>(undefined);
-  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
-  const [submittedLead, setSubmittedLead] = useState<Lead | null>(null);
+  const [, setSubmittedLead] = useState<Lead | null>(null);
 
   // Terms & Privacy Modal state
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
@@ -91,8 +90,7 @@ export default function App() {
   // Success form handler callback
   const handleLeadSubmitSuccess = (lead: Lead) => {
     setSubmittedLead(lead);
-    setIsLeadPopupOpen(false);
-    setIsSuccessPopupOpen(true);
+    // Floating modal popup removed in favor of clean inline messages inside forms
   };
 
   // Open popup triggered with custom note / plans
@@ -211,13 +209,6 @@ export default function App() {
 
       {/* Exit Intent Tracker overlay prompt */}
       <ExitIntentPopup onSubmitSuccess={handleLeadSubmitSuccess} />
-
-      {/* Form Submission Success confirmation window overlay */}
-      <SuccessPopup
-        isOpen={isSuccessPopupOpen}
-        onClose={() => setIsSuccessPopupOpen(false)}
-        leadDetails={submittedLead}
-      />
 
       {/* Sequential timed social proof conversion notifications */}
       <SocialProofToasts onOpenLeadPopup={handleOpenGeneralPopup} />

@@ -43,20 +43,18 @@ export default function BackupAndHistory() {
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
-      // Calculate dynamic active index based on card width + gap
-      const cardWidth = 260; // card width is set to min-w-[260px]
-      const gap = 16;       // flex gap-4 is 16px
-      const index = Math.round(scrollLeft / (cardWidth + gap));
-      setActiveIdx(Math.min(Math.max(0, index), stats.length - 1));
+      if (clientWidth > 0) {
+        const index = Math.round(scrollLeft / clientWidth);
+        setActiveIdx(Math.min(Math.max(0, index), stats.length - 1));
+      }
     }
   };
 
   const scrollToIdx = (idx: number) => {
     if (scrollRef.current) {
-      const cardWidth = 260;
-      const gap = 16;
+      const { clientWidth } = scrollRef.current;
       scrollRef.current.scrollTo({
-        left: idx * (cardWidth + gap),
+        left: idx * clientWidth,
         behavior: 'smooth'
       });
       setActiveIdx(idx);
@@ -176,44 +174,46 @@ export default function BackupAndHistory() {
             </div>
           </div>
 
-          {/* Side-by-side or horizontal swipable cards preview precisely mimicking Image 6 */}
-          <div 
-            ref={scrollRef}
-            onScroll={handleScroll}
-            className="flex gap-4 overflow-x-auto pb-6 pt-1 px-4 snap-x snap-mandatory scrollbar-none scroll-smooth"
-          >
-            {stats.map((stat, idx) => (
-              <div
-                key={idx}
-                className="relative h-56 min-w-[260px] w-[260px] rounded-[24px] overflow-hidden shadow-lg flex flex-col justify-end p-5 text-left font-sans snap-center shrink-0 border border-neutral-100/50"
-              >
-                {/* Background Image */}
-                <img
-                  src={stat.imageUrl}
-                  alt={stat.label}
-                  className="absolute inset-0 w-full h-full object-cover saturate-[1.15]"
-                />
-                
-                {/* Dark Vignette Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
+          {/* Mobile Carousel - showing 1 card cleanly at a time without adjacent image cutoffs */}
+          <div className="w-full max-w-[340px] sm:max-w-md mx-auto relative px-1">
+            <div 
+              ref={scrollRef}
+              onScroll={handleScroll}
+              className="flex overflow-x-auto rounded-[24px] shadow-lg snap-x snap-mandatory scrollbar-none scroll-smooth w-full border border-neutral-100"
+            >
+              {stats.map((stat, idx) => (
+                <div
+                  key={idx}
+                  className="relative h-60 w-full min-w-full shrink-0 snap-center snap-always rounded-[24px] overflow-hidden flex flex-col justify-end p-6 text-left font-sans"
+                >
+                  {/* Background Image */}
+                  <img
+                    src={stat.imageUrl}
+                    alt={stat.label}
+                    className="absolute inset-0 w-full h-full object-cover saturate-[1.15]"
+                  />
+                  
+                  {/* Dark Vignette Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
 
-                {/* Left side text labels representing statistics */}
-                <div className="relative z-10 flex flex-col font-sans">
-                  {/* Big yellow value */}
-                  <span className="font-sans font-black text-5xl text-[#FFD100] leading-none mb-1">
-                    {stat.value}
-                  </span>
-                  {/* Unit label (e.g. proyectos, años) */}
-                  <span className="text-base font-extrabold text-white leading-tight uppercase font-sans">
-                    {stat.unit}
-                  </span>
-                  {/* Label (e.g. entregados, junto a ti) */}
-                  <span className="text-sm font-semibold text-neutral-200 leading-normal font-sans">
-                    {stat.label}
-                  </span>
+                  {/* Left side text labels representing statistics */}
+                  <div className="relative z-10 flex flex-col font-sans">
+                    {/* Big yellow value */}
+                    <span className="font-sans font-black text-5xl text-[#FFD100] leading-none mb-1 drop-shadow-sm">
+                      {stat.value}
+                    </span>
+                    {/* Unit label (e.g. proyectos, años) */}
+                    <span className="text-base font-extrabold text-white leading-tight uppercase font-sans tracking-wide">
+                      {stat.unit}
+                    </span>
+                    {/* Label (e.g. entregados, junto a ti) */}
+                    <span className="text-sm font-semibold text-neutral-200 leading-normal font-sans">
+                      {stat.label}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Dots carousels indicators - matching Image 6 style */}

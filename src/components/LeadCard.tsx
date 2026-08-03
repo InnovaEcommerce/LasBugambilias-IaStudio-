@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, CheckCircle } from 'lucide-react';
 import { Lead } from '../types';
 import { saveLeadLocal } from '../services/leadsService';
 import { trackLead, trackInitiateRegistration } from '../utils/pixel';
@@ -10,6 +10,7 @@ interface LeadCardProps {
 }
 
 export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardProps) {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [form, setForm] = useState<Lead>({
     lead: '',
     celular: '',
@@ -127,6 +128,7 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
     window.dispatchEvent(new Event('innova_lead_submitted'));
 
     onSubmitSuccess(form);
+    setIsSubmitted(true);
 
     // Reset local state fields
     setForm({
@@ -146,7 +148,33 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
   return (
     <div className={`w-full bg-[#FFD100] rounded-[32px] p-6 text-neutral-900 border-none relative flex flex-col justify-between shadow-2xl font-sans ${className}`}>
       
-      {/* Step Indicators Section matching Image 2 */}
+      {isSubmitted ? (
+        <div className="bg-white rounded-[24px] p-6 text-center space-y-4 my-2 shadow-xl border-2 border-[#D2007A] font-sans animate-fade-in">
+          <div className="w-14 h-14 bg-pink-50 text-[#D2007A] rounded-full flex items-center justify-center mx-auto border-2 border-pink-200 shadow-sm">
+            <CheckCircle className="w-8 h-8 stroke-[2.5px]" />
+          </div>
+          <div className="space-y-1">
+            <span className="inline-block text-[10px] text-[#D2007A] font-black uppercase font-mono tracking-widest bg-pink-50 px-3 py-1 rounded-full border border-pink-200">
+              ¡REGISTRO EXITOSO!
+            </span>
+            <h4 className="font-display font-black text-lg text-neutral-900 leading-tight uppercase font-sans pt-1">
+              ¡Gracias por escribirnos!
+            </h4>
+          </div>
+          <p className="text-xs text-neutral-600 font-medium leading-relaxed">
+            Tu registro se ha completado correctamente. Un asesor de <strong className="text-neutral-900 font-bold">INNOVA Inversiones</strong> se contactará contigo vía WhatsApp o llamada a la brevedad.
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsSubmitted(false)}
+            className="w-full py-3 bg-[#D2007A] hover:bg-pink-800 text-white font-black text-xs rounded-full uppercase transition-all shadow-md cursor-pointer tracking-wide"
+          >
+            Registrar otra consulta
+          </button>
+        </div>
+      ) : (
+        <>
+          {/* Step Indicators Section matching Image 2 */}
       <div className="flex items-center justify-center gap-2.5 mb-5 mt-1">
         {/* Step 1 badge */}
         <div 
@@ -357,6 +385,8 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
       <div className="text-[9px] text-neutral-700 font-mono tracking-wider font-bold text-center uppercase pt-4 opacity-75">
         🔒 DATOS SEGUROS • LEY Nro. 29733 PERÚ
       </div>
+        </>
+      )}
 
     </div>
   );
