@@ -84,7 +84,7 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
     }
     setErrors({});
     setStep(2);
-    trackInitiateRegistration(2, 'Formulario Popup');
+    trackInitiateRegistration(2, 'form 2 - Body');
   };
 
   const handleBack = () => {
@@ -102,11 +102,14 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
     e.preventDefault();
     if (!validate()) return;
 
-    const origenStr = 'formulario popup';
+    const origenStr = 'form 2 - Body';
 
     try {
       await saveLeadLocal(form, {
         origen: origenStr,
+        campaña: 'form 2 - Body',
+        formulario: 'lp LB form',
+        captacion: 'lp LB form',
       });
     } catch (dbError) {
       console.error('Local database lead capture failed:', dbError);
@@ -352,11 +355,11 @@ export function LeadPopup({ isOpen, onClose, onSubmitSuccess, initialComment }: 
                     <div className="space-y-1">
                       <label className="text-[13.5px] font-semibold text-neutral-600 font-sans tracking-normal block">Tu Comentario (Opcional)</label>
                       <textarea
-                        rows={2}
-                        placeholder="Deseo financiamiento de cuotas, consultas del terreno."
+                        rows={4}
+                        placeholder="Deseo financiamiento de cuotas, consultas del terreno..."
                         value={form.comentarios}
                         onChange={(e) => handleFormChange('comentarios', e.target.value)}
-                        className="w-full p-3 font-sans font-semibold bg-neutral-50 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-centenario-magenta text-neutral-800"
+                        className="w-full p-3.5 font-sans font-medium bg-neutral-50 border border-neutral-200 rounded-xl text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-centenario-magenta text-neutral-800 placeholder:text-neutral-400 min-h-[100px] resize-y"
                       />
                     </div>
 

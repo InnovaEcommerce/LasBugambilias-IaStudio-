@@ -11,6 +11,7 @@ import BackupAndHistory from './components/BackupAndHistory';
 import Testimonials from './components/Testimonials';
 import ReferralBanner from './components/ReferralBanner';
 import AppPromo from './components/AppPromo';
+import NewsletterSection from './components/NewsletterSection';
 import WhatsAppBubble from './components/WhatsAppBubble';
 import Footer from './components/Footer';
 import { TermsModal } from './components/TermsModal';
@@ -180,6 +181,9 @@ export default function App() {
         <div id="app">
           <AppPromo />
         </div>
+
+        {/* Newsletter subscription section */}
+        <NewsletterSection onSubmitSuccess={handleLeadSubmitSuccess} />
 
       </main>
 

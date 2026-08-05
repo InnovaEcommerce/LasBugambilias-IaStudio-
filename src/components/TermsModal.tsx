@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, FileText, Shield, Scale } from 'lucide-react';
+import { X, FileText, Shield } from 'lucide-react';
 
 interface TermsModalProps {
   isOpen: boolean;
@@ -60,8 +60,8 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose, default
               </button>
 
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center text-teal-400">
-                  <Scale className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-2 shadow-sm">
+                  <img src="/logo_innova.svg" alt="Innova Inversiones" className="w-full h-full object-contain" />
                 </div>
                 <div>
                   <h2 className="text-xl md:text-2xl font-black tracking-tight">

@@ -62,9 +62,9 @@ async function startServer() {
         origen:"LP_LasBugambilias",
 
         fecha: leadData.fecha || "",
-        campaña: leadData.campaña || "Landing Page LB",
-        formulario: leadData.formulario || "formulario principal",
-        captacion: leadData.captacion || "Landing LP Form",
+        campaña: leadData.campaña || "form 1 - Header",
+        formulario: leadData.formulario || "lp LB form",
+        captacion: leadData.captacion || "lp LB form",
         lead: leadData.lead || "",
         celular: leadData.celular || "",
         correo: leadData.correo || "",
@@ -153,9 +153,9 @@ async function startServer() {
 
       const formattedData = {
         fecha: leadData.fecha || "",
-        campaña: leadData.campaña || "Landing Page LB",
-        formulario: leadData.formulario || "formulario principal",
-        captacion: leadData.captacion || "Landing LP Form",
+        campaña: leadData.campaña || "form 1 - Header",
+        formulario: leadData.formulario || "lp LB form",
+        captacion: leadData.captacion || "lp LB form",
         lead: leadData.lead || "",
         celular: leadData.celular || "",
         correo: leadData.correo || "",

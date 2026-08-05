@@ -50,7 +50,12 @@ const subscribers: Set<(leads: LeadWithMeta[]) => void> = new Set();
  */
 export async function saveLeadLocal(
   lead: Lead,
-  extra: { origen: 'formulario principal' | 'formulario popup' | string }
+  extra: {
+    origen?: string;
+    campaña?: string;
+    formulario?: string;
+    captacion?: string;
+  }
 ): Promise<string> {
   const currentLeads = getLocalLeads();
   const id = 'lead_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
@@ -66,6 +71,9 @@ export async function saveLeadLocal(
     second: '2-digit',
   });
 
+  const isBodyForm = extra.origen === 'form 2 - Body' || extra.origen === 'formulario popup';
+  const defaultCampana = isBodyForm ? 'form 2 - Body' : 'form 1 - Header';
+
   const newLead: LeadWithMeta = {
     id,
     lead: lead.lead.trim(),
@@ -79,9 +87,9 @@ export async function saveLeadLocal(
     
     // Google Sheets exact column expectations & defaults
     fecha: localDateStr,
-    campaña: 'Landing Page LB',
-    formulario: extra.origen === 'formulario popup' ? 'formulario popup' : 'formulario principal',
-    captacion: 'Landing LP Form',
+    campaña: extra.campaña || defaultCampana,
+    formulario: extra.formulario || 'lp LB form',
+    captacion: extra.captacion || 'lp LB form',
     contactoLaia: 'no',
     asesora: 'N/A',
     contactoAsesor: 'sin seguimiento',

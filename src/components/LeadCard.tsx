@@ -75,7 +75,7 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
   const handleNextStep = () => {
     if (validateStep1()) {
       setActiveStep(2);
-      trackInitiateRegistration(2, 'Formulario Principal');
+      trackInitiateRegistration(2, 'form 1 - Header');
     }
   };
 
@@ -90,11 +90,14 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
       return;
     }
 
-    const origenStr = 'Formulario Principal';
+    const origenStr = 'form 1 - Header';
 
     try {
       await saveLeadLocal(form, {
         origen: origenStr,
+        campaña: 'form 1 - Header',
+        formulario: 'lp LB form',
+        captacion: 'lp LB form',
       });
     } catch (dbError) {
       console.error('Local and Sheets storage pipeline failed:', dbError);
@@ -292,8 +295,8 @@ export default function LeadCard({ onSubmitSuccess, className = '' }: LeadCardPr
                 placeholder="¿Algún comentario o consulta adicional?"
                 value={form.comentarios}
                 onChange={(e) => handleFormChange('comentarios', e.target.value)}
-                rows={2}
-                className="w-full px-4 py-3 bg-[#FAF9F6] border border-transparent text-neutral-800 text-xs font-semibold placeholder:text-neutral-450 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D2007A] resize-none"
+                rows={4}
+                className="w-full px-4 py-3 bg-[#FAF9F6] border border-transparent text-neutral-800 text-xs font-semibold placeholder:text-neutral-450 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D2007A] leading-relaxed min-h-[90px] resize-y"
               />
             </div>
 
